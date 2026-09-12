@@ -22,11 +22,9 @@ export function drizzleProbe(options: DrizzleProbeOptions): Probe {
   const query = sql`select 1`;
   let run: () => PromiseLike<ProbeResult>;
   if (typeof db.execute === "function") {
-    const execute = db.execute;
-    run = () => execute(query);
+    run = () => db.execute!(query);
   } else if (typeof db.run === "function") {
-    const runFn = db.run;
-    run = () => runFn(query);
+    run = () => db.run!(query);
   } else {
     throw new ProbeConfigError(
       "drizzleProbe",

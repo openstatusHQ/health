@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import type { SQL } from "drizzle-orm";
+import { drizzle as drizzlePg } from "drizzle-orm/pg-proxy";
+import { drizzle as drizzleSqlite } from "drizzle-orm/sqlite-proxy";
 import { runProbes } from "@openstatus/health";
 import { type DrizzleLikeDb, drizzleProbe } from "./mod.ts";
 
@@ -37,6 +39,34 @@ test("drizzleProbe() falls back to run for sqlite/libsql", async () => {
   assert.equal(report.status, "ok");
   assert.equal(report.checks[0].status, "ok");
   assert.equal(calls.length, 1);
+});
+
+test("drizzleProbe() calls execute on a real pg drizzle instance", async () => {
+  const calls: string[] = [];
+  const db = drizzlePg((query) => {
+    calls.push(query);
+    return Promise.resolve({ rows: [] });
+  });
+  const report = await runProbes([drizzleProbe({ db })], {
+    formatError: "message",
+  });
+  assert.equal(report.status, "ok");
+  assert.equal(report.checks[0].status, "ok");
+  assert.deepEqual(calls, ["select 1"]);
+});
+
+test("drizzleProbe() calls run on a real sqlite drizzle instance", async () => {
+  const calls: string[] = [];
+  const db = drizzleSqlite((query) => {
+    calls.push(query);
+    return Promise.resolve({ rows: [] });
+  });
+  const report = await runProbes([drizzleProbe({ db })], {
+    formatError: "message",
+  });
+  assert.equal(report.status, "ok");
+  assert.equal(report.checks[0].status, "ok");
+  assert.deepEqual(calls, ["select 1"]);
 });
 
 test("drizzleProbe() defaults to critical with the name database", async () => {
