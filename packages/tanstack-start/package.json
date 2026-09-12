@@ -1,0 +1,63 @@
+{
+  "name": "@openstatus/health-tanstack-start",
+  "version": "0.1.0",
+  "description": "TanStack Start adapter for @openstatus/health",
+  "keywords": [
+    "openstatus",
+    "health",
+    "healthcheck",
+    "tanstack",
+    "tanstack-start",
+    "server-routes"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "openstatus",
+    "url": "https://www.openstatus.dev/"
+  },
+  "homepage": "https://github.com/openstatusHQ/health",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openstatusHQ/health.git",
+    "directory": "packages/tanstack-start/"
+  },
+  "bugs": {
+    "url": "https://github.com/openstatusHQ/health/issues"
+  },
+  "type": "module",
+  "module": "./dist/mod.js",
+  "main": "./dist/mod.cjs",
+  "types": "./dist/mod.d.ts",
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/mod.d.ts",
+        "require": "./dist/mod.d.cts"
+      },
+      "import": "./dist/mod.js",
+      "require": "./dist/mod.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist/"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "peerDependencies": {
+    "@openstatus/health": "^0.1.0"
+  },
+  "devDependencies": {
+    "@tanstack/react-router": "^1.170.35",
+    "@tanstack/start-client-core": "^1.170.29",
+    "tsdown": "^0.12.7",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "prepack": "tsdown",
+    "test": "node --experimental-transform-types --test"
+  }
+}

@@ -3,7 +3,7 @@
 ## Layout
 
 - `packages/<name>/` — one npm/JSR package per concern. `health` is the
-  zero-dependency core; `hono`, `elysia`, `express`, `next` are server
+  zero-dependency core; `hono`, `elysia`, `express`, `next`, `tanstack-start` are server
   adapters; `tinybird`, `drizzle`, `turso`, `turso-serverless`, `supabase`,
   `unkey`, `upstash` are probes; `fly`, `koyeb`, `railway`, `vercel`, `cloudflare` render
   hosting metadata under `server` via the `extend` hook.
@@ -31,7 +31,8 @@
 - Explicit return types on every exported function (JSR rejects slow types).
 - Every server adapter exports `healthRoute(options)` (mounts `path`) and
   `healthHandler(options)` (a bare handler for that framework; Next.js has
-  only `healthRoute`, the file is the route). Adapters are built on
+  only `healthRoute`, the file is the route; TanStack Start's `healthRoute`
+  returns `{ GET, HEAD }` for `server.handlers`). Adapters are built on
   `createHealthResponder` from the core and contain no response logic of
   their own. Options are layered: `RunProbesOptions` ⊂ `HealthCheckOptions`
   ⊂ `HealthHandlerOptions` ⊂ `HealthRouteOptions`; a function only accepts

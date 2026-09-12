@@ -43,6 +43,7 @@ the open-source uptime monitoring and status page platform.
 | [`@openstatus/health-elysia`](packages/elysia) | [![JSR](https://jsr.io/badges/@openstatus/health-elysia)](https://jsr.io/@openstatus/health-elysia) | [![npm](https://img.shields.io/npm/v/@openstatus/health-elysia)](https://www.npmjs.com/package/@openstatus/health-elysia) | Elysia adapter |
 | [`@openstatus/health-express`](packages/express) | [![JSR](https://jsr.io/badges/@openstatus/health-express)](https://jsr.io/@openstatus/health-express) | [![npm](https://img.shields.io/npm/v/@openstatus/health-express)](https://www.npmjs.com/package/@openstatus/health-express) | Express 4 / 5 adapter |
 | [`@openstatus/health-next`](packages/next) | [![JSR](https://jsr.io/badges/@openstatus/health-next)](https://jsr.io/@openstatus/health-next) | [![npm](https://img.shields.io/npm/v/@openstatus/health-next)](https://www.npmjs.com/package/@openstatus/health-next) | Next.js App Router adapter |
+| [`@openstatus/health-tanstack-start`](packages/tanstack-start) | [![JSR](https://jsr.io/badges/@openstatus/health-tanstack-start)](https://jsr.io/@openstatus/health-tanstack-start) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tanstack-start)](https://www.npmjs.com/package/@openstatus/health-tanstack-start) | TanStack Start adapter |
 
 ### Providers
 
@@ -139,6 +140,19 @@ import { supabaseProbe } from "@openstatus/health-supabase";
 export const dynamic = "force-dynamic";
 
 export const { GET, HEAD } = healthRoute({ probes: [supabaseProbe({ client })] });
+```
+
+### TanStack Start
+
+```ts
+// src/routes/api/health.ts
+import { createFileRoute } from "@tanstack/react-router";
+import { healthRoute } from "@openstatus/health-tanstack-start";
+import { supabaseProbe } from "@openstatus/health-supabase";
+
+export const Route = createFileRoute("/api/health")({
+  server: { handlers: healthRoute({ probes: [supabaseProbe({ client })] }) },
+});
 ```
 
 ### Anything with a Fetch API (`Deno.serve`, `Bun.serve`, Workers)
