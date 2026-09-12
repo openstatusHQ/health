@@ -2,12 +2,34 @@
 
 Framework-agnostic core for health endpoints: a probe runner, a cached
 checker, response rendering, and a Fetch-API handler. Zero dependencies; runs
-on Deno, Node, Bun and edge runtimes.
+on Deno, Node ≥ 22, Bun and edge runtimes. Built and used in production by
+[openstatus](https://www.openstatus.dev/), the open-source uptime monitoring
+and status page platform.
 
-Adapters: [`@openstatus/health-hono`](https://jsr.io/@openstatus/health-hono),
-[`@openstatus/health-elysia`](https://jsr.io/@openstatus/health-elysia),
-[`@openstatus/health-express`](https://jsr.io/@openstatus/health-express),
-[`@openstatus/health-next`](https://jsr.io/@openstatus/health-next).
+The core is one package in a family — thin adapters mount it on your
+framework, thin probes know how to ping one dependency each, and hosting
+packages say which replica answered:
+
+- Adapters: [`@openstatus/health-hono`](https://jsr.io/@openstatus/health-hono),
+  [`@openstatus/health-elysia`](https://jsr.io/@openstatus/health-elysia),
+  [`@openstatus/health-express`](https://jsr.io/@openstatus/health-express),
+  [`@openstatus/health-next`](https://jsr.io/@openstatus/health-next),
+  [`@openstatus/health-tanstack-start`](https://jsr.io/@openstatus/health-tanstack-start).
+- Probes: [`@openstatus/health-drizzle`](https://jsr.io/@openstatus/health-drizzle),
+  [`@openstatus/health-supabase`](https://jsr.io/@openstatus/health-supabase),
+  [`@openstatus/health-tinybird`](https://jsr.io/@openstatus/health-tinybird),
+  [`@openstatus/health-turso`](https://jsr.io/@openstatus/health-turso),
+  [`@openstatus/health-turso-serverless`](https://jsr.io/@openstatus/health-turso-serverless),
+  [`@openstatus/health-unkey`](https://jsr.io/@openstatus/health-unkey),
+  [`@openstatus/health-upstash`](https://jsr.io/@openstatus/health-upstash).
+- Hosting: [`@openstatus/health-fly`](https://jsr.io/@openstatus/health-fly),
+  [`@openstatus/health-koyeb`](https://jsr.io/@openstatus/health-koyeb),
+  [`@openstatus/health-railway`](https://jsr.io/@openstatus/health-railway),
+  [`@openstatus/health-vercel`](https://jsr.io/@openstatus/health-vercel),
+  [`@openstatus/health-cloudflare`](https://jsr.io/@openstatus/health-cloudflare).
+
+The full package table, with quick starts for every adapter, is in the
+[repository README](https://github.com/openstatusHQ/health#packages).
 
 ## Install
 
@@ -56,9 +78,11 @@ Deno.serve(handler);
 }
 ```
 
-`HEAD` returns the same status code with no body. Other methods get `405`.
-Without `path` the handler answers on every URL; with it, anything else gets
-`404` (a trailing slash is tolerated either way).
+`HEAD` returns the same status code with no body. Other methods get `405`
+with an `allow: GET, HEAD` header. Without `path` the handler answers on
+every URL; with it, anything else gets `404` (a trailing slash is tolerated
+either way). Every response carries `content-type: application/json` and
+`cache-control: no-store`.
 
 Errors are masked by default — a failing probe reports `"error": "failed"`.
 Pass `formatError: "message"` to see the real message while developing, or
@@ -116,33 +140,41 @@ Status aggregation:
 | a non-critical probe failed or timed out | `degraded` |
 | a critical probe failed or timed out | `unhealthy` |
 
-Probe names must be unique; duplicates throw when the endpoint is created.
+Probe names must be unique; duplicates throw a `DuplicateProbeError` when the
+endpoint is created.
 
 A probe that ignores `signal` and settles after its deadline is still reported
 as `timeout`; the late result is discarded and can never surface as an
 unhandled rejection.
 
+The probe packages listed above follow the same contract: every factory takes
+a client or URL (never the environment), accepts `name`, `critical`,
+`timeoutMs` and `skip` overrides, and validates its options at construction —
+a missing or malformed URL throws a `ProbeConfigError` naming the probe and
+the field.
+
 ## Options
 
 The options are layered so that each function only accepts what it uses:
 
-| Type | Accepted by | Adds |
-| ---- | ----------- | ---- |
+| Type | Accepted by | Fields |
+| ---- | ----------- | ------ |
 | `RunProbesOptions` | `runProbes()` | `timeoutMs`, `deadlineMs`, `formatError` |
-| `HealthCheckOptions` | `createHealthCheck()` | `probes`, `cacheMs`, `cacheFailuresMs`, `staleMs`, `onReport` |
+| `HealthCheckOptions` | `createHealthCheck()` | the above plus `probes`, `cacheMs`, `cacheFailuresMs`, `staleMs`, `onReport` |
 | `HealthResponseOptions` | `renderHealthResponse()` | `exposeChecks` (boolean), `unhealthyStatusCode`, `degradedStatusCode` |
-| `HealthHandlerOptions<Ctx>` | `createHealthResponder()`, `createHealthHandler()`, adapter `healthHandler()` | `check` (instead of `probes`), `exposeChecks` (boolean or function), `extend`, `onError` |
-| `HealthRouteOptions<Ctx>` | `createHealthHandler()`, adapter `healthRoute()` | `path` |
+| `HealthResponderOptions<Ctx>` | — | `exposeChecks` (boolean or function), `unhealthyStatusCode`, `degradedStatusCode`, `extend`, `onError` |
+| `HealthHandlerOptions<Ctx>` | `createHealthResponder()`, adapter `healthHandler()`, Next.js and TanStack Start `healthRoute()` | `HealthResponderOptions` plus either `HealthCheckOptions` or `{ check }` |
+| `HealthRouteOptions<Ctx>` | `createHealthHandler()`, `createLazyHealthHandler()`, adapter `healthRoute()` | the above plus `path` |
 
-Each type extends the one above it, so an object typed as
-`HealthRouteOptions` works everywhere. From `HealthHandlerOptions` up, you
-pass either `probes` (and the check options) or a prebuilt `check`.
+An object typed as `HealthRouteOptions` works everywhere. From
+`HealthHandlerOptions` up, you pass either `probes` (and the check options) or
+a prebuilt `check` — the `HealthSource` union makes passing both a type error.
 
 | Option | Default | Description |
 | ------ | ------- | ----------- |
 | `probes` | — | Probes to run, concurrently, on every uncached request. |
 | `check` | — | A `HealthCheck` from `createHealthCheck()` to use instead of `probes`. Share one between routes so the probes run once per cache window, and keep a handle to `invalidate()`. |
-| `path` | `"/health"` | Route the adapter mounts. On `createHealthHandler` there is no default: unset answers every URL, set returns `404` elsewhere. Ignored by Next.js, where the file is the route. |
+| `path` | `"/health"` | Route the adapter mounts. On `createHealthHandler` there is no default: unset answers every URL, set returns `404` elsewhere. Ignored by Next.js and TanStack Start, where the file is the route. |
 | `cacheMs` | `5000` | Reuse the last `ok` report for this long; concurrent callers share one round. `0` disables. |
 | `cacheFailuresMs` | `cacheMs` | Same, for `degraded` and `unhealthy` reports. Set `0` so a readiness poller sees recovery on its next tick instead of waiting out the cache. |
 | `staleMs` | `0` | Stale-while-revalidate: after the cache expires, keep answering with the last report for this long while one refresh runs in the background. The prober never waits on a probe. |
@@ -151,17 +183,20 @@ pass either `probes` (and the check options) or a prebuilt `check`.
 | `exposeChecks` | `true` | Include `latencyMs`, `checks` and `extend` output in the body. `false` returns only `status` and `checkedAt` — for public endpoints. A function `(ctx) => boolean \| Promise<boolean>` decides per request, so one route can be terse for anonymous callers and detailed for trusted ones. |
 | `unhealthyStatusCode` | `503` | HTTP status for `unhealthy`. Set `200` to always answer 200 and let callers read `status`. |
 | `degradedStatusCode` | `200` | HTTP status for `degraded`. |
-| `extend` | — | `(report, ctx) => object` merged into the body: request id, vitals, or a `server` object from a hosting package. `ctx` is the framework request context. Anything `JSON.stringify` accepts is fine — `interface` types and `Date`s included. `status`, `checkedAt`, `latencyMs` and `checks` always win; put your data under your own keys. Only runs when checks are exposed. If it throws, the report is served without it and the error goes to `onError`. |
+| `extend` | — | `(report, ctx) => object` merged into the body: request id, vitals, or a `server` object from a hosting package. `ctx` is the framework request context. May be async. Anything `JSON.stringify` accepts is fine — `interface` types and `Date`s included. `status`, `checkedAt`, `latencyMs` and `checks` always win; put your data under your own keys. Only runs when checks are exposed. If it throws, the report is served without it and the error goes to `onError`. |
 | `formatError` | `"generic"` | What goes in a check's `error` field. `"generic"` reports `"failed"` / `"timed out after Nms"` and never leaks messages. `"message"` reports `error.message`. Or supply `(error: Error) => string`. |
 | `onReport` | — | `(report) => void` called once per uncached round, after the probes finish. Log it, emit a metric, page on `unhealthy`. Errors thrown or rejected inside are swallowed. |
 | `onError` | `console.error` | `(error, ctx) => void` called when `extend` or a function-form `exposeChecks` throws. The endpoint still answers — with no extension, or with checks hidden. |
 
+The defaults are exported as `defaultTimeoutMs`, `defaultCacheMs`,
+`defaultUnhealthyStatusCode` and `defaultDegradedStatusCode`.
+
 ## Helpers
 
-- `httpProbe({ name, url, method?, headers?, expectStatus?, fetch? })` — reachability probe for any HTTP endpoint.
-- `expectOk(response, expectStatus?)` — rejects unless the response is 2xx (or the given status).
+- `httpProbe({ name, url, method?, headers?, expectStatus?, fetch?, critical?, timeoutMs?, skip? })` — reachability probe for any HTTP endpoint. `method` is `GET` (default) or `HEAD`; `expectStatus` replaces the 2xx check with one exact status; `fetch` swaps the implementation for tests.
+- `expectOk(response, expectStatus?)` — rejects unless the response is 2xx (or the given status), and cancels the body either way.
 - `probe(options)` — identity function for authoring probes with inference.
-- `runProbes(probes, { timeoutMs?, formatError? })` — one round, no caching.
+- `runProbes(probes, { timeoutMs?, deadlineMs?, formatError? })` — one round, no caching.
 - `createHealthCheck(options)` — `{ report(), invalidate() }` with caching and in-flight de-duplication.
 - `renderHealthResponse(report, options, extended?)` — `{ status, headers, body }` from a report you already have.
 - `createHealthResponder<Ctx>(options)` — `{ check, respond(ctx), toResponse(ctx, method?) }`: everything between "a request arrived" and "here is the response", for any framework. `respond` returns `{ status, headers, body }`; `toResponse` builds a `Response` and drops the body on `HEAD`. This is what every adapter is built on — see [Custom adapters](#custom-adapters).
@@ -179,6 +214,13 @@ pass either `probes` (and the check options) or a prebuilt `check`.
 
 - `readEnv(name, source?)` — portable environment lookup that never throws.
 - `probeUrl({ probe, field, value, path? })` — parse a URL option at construction and throw a `ProbeConfigError` that names the probe and the field (`upstashProbe: "url" must be an absolute URL, got undefined`) instead of a bare `Invalid URL` from inside the library. Use it in your own probe factories.
+
+## Errors
+
+- `ProbeTimeoutError` — the `signal.reason` a probe receives when its timeout fires, and the error behind a `timeout` check. Carries `timeoutMs`.
+- `DuplicateProbeError` — thrown by `createHealthCheck()` and everything built on it when two probes share a `name`. Carries `probeName`.
+- `ProbeConfigError` — thrown by probe factories for an invalid option. Carries `probe` and `field`.
+- `genericFormatError` / `messageFormatError` — the two built-in `formatError` implementations, exported so a custom formatter can fall back to them.
 
 ## Custom adapters
 
@@ -223,3 +265,21 @@ const report = await runProbes([
 - `fakeFetch({ status?, body?, onFetch? })` — a `fetch` that answers immediately and reports each call's `url`, `method`, `headers` and `signal`.
 - `hangFetch(track?)` — a `fetch` that never resolves; sets `track.aborted` when the signal fires.
 - `okProbe(name, critical?)`, `failingProbe(name, critical?, error?)`, `hangingProbe(name, critical?, timeoutMs?)` — probes with a known outcome.
+
+## About openstatus
+
+[openstatus](https://www.openstatus.dev/) monitors endpoints from regions
+around the world and turns the results into status pages and alerts. These
+packages are the `/health` endpoints behind openstatus's own services,
+extracted so any JavaScript server can expose one — and so a monitor has
+something more useful to poll than `200 OK`. Point an
+[openstatus monitor](https://www.openstatus.dev/docs/reference/http-monitor)
+at the endpoint and assert on `status` in the body to be alerted on
+`degraded` before it becomes `unhealthy`.
+
+Source: [github.com/openstatusHQ/health](https://github.com/openstatusHQ/health).
+Issues and PRs welcome.
+
+## License
+
+[MIT](https://github.com/openstatusHQ/health/blob/main/LICENSE)

@@ -42,3 +42,21 @@ Pass `check` instead of `probes` to share one `createHealthCheck()` between
 routes. Probe failures never reject the request; an `extend` that throws is
 reported to `onError` and the report is served without it. Methods other than
 `GET` and `HEAD` fall through to Express's default `404`.
+
+## About openstatus
+
+[openstatus](https://www.openstatus.dev/) is the open-source uptime monitoring
+and status page platform. This package is part of
+[`@openstatus/health`](https://github.com/openstatusHQ/health), the `/health`
+endpoints behind openstatus's own services, extracted so any JavaScript server
+can expose one. Point an
+[openstatus monitor](https://www.openstatus.dev/docs/reference/http-monitor)
+at the endpoint and assert on `status` in the body to be alerted on
+`degraded` before it becomes `unhealthy`.
+
+Source: [github.com/openstatusHQ/health](https://github.com/openstatusHQ/health).
+Issues and PRs welcome.
+
+## License
+
+[MIT](https://github.com/openstatusHQ/health/blob/main/LICENSE)

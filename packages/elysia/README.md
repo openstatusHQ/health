@@ -52,3 +52,21 @@ new Elysia().decorate("db", db).get(
 Pass `check` instead of `probes` to share one `createHealthCheck()` between
 routes. Methods other than `GET` and `HEAD` fall through to Elysia's `404`.
 All other options are documented in `@openstatus/health`.
+
+## About openstatus
+
+[openstatus](https://www.openstatus.dev/) is the open-source uptime monitoring
+and status page platform. This package is part of
+[`@openstatus/health`](https://github.com/openstatusHQ/health), the `/health`
+endpoints behind openstatus's own services, extracted so any JavaScript server
+can expose one. Point an
+[openstatus monitor](https://www.openstatus.dev/docs/reference/http-monitor)
+at the endpoint and assert on `status` in the body to be alerted on
+`degraded` before it becomes `unhealthy`.
+
+Source: [github.com/openstatusHQ/health](https://github.com/openstatusHQ/health).
+Issues and PRs welcome.
+
+## License
+
+[MIT](https://github.com/openstatusHQ/health/blob/main/LICENSE)
