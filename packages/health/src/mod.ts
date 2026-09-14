@@ -38,6 +38,7 @@ export {
   ProbeTimeoutError,
 } from "./errors.ts";
 export { readEnv } from "./env.ts";
+export { omitFields } from "./omit.ts";
 export { defaultTimeoutMs, runProbes } from "./run.ts";
 export { createHealthCheck, defaultCacheMs } from "./check.ts";
 export { createHealthResponder, resolveHealthCheck } from "./responder.ts";

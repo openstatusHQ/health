@@ -106,6 +106,16 @@ hidden too. The colo is harmless to publish, the version id tells anyone
 polling exactly which build you are running — pass a function as
 `exposeChecks` to show the detailed body only to callers you trust.
 
+To keep the colo but hide the build, both functions take a typed `omit` list:
+
+```ts
+cloudflareExtend({ version, omit: ["version"] })
+```
+
+The keys are checked against `CloudflareServerInfo`, so `"colo"` is a compile
+error, and `platform` may be omitted too when you would rather not advertise
+the host.
+
 ## About openstatus
 
 [openstatus](https://www.openstatus.dev/) is the open-source uptime monitoring

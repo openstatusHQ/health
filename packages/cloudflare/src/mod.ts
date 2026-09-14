@@ -1,4 +1,5 @@
 import type { HealthReport, JsonObject } from "@openstatus/health";
+import { omitFields } from "@openstatus/health";
 
 export type CloudflareRequestLike = Request & {
   readonly cf?: { readonly colo?: string };
@@ -18,6 +19,7 @@ export type CloudflareServerInfo = {
 
 export type CloudflareServerOptions = {
   readonly version?: CloudflareVersionMetadata;
+  readonly omit?: readonly (keyof CloudflareServerInfo)[];
 };
 
 export type CloudflareExtendOptions<Ctx> = CloudflareServerOptions & {
@@ -38,12 +40,13 @@ export function cloudflareServer(
   const version = text(options?.version?.id);
   const versionTag = text(options?.version?.tag);
 
-  return {
+  const info: CloudflareServerInfo = {
     platform: "cloudflare",
     ...(region != null ? { region } : {}),
     ...(version != null ? { version } : {}),
     ...(versionTag != null ? { versionTag } : {}),
   };
+  return omitFields(info, options?.omit);
 }
 
 export function cloudflareExtend<Ctx = Request>(

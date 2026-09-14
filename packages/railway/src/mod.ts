@@ -1,5 +1,5 @@
 import type { JsonObject } from "@openstatus/health";
-import { readEnv } from "@openstatus/health";
+import { omitFields, readEnv } from "@openstatus/health";
 
 export type RailwayServerInfo = {
   readonly platform: "railway";
@@ -14,6 +14,7 @@ export type RailwayServerInfo = {
 
 export type RailwayServerOptions = {
   readonly env?: Readonly<Record<string, string | undefined>>;
+  readonly omit?: readonly (keyof RailwayServerInfo)[];
 };
 
 function text(value: string | undefined): string | undefined {
@@ -34,7 +35,7 @@ export function railwayServer(
   const project = text(readEnv("RAILWAY_PROJECT_NAME", env));
   const commitSha = text(readEnv("RAILWAY_GIT_COMMIT_SHA", env));
 
-  return {
+  const info: RailwayServerInfo = {
     platform: "railway",
     ...(region != null ? { region } : {}),
     ...(instanceId != null ? { instanceId } : {}),
@@ -44,6 +45,7 @@ export function railwayServer(
     ...(project != null ? { project } : {}),
     ...(commitSha != null ? { commitSha } : {}),
   };
+  return omitFields(info, options?.omit);
 }
 
 export function railwayExtend(

@@ -1,5 +1,5 @@
 import type { JsonObject } from "@openstatus/health";
-import { readEnv } from "@openstatus/health";
+import { omitFields, readEnv } from "@openstatus/health";
 
 export type VercelServerInfo = {
   readonly platform: "vercel";
@@ -14,6 +14,7 @@ export type VercelServerInfo = {
 
 export type VercelServerOptions = {
   readonly env?: Readonly<Record<string, string | undefined>>;
+  readonly omit?: readonly (keyof VercelServerInfo)[];
 };
 
 function text(value: string | undefined): string | undefined {
@@ -34,7 +35,7 @@ export function vercelServer(
   const commitSha = text(readEnv("VERCEL_GIT_COMMIT_SHA", env));
   const branch = text(readEnv("VERCEL_GIT_COMMIT_REF", env));
 
-  return {
+  const info: VercelServerInfo = {
     platform: "vercel",
     ...(region != null ? { region } : {}),
     ...(environment != null ? { environment } : {}),
@@ -44,6 +45,7 @@ export function vercelServer(
     ...(commitSha != null ? { commitSha } : {}),
     ...(branch != null ? { branch } : {}),
   };
+  return omitFields(info, options?.omit);
 }
 
 export function vercelExtend(options?: VercelServerOptions): () => JsonObject {

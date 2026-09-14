@@ -48,6 +48,20 @@ test("flyServer() omits absent and empty fields", () => {
   });
 });
 
+test("flyServer() omits the requested fields", () => {
+  const server = flyServer({ env: fullEnv, omit: ["instanceId", "version"] });
+  assert.equal("instanceId" in (server ?? {}), false);
+  assert.equal("version" in (server ?? {}), false);
+  assert.equal(server?.region, "ams");
+});
+
+test("flyExtend() keeps the omitted fields out of the report", () => {
+  const extend = flyExtend({ env: fullEnv, omit: ["instanceId"] });
+  assert.deepEqual(extend(), {
+    server: flyServer({ env: fullEnv, omit: ["instanceId"] }),
+  });
+});
+
 test("flyServer() falls back to FLY_ALLOC_ID and FLY_APP_NAME", () => {
   assert.equal(
     flyServer({ env: { FLY_ALLOC_ID: "0e28", FLY_APP_NAME: "api" } })

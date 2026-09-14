@@ -213,6 +213,7 @@ The defaults are exported as `defaultTimeoutMs`, `defaultCacheMs`,
   ```
 
 - `readEnv(name, source?)` — portable environment lookup that never throws.
+- `omitFields(value, keys?)` — shallow copy of `value` with the named keys removed, or `value` itself when nothing is omitted. The hosting packages use it for their `omit` option.
 - `probeUrl({ probe, field, value, path? })` — parse a URL option at construction and throw a `ProbeConfigError` that names the probe and the field (`upstashProbe: "url" must be an absolute URL, got undefined`) instead of a bare `Invalid URL` from inside the library. Use it in your own probe factories.
 
 ## Errors

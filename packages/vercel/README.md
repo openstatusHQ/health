@@ -87,6 +87,17 @@ from a record you supply instead of the process environment.
 hidden too, so deployment ids and branch names are never shown to anonymous
 callers. Pass a function as `exposeChecks` to decide per request.
 
+To publish part of `server` but not all of it, both functions take a typed
+`omit` list and drop those keys before anything is rendered:
+
+```ts
+extend: vercelExtend({ omit: ["projectId", "commitSha"] }),
+```
+
+The keys are checked against `VercelServerInfo`, so `"projectID"` is a compile
+error, and `platform` may be omitted too when you would rather not advertise
+the host.
+
 ## About openstatus
 
 [openstatus](https://www.openstatus.dev/) is the open-source uptime monitoring

@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Every hosting package (`fly`, `koyeb`, `railway`, `vercel`, `cloudflare`)
+  accepts a typed `omit` list on its `*Server()` / `*Extend()` options, so a
+  public endpoint can hide individual fields:
+  `vercelExtend({ omit: ["projectId", "commitSha"] })`. The keys are checked
+  against the package's `*ServerInfo` type, and `platform` can be omitted too.
+- `@openstatus/health` exports `omitFields(value, keys?)`, the shallow-copy
+  helper the hosting packages use to implement `omit`.
+
 ## 0.1.1
 
 - New `@openstatus/health-tanstack-start` adapter: `healthRoute()` returns

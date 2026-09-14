@@ -39,6 +39,25 @@ test("vercelServer() reports the project id under its own name", () => {
   assert.equal(server?.projectId, "prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE");
 });
 
+test("vercelServer() omits the requested fields", () => {
+  const server = vercelServer({ env: fullEnv, omit: ["projectId"] });
+  assert.equal("projectId" in (server ?? {}), false);
+  assert.equal(server?.region, "cdg1");
+  assert.equal(server?.commitSha, "fa1eade47b73733d6312d5abfad33ce9e4068081");
+});
+
+test("vercelServer() can omit the platform itself", () => {
+  const server = vercelServer({ env: fullEnv, omit: ["platform"] });
+  assert.equal("platform" in (server ?? {}), false);
+});
+
+test("vercelExtend() keeps the omitted fields out of the report", () => {
+  const extend = vercelExtend({ env: fullEnv, omit: ["projectId"] });
+  assert.deepEqual(extend(), {
+    server: vercelServer({ env: fullEnv, omit: ["projectId"] }),
+  });
+});
+
 test("vercelServer() survives a project with system variables disabled", () => {
   assert.deepEqual(vercelServer({ env: { VERCEL: "1" } }), {
     platform: "vercel",

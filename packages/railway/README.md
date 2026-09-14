@@ -92,6 +92,18 @@ app.use(healthRoute({
 }));
 ```
 
+To publish part of `server` but not all of it, railwayServer() and
+railwayExtend() take a typed `omit` list and drop those keys before anything
+is rendered:
+
+```ts
+extend: railwayExtend({ omit: ["instanceId", "commitSha"] }),
+```
+
+The keys are checked against `RailwayServerInfo`, so `"replicaId"` is a
+compile error, and `platform` may be omitted too when you would rather not
+advertise the host.
+
 ## About openstatus
 
 [openstatus](https://www.openstatus.dev/) is the open-source uptime monitoring

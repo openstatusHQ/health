@@ -68,6 +68,20 @@ test("koyebServer() omits absent and empty fields", () => {
   );
 });
 
+test("koyebServer() omits the requested fields", () => {
+  const server = koyebServer({ env: fullEnv, omit: ["instanceId", "app"] });
+  assert.equal("instanceId" in (server ?? {}), false);
+  assert.equal("app" in (server ?? {}), false);
+  assert.equal(server?.region, "fra");
+});
+
+test("koyebExtend() keeps the omitted fields out of the report", () => {
+  const extend = koyebExtend({ env: fullEnv, omit: ["instanceId"] });
+  assert.deepEqual(extend(), {
+    server: koyebServer({ env: fullEnv, omit: ["instanceId"] }),
+  });
+});
+
 test("koyebServer() returns undefined off Koyeb", () => {
   assert.equal(koyebServer({ env: {} }), undefined);
   assert.equal(koyebServer({ env: { KOYEB_REGION: "fra" } }), undefined);

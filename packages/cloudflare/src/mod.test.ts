@@ -48,6 +48,25 @@ test("cloudflareServer() omits version fields when the binding is absent", () =>
   assert.equal("versionTag" in server, false);
 });
 
+test("cloudflareServer() omits the requested fields", () => {
+  const server = cloudflareServer(requestWithCf(), {
+    version,
+    omit: ["version"],
+  });
+  assert.equal("version" in (server ?? {}), false);
+  assert.equal(server?.versionTag, "v3");
+});
+
+test("cloudflareExtend() keeps the omitted fields out of the report", () => {
+  const extend = cloudflareExtend<CloudflareRequestLike>({
+    version,
+    omit: ["version"],
+  });
+  assert.deepEqual(extend(report(), requestWithCf()), {
+    server: cloudflareServer(requestWithCf(), { version, omit: ["version"] }),
+  });
+});
+
 test("cloudflareServer() never renders client geolocation", () => {
   const server = cloudflareServer(
     requestWithCf({

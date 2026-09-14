@@ -49,6 +49,23 @@ test("railwayServer() omits absent and empty fields", () => {
   );
 });
 
+test("railwayServer() omits the requested fields", () => {
+  const server = railwayServer({
+    env: fullEnv,
+    omit: ["commitSha", "project"],
+  });
+  assert.equal("commitSha" in (server ?? {}), false);
+  assert.equal("project" in (server ?? {}), false);
+  assert.equal(server?.service, "api");
+});
+
+test("railwayExtend() keeps the omitted fields out of the report", () => {
+  const extend = railwayExtend({ env: fullEnv, omit: ["commitSha"] });
+  assert.deepEqual(extend(), {
+    server: railwayServer({ env: fullEnv, omit: ["commitSha"] }),
+  });
+});
+
 test("railwayServer() falls back to the service name", () => {
   assert.equal(
     railwayServer({ env: { RAILWAY_SERVICE_NAME: "api" } })?.service,

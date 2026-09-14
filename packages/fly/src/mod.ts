@@ -1,5 +1,5 @@
 import type { JsonObject } from "@openstatus/health";
-import { readEnv } from "@openstatus/health";
+import { omitFields, readEnv } from "@openstatus/health";
 
 export type FlyServerInfo = {
   readonly platform: "fly";
@@ -15,6 +15,7 @@ export type FlyServerInfo = {
 
 export type FlyServerOptions = {
   readonly env?: Readonly<Record<string, string | undefined>>;
+  readonly omit?: readonly (keyof FlyServerInfo)[];
 };
 
 function text(value: string | undefined): string | undefined {
@@ -43,7 +44,7 @@ export function flyServer(
   const machineVersion = text(readEnv("FLY_MACHINE_VERSION", env));
   const memoryMb = count(readEnv("FLY_VM_MEMORY_MB", env));
 
-  return {
+  const info: FlyServerInfo = {
     platform: "fly",
     ...(region != null ? { region } : {}),
     ...(instanceId != null ? { instanceId } : {}),
@@ -54,6 +55,7 @@ export function flyServer(
     ...(machineVersion != null ? { machineVersion } : {}),
     ...(memoryMb != null ? { memoryMb } : {}),
   };
+  return omitFields(info, options?.omit);
 }
 
 export function flyExtend(options?: FlyServerOptions): () => JsonObject {

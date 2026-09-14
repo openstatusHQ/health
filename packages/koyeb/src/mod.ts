@@ -1,5 +1,5 @@
 import type { JsonObject } from "@openstatus/health";
-import { readEnv } from "@openstatus/health";
+import { omitFields, readEnv } from "@openstatus/health";
 
 export type KoyebServerInfo = {
   readonly platform: "koyeb";
@@ -15,6 +15,7 @@ export type KoyebServerInfo = {
 
 export type KoyebServerOptions = {
   readonly env?: Readonly<Record<string, string | undefined>>;
+  readonly omit?: readonly (keyof KoyebServerInfo)[];
 };
 
 function text(value: string | undefined): string | undefined {
@@ -42,7 +43,7 @@ export function koyebServer(
   const replicaIndex = count(readEnv("KOYEB_REPLICA_INDEX", env));
   const instanceType = text(readEnv("KOYEB_INSTANCE_TYPE", env));
 
-  return {
+  const info: KoyebServerInfo = {
     platform: "koyeb",
     ...(region != null ? { region } : {}),
     instanceId,
@@ -53,6 +54,7 @@ export function koyebServer(
     ...(replicaIndex != null ? { replicaIndex } : {}),
     ...(instanceType != null ? { instanceType } : {}),
   };
+  return omitFields(info, options?.omit);
 }
 
 export function koyebExtend(options?: KoyebServerOptions): () => JsonObject {
