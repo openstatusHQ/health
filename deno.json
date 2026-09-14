@@ -11,6 +11,7 @@
     "./packages/railway",
     "./packages/vercel",
     "./packages/cloudflare",
+    "./packages/clickhouse",
     "./packages/tinybird",
     "./packages/drizzle",
     "./packages/turso",
@@ -36,7 +37,8 @@
     "drizzle-orm": "npm:drizzle-orm@^0.44.0",
     "@libsql/client": "npm:@libsql/client@^0.15.0",
     "@tursodatabase/serverless": "npm:@tursodatabase/serverless@^1.4.0",
-    "@supabase/supabase-js": "npm:@supabase/supabase-js@^2.0.0"
+    "@supabase/supabase-js": "npm:@supabase/supabase-js@^2.0.0",
+    "@clickhouse/client": "npm:@clickhouse/client@^1.23.1"
   },
   "exclude": [
     "**/dist/",

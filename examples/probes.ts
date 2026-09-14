@@ -1,8 +1,10 @@
 import { createClient as createLibsqlClient } from "@libsql/client";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { createClient as createClickHouseClient } from "@clickhouse/client";
 import { connect as connectTursoServerless } from "@tursodatabase/serverless";
 import { drizzle } from "drizzle-orm/libsql/http";
 import type { Probe } from "@openstatus/health";
+import { clickhouseProbe } from "@openstatus/health-clickhouse";
 import { drizzleProbe } from "@openstatus/health-drizzle";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
@@ -24,6 +26,12 @@ export function exampleProbes(): Probe[] {
     env("SUPABASE_SERVICE_ROLE_KEY") ?? "service-role-key",
   );
 
+  const clickhouse = createClickHouseClient({
+    url: env("CLICKHOUSE_URL") ?? "http://localhost:8123",
+    username: env("CLICKHOUSE_USER"),
+    password: env("CLICKHOUSE_PASSWORD"),
+  });
+
   const tursoServerless = connectTursoServerless({
     url: env("TURSO_DATABASE_URL") ?? "http://localhost:8080",
     authToken: env("TURSO_AUTH_TOKEN"),
@@ -44,6 +52,10 @@ export function exampleProbes(): Probe[] {
       db,
       name: "drizzle",
       skip: () => env("DRIZZLE_NOOP") === "true",
+    }),
+    clickhouseProbe({
+      client: clickhouse,
+      skip: () => env("CLICKHOUSE_NOOP") === "true",
     }),
     tinybirdProbe({
       baseUrl: env("TINYBIRD_URL"),
