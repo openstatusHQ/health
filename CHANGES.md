@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+- New `@openstatus/health-clickhouse` probe: `clickhouseProbe({ client })`
+  runs the official client's health check — `SELECT 1` by default, so the
+  server verifies the credentials — and fails the check when `ping()`
+  resolves with `{ success: false }` instead of throwing. Pass
+  `select: false` for the cheaper `GET /ping` endpoint (Node.js only). The
+  probe's `AbortSignal` is forwarded as `abort_signal`, so `timeoutMs`
+  cancels the request in flight. Throws `ProbeConfigError` at construction
+  when `client` has no `ping()`. Non-critical by default; the client is typed
+  structurally, so `@clickhouse/client` (>= 1.12.0, where `ping()` gained
+  its options) stays an optional peer for its types.
+
 ## 0.1.2
 
 - Every hosting package (`fly`, `koyeb`, `railway`, `vercel`, `cloudflare`)
