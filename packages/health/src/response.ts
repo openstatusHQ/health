@@ -1,7 +1,6 @@
 import type {
   HealthHttpResponse,
   HealthReport,
-  HealthResponseBody,
   HealthResponseOptions,
 } from "./types.ts";
 
@@ -33,7 +32,7 @@ export function renderHealthResponse(
   extended: object = {},
 ): HealthHttpResponse {
   const exposeChecks = options.exposeChecks ?? true;
-  const body: HealthResponseBody = exposeChecks
+  const body = exposeChecks
     ? {
       ...extended,
       status: report.status,
@@ -42,6 +41,10 @@ export function renderHealthResponse(
       checks: report.checks,
     }
     : { ...extended, status: report.status, checkedAt: report.checkedAt };
+  if (!exposeChecks) {
+    delete body.checks;
+    delete body.latencyMs;
+  }
   Reflect.deleteProperty(body, "toJSON");
   return {
     status: statusCodeFor(report, options),

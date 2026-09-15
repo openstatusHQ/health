@@ -26,7 +26,10 @@ test("statusCodeFor() honours overrides", () => {
 });
 
 test("renderHealthResponse() exposes checks by default", () => {
-  const res = renderHealthResponse(report("ok"), {});
+  const res = renderHealthResponse(report("ok"), {}, {
+    checks: [{ name: "private-db", status: "unhealthy" }],
+    latencyMs: 999,
+  });
   assert.equal(res.status, 200);
   assert.equal(res.headers["cache-control"], "no-store");
   assert.equal(res.headers["content-type"], "application/json; charset=utf-8");
@@ -48,12 +51,15 @@ test("renderHealthResponse() hides checks and latency when exposeChecks is false
   });
 });
 
-test("renderHealthResponse() merges extra fields without overriding the report", () => {
+test("renderHealthResponse() hides extension checks and latency but keeps other fields", () => {
   const res = renderHealthResponse(report("ok"), {
     exposeChecks: false,
   }, {
     region: "fra",
     status: "hacked",
+    checkedAt: "hacked",
+    checks: [{ name: "private-db", status: "unhealthy" }],
+    latencyMs: 999,
   });
   assert.deepEqual(res.body, {
     region: "fra",
