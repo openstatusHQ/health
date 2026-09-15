@@ -229,3 +229,25 @@ test("createHealthResponder().toResponse() drops the body on HEAD", async () => 
   assert.equal(await head.text(), "");
   assert.equal(head.headers.get("cache-control"), "no-store");
 });
+
+test("createHealthResponder() survives a non-serializable extend", async () => {
+  const circular: { self?: object } = {};
+  circular.self = circular;
+  const errors: Error[] = [];
+  const responder = createHealthResponder<Ctx>({
+    probes: [okProbe("a")],
+    extend: () => circular,
+    onError: (error) => errors.push(error),
+  });
+  const res = await responder.toResponse({});
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.equal(body.status, "ok");
+  assert.deepEqual(Object.keys(body).sort(), [
+    "checkedAt",
+    "checks",
+    "latencyMs",
+    "status",
+  ]);
+  assert.equal(errors.length, 1);
+});

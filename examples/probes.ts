@@ -59,7 +59,7 @@ export function exampleProbes(): Probe[] {
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
-      token: env("UPSTASH_REDIS_REST_TOKEN") ?? "",
+      token: env("UPSTASH_REDIS_REST_TOKEN") ?? "unconfigured",
       skip: () => env("UPSTASH_REDIS_REST_URL") == null,
     }),
   ];

@@ -236,3 +236,28 @@ test("createHealthCheck() accepts a prebuilt check through resolveHealthCheck", 
   await built.report();
   assert.equal(calls(), 1);
 });
+
+test("createHealthCheck().invalidate() abandons an in-flight round", async () => {
+  const gate = Promise.withResolvers<void>();
+  let calls = 0;
+  const check = createHealthCheck({
+    probes: [{
+      name: "a",
+      run: async () => {
+        calls++;
+        if (calls === 1) await gate.promise;
+      },
+    }],
+    cacheMs: 1000,
+  });
+  const first = check.report();
+  check.invalidate();
+  const second = check.report();
+  gate.resolve();
+  const [firstReport, secondReport] = await Promise.all([first, second]);
+  await delay(0);
+  assert.equal(calls, 2);
+  assert.notEqual(firstReport, secondReport);
+  assert.equal(await check.report(), secondReport);
+  assert.equal(calls, 2);
+});

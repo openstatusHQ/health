@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
-import { aggregate, runProbes } from "./run.ts";
+import { aggregate, defaultTimeoutMs, runProbes } from "./run.ts";
 import type { CheckResult, Probe } from "./types.ts";
 
 const ok = (name: string, critical = false): Probe => ({
@@ -273,4 +273,36 @@ test("runProbes() caps every probe's timeout at deadlineMs", async () => {
   assert.equal(report.checks[0].error, "timed out after 20ms");
   assert.equal(report.checks[1].status, "ok");
   assert.ok(report.latencyMs < 1000);
+});
+
+test("runProbes() ignores non-positive and non-finite timeouts", async () => {
+  const seen: number[] = [];
+  await runProbes([
+    {
+      name: "zero",
+      timeoutMs: 0,
+      run: (_signal, ctx) => void seen.push(ctx.timeoutMs),
+    },
+    {
+      name: "negative",
+      timeoutMs: -1,
+      run: (_signal, ctx) => void seen.push(ctx.timeoutMs),
+    },
+    {
+      name: "infinite",
+      timeoutMs: Infinity,
+      run: (_signal, ctx) => void seen.push(ctx.timeoutMs),
+    },
+    {
+      name: "nan",
+      timeoutMs: Number.NaN,
+      run: (_signal, ctx) => void seen.push(ctx.timeoutMs),
+    },
+  ], { timeoutMs: 0, deadlineMs: 0 });
+  assert.deepEqual(seen, [
+    defaultTimeoutMs,
+    defaultTimeoutMs,
+    defaultTimeoutMs,
+    defaultTimeoutMs,
+  ]);
 });

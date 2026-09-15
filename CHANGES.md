@@ -15,6 +15,25 @@
   content-type headers on `404` and `405` responses.
 - `@openstatus/health`: Probes no longer start work if an async `skip`
   returns `false` after the timeout. The completed timeout report stays unchanged.
+- `@openstatus/health`: `runProbes()` ignores non-positive and non-finite
+  `timeoutMs` / `deadlineMs` values instead of scheduling an instant timeout.
+- `@openstatus/health`: `createHealthResponder().toResponse()` falls back to the
+  report body when `extend` returns something `JSON.stringify` cannot
+  serialize, and reports it through `onError`, so the endpoint still answers.
+- `@openstatus/health`: `check.invalidate()` abandons an in-flight round, so a
+  later `report()` starts a fresh run and the abandoned round cannot overwrite
+  the cache.
+- `@openstatus/health`: `readEnv()` falls back to `Deno.env.get()` when
+  `process.env` is unavailable or throws.
+- `@openstatus/health-upstash`: `upstashProbe()` rejects an empty `token` at
+  construction.
+- `@openstatus/health-supabase`: `supabaseProbe()` rejects a negative or
+  non-finite `maxConnectionPercent` and treats a non-finite
+  `connection_percent` as an unexpected response shape.
+- Docs: corrected the Upstash env/skip example, clarified the TanStack Start
+  `createFileRoute` example, and noted that Next.js has no `healthHandler`.
+- Tooling: pinned `rolldown@1.0.0-beta.19` so the `tsdown` build no longer
+  prints an invalid `define` option warning.
 
 ## 0.1.2
 
