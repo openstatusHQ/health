@@ -6,6 +6,7 @@
   "devDependencies": {
     "esbuild": "^0.25.0",
     "tsdown": "^0.12.7",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "rolldown": "1.0.0-beta.19"
   }
 }

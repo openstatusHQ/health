@@ -178,8 +178,8 @@ a prebuilt `check` — the `HealthSource` union makes passing both a type error.
 | `cacheMs` | `5000` | Reuse the last `ok` report for this long; concurrent callers share one round. `0` disables. |
 | `cacheFailuresMs` | `cacheMs` | Same, for `degraded` and `unhealthy` reports. Set `0` so a readiness poller sees recovery on its next tick instead of waiting out the cache. |
 | `staleMs` | `0` | Stale-while-revalidate: after the cache expires, keep answering with the last report for this long while one refresh runs in the background. The prober never waits on a probe. |
-| `timeoutMs` | `5000` | Default per-probe timeout; a hung probe reports `timeout`. |
-| `deadlineMs` | — | Upper bound for the whole round: every probe's timeout is capped to it, so the response is ready within `deadlineMs` no matter what hangs. Set it below your prober's own timeout — Kubernetes defaults to `1s`. |
+| `timeoutMs` | `5000` | Default per-probe timeout; a hung probe reports `timeout`. A non-positive or non-finite value is ignored so a probe can never be configured to fail instantly. |
+| `deadlineMs` | — | Upper bound for the whole round: every probe's timeout is capped to it, so the response is ready within `deadlineMs` no matter what hangs. Non-positive or non-finite values are ignored. Set it below your prober's own timeout — Kubernetes defaults to `1s`. |
 | `exposeChecks` | `true` | Include `latencyMs`, `checks` and `extend` output in the body. `false` returns only `status` and `checkedAt` — for public endpoints. A function `(ctx) => boolean \| Promise<boolean>` decides per request, so one route can be terse for anonymous callers and detailed for trusted ones. |
 | `unhealthyStatusCode` | `503` | HTTP status for `unhealthy`. Set `200` to always answer 200 and let callers read `status`. |
 | `degradedStatusCode` | `200` | HTTP status for `degraded`. |

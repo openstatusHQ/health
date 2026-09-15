@@ -78,4 +78,8 @@ test("upstashProbe() names the missing option at construction", () => {
       }),
     /upstashProbe: "token" must be a string, got undefined/,
   );
+  assert.throws(
+    () => upstashProbe({ url: "https://x.upstash.io", token: "" }),
+    /upstashProbe: "token" must not be empty/,
+  );
 });

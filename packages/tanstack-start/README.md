@@ -43,10 +43,13 @@ export const Route = createFileRoute("/api/health")({
 });
 ```
 
-The route path is the file location, so there is no `path` option. `extend`,
-a function-form `exposeChecks` and `onError` receive the handler context
-`{ request, params, context }`. Pass the middleware context type to read it
-with full typing:
+The route path is the file location, so there is no `path` option. The
+`createFileRoute(name)` above comes from TanStack Start's generated route tree;
+without the router plugin (or its codegen), use
+`createRoute({ getParentRoute, path, server })` as the package tests do.
+`extend`, a function-form `exposeChecks` and `onError` receive the handler
+context `{ request, params, context }`. Pass the middleware context type to
+read it with full typing:
 
 ```ts
 healthRoute<{ requestId: string }>({

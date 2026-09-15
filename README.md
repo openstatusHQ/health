@@ -82,7 +82,8 @@ deno add jsr:@openstatus/health jsr:@openstatus/health-hono jsr:@openstatus/heal
 npm install @openstatus/health @openstatus/health-hono @openstatus/health-turso
 ```
 
-Every adapter exports the same two functions. `healthRoute(options)` is the
+Every adapter exports `healthRoute(options)`. All but Next.js also export
+`healthHandler(options)`. `healthRoute(options)` is the
 batteries-included form: it mounts `GET` and `HEAD` on `options.path`
 (default `/health`). `healthHandler(options)` is the primitive underneath — a
 plain handler for that framework — for when you want to pick the path, stack

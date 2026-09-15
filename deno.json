@@ -20,12 +20,9 @@
     "./packages/upstash"
   ],
   "imports": {
-    "@std/assert": "jsr:@std/assert@^1.0.13",
-    "@std/async": "jsr:@std/async@^1.0.13",
     "@std/path": "jsr:@std/path@^1.1.0",
     "esbuild": "npm:esbuild@^0.25.0",
     "tsdown": "npm:tsdown@^0.12.7",
-    "typescript": "npm:typescript@^5.8.3",
     "hono": "npm:hono@^4.0.0",
     "elysia": "npm:elysia@^1.4.0",
     "express": "npm:express@^5.2.1",

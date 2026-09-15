@@ -10,6 +10,23 @@ import type {
 
 export const defaultTimeoutMs = 5000;
 
+function normalizeTimeout(value: number | undefined): number | undefined {
+  return value != null && Number.isFinite(value) && value > 0
+    ? value
+    : undefined;
+}
+
+function effectiveTimeoutMs(
+  probeMs: number | undefined,
+  runMs: number | undefined,
+  deadlineMs: number | undefined,
+): number {
+  const chosen = normalizeTimeout(probeMs) ?? normalizeTimeout(runMs) ??
+    defaultTimeoutMs;
+  const deadline = normalizeTimeout(deadlineMs);
+  return deadline == null ? chosen : Math.min(chosen, deadline);
+}
+
 export async function runProbes(
   probes: readonly Probe[],
   options: RunProbesOptions = {},
@@ -43,9 +60,10 @@ async function runProbe(
   const ctx: ProbeContext = {
     name: probe.name,
     critical: probe.critical ?? false,
-    timeoutMs: Math.min(
-      probe.timeoutMs ?? options.timeoutMs ?? defaultTimeoutMs,
-      options.deadlineMs ?? Infinity,
+    timeoutMs: effectiveTimeoutMs(
+      probe.timeoutMs,
+      options.timeoutMs,
+      options.deadlineMs,
     ),
   };
   const { name, critical, timeoutMs } = ctx;
