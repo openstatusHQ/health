@@ -2406,6 +2406,14 @@
           ]
         }
       },
+      "packages/convex": {
+        "packageJson": {
+          "dependencies": [
+            "npm:tsdown@~0.12.7",
+            "npm:typescript@^5.8.3"
+          ]
+        }
+      },
       "packages/drizzle": {
         "packageJson": {
           "dependencies": [

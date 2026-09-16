@@ -34,6 +34,7 @@ import { anthropicProbe } from "@openstatus/health-anthropic";
 import { algoliaProbe } from "@openstatus/health-algolia";
 import { meilisearchProbe } from "@openstatus/health-meilisearch";
 import { typesenseProbe } from "@openstatus/health-typesense";
+import { convexProbe } from "@openstatus/health-convex";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { triggerDevProbe } from "@openstatus/health-trigger-dev";
@@ -253,6 +254,11 @@ export function exampleProbes(): Probe[] {
       host: env("TYPESENSE_HOST") || "http://localhost:8108",
       apiKey: env("TYPESENSE_API_KEY") || undefined,
       skip: () => !env("TYPESENSE_HOST"),
+    }),
+    convexProbe({
+      url: env("CONVEX_URL") ?? "https://unconfigured.convex.cloud",
+      path: "health:ping",
+      skip: () => env("CONVEX_URL") == null,
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

@@ -142,6 +142,11 @@
   })` expects `GET {host}/health` to answer 2xx with `ok: true`, sending the
   API key as `x-typesense-api-key` when given. Non-critical by default;
   rejects an invalid `host` or an empty `apiKey` at construction.
+- New `@openstatus/health-convex` probe: `convexProbe({ url, path, args?,
+  token? })` runs one query function over the deployment HTTP API (`POST
+  {url}/api/query`) and fails the check unless it answers `status: "success"`,
+  surfacing the `errorMessage` otherwise. Critical by default; rejects an
+  invalid `url`, an empty `path` or an empty `token` at construction.
 
 ## 0.1.3
 
