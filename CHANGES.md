@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.3
 
 - New `@openstatus/health-clickhouse` probe: `clickhouseProbe({ client })`
   runs the official client's health check — `SELECT 1` by default, so the
@@ -44,6 +44,8 @@
   `createFileRoute` example, and noted that Next.js has no `healthHandler`.
 - Tooling: pinned `rolldown@1.0.0-beta.19` so the `tsdown` build no longer
   prints an invalid `define` option warning.
+- Every package moves to 0.1.3; adapters and probes now declare
+  `@openstatus/health` as a peer at `^0.1.3`.
 
 ## 0.1.2
 

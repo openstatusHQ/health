@@ -1,6 +1,6 @@
 {
   "name": "@openstatus/health-next",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Next.js App Router adapter for @openstatus/health",
   "keywords": [
     "openstatus",
@@ -47,7 +47,7 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@openstatus/health": "^0.1.2",
+    "@openstatus/health": "^0.1.3",
     "next": "^14.0.0 || ^15.0.0"
   },
   "devDependencies": {

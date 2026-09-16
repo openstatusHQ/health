@@ -1,6 +1,6 @@
 {
   "name": "@openstatus/health-cloudflare",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Cloudflare Workers server metadata for @openstatus/health",
   "keywords": [
     "openstatus",
@@ -47,7 +47,7 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@openstatus/health": "^0.1.2"
+    "@openstatus/health": "^0.1.3"
   },
   "devDependencies": {
     "tsdown": "^0.12.7",

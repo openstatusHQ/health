@@ -1,6 +1,6 @@
 {
   "name": "@openstatus/health-hono",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Hono adapter for @openstatus/health",
   "keywords": [
     "openstatus",
@@ -45,7 +45,7 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@openstatus/health": "^0.1.2",
+    "@openstatus/health": "^0.1.3",
     "hono": "^4.0.0"
   },
   "devDependencies": {
