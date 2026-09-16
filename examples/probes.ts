@@ -33,6 +33,7 @@ import { openaiProbe } from "@openstatus/health-openai";
 import { anthropicProbe } from "@openstatus/health-anthropic";
 import { algoliaProbe } from "@openstatus/health-algolia";
 import { meilisearchProbe } from "@openstatus/health-meilisearch";
+import { typesenseProbe } from "@openstatus/health-typesense";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { triggerDevProbe } from "@openstatus/health-trigger-dev";
@@ -247,6 +248,11 @@ export function exampleProbes(): Probe[] {
       host: env("MEILISEARCH_HOST") || "http://localhost:7700",
       apiKey: env("MEILISEARCH_API_KEY") || undefined,
       skip: () => !env("MEILISEARCH_HOST"),
+    }),
+    typesenseProbe({
+      host: env("TYPESENSE_HOST") ?? "http://localhost:8108",
+      apiKey: env("TYPESENSE_API_KEY"),
+      skip: () => env("TYPESENSE_HOST") == null,
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

@@ -45,7 +45,8 @@
     "./packages/redis",
     "./packages/openai",
     "./packages/anthropic",
-    "./packages/algolia"
+    "./packages/algolia",
+    "./packages/typesense"
   ],
   "imports": {
     "@std/path": "jsr:@std/path@^1.1.0",

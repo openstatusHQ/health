@@ -138,6 +138,10 @@
   apiKey? })` expects `GET {host}/health` to answer 2xx with `status:
   "available"`, sending the API key as a bearer token when given. Non-critical
   by default; rejects an invalid `host` or an empty `apiKey` at construction.
+- New `@openstatus/health-typesense` probe: `typesenseProbe({ host, apiKey?
+  })` expects `GET {host}/health` to answer 2xx with `ok: true`, sending the
+  API key as `x-typesense-api-key` when given. Non-critical by default;
+  rejects an invalid `host` or an empty `apiKey` at construction.
 
 ## 0.1.3
 
