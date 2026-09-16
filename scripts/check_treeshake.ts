@@ -63,6 +63,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-inngest": { symbol: "inngestProbe", allowed: [] },
   "@openstatus/health-trigger-dev": { symbol: "triggerDevProbe", allowed: [] },
   "@openstatus/health-bullmq": { symbol: "bullmqProbe", allowed: [] },
+  "@openstatus/health-nats": { symbol: "natsProbe", allowed: [] },
 };
 
 const banned = [
@@ -89,6 +90,8 @@ const banned = [
   "@prisma/client",
   "@aws-sdk/client-s3",
   "bullmq",
+  "@nats-io/nats-core",
+  "nats",
 ];
 
 const root: string = dirname(import.meta.dirname!);
