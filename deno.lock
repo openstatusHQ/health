@@ -3,6 +3,7 @@
   "specifiers": {
     "jsr:@std/internal@^1.0.12": "1.0.14",
     "jsr:@std/path@^1.1.0": "1.1.4",
+    "npm:@clickhouse/client@^1.23.1": "1.23.1",
     "npm:@libsql/client@0.15": "0.15.15",
     "npm:@supabase/supabase-js@2": "2.116.0",
     "npm:@tanstack/react-router@^1.170.35": "1.170.35_react@19.3.0_react-dom@19.3.0",
@@ -63,6 +64,9 @@
     },
     "@borewit/text-codec@0.2.2": {
       "integrity": "sha512-DDaRehssg1aNrH4+2hnj1B7vnUGEjU6OIlyRdkMd0aUdIUvKXrJfXsy8LVtXAy7DRvYVluWbMspsRhz2lcW0mQ=="
+    },
+    "@clickhouse/client@1.23.1": {
+      "integrity": "sha512-vs3/Zc1dHvT171btW5nMoPsPCJ6QVJ5pp7obxzO5sjqwFx/jjz9wwCAqcFOdc2DhprugDBaVn+4dVY8hG3A9nw=="
     },
     "@cloudflare/workers-types@4.20260702.1": {
       "integrity": "sha512-mOhf5TUEB1m2vPrxtqoIGfz0fUC9xyxRDx5gWHy5s+OCo6dcV+g7wI1R7gYCMFohhqF/2y2xeKVwMwCJjfn/WA=="
@@ -1660,6 +1664,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/path@^1.1.0",
+      "npm:@clickhouse/client@^1.23.1",
       "npm:@libsql/client@0.15",
       "npm:@supabase/supabase-js@2",
       "npm:@tanstack/react-router@^1.170.35",
@@ -1683,6 +1688,15 @@
       ]
     },
     "members": {
+      "packages/clickhouse": {
+        "packageJson": {
+          "dependencies": [
+            "npm:@clickhouse/client@^1.23.1",
+            "npm:tsdown@~0.12.7",
+            "npm:typescript@^5.8.3"
+          ]
+        }
+      },
       "packages/cloudflare": {
         "packageJson": {
           "dependencies": [

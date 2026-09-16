@@ -28,6 +28,10 @@ const targets: Record<string, Target> = {
     symbol: "cloudflareExtend",
     allowed: [],
   },
+  "@openstatus/health-clickhouse": {
+    symbol: "clickhouseProbe",
+    allowed: [],
+  },
   "@openstatus/health-tinybird": { symbol: "tinybirdProbe", allowed: [] },
   "@openstatus/health-drizzle": {
     symbol: "drizzleProbe",
@@ -55,6 +59,7 @@ const banned = [
   "@libsql/client",
   "@tursodatabase/serverless",
   "@supabase/supabase-js",
+  "@clickhouse/client",
 ];
 
 const root: string = dirname(import.meta.dirname!);
