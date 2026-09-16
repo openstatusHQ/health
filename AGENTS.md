@@ -8,9 +8,9 @@
   `cloudflare-kv`, `cloudflare-r2`, `drizzle`, `inngest`, `kafka`, `mongodb`,
   `mysql`, `nats`, `neon`, `planetscale`, `postgres`, `prisma`, `qstash`,
   `redis`, `resend`, `s3`, `stripe`, `supabase`, `tinybird`, `trigger-dev`,
-  `turso`, `turso-serverless`, `unkey`, `upstash` are probes; `fly`, `koyeb`,
-  `railway`, `vercel`, `cloudflare` render hosting metadata under `server` via
-  the `extend` hook.
+  `turso`, `turso-serverless`, `unkey`, `upstash`, `workos` are probes; `fly`,
+  `koyeb`, `railway`, `vercel`, `cloudflare` render hosting metadata under
+  `server` via the `extend` hook.
 - Each package has `deno.json` (`exports: ./src/mod.ts`), `package.json`
   (`exports -> dist/`, `sideEffects: false`), `tsdown.config.ts`, `README.md`
   and `src/` with `mod.ts`, implementation files and one `*.test.ts` per file.
