@@ -67,6 +67,10 @@
   expects 2xx from `GET {baseUrl}/v2/queues` with the QStash token as a bearer
   header. Non-critical by default; rejects an empty `token` or an invalid
   `baseUrl` at construction.
+- New `@openstatus/health-inngest` probe: `inngestProbe({ signingKey, baseUrl?
+  })` expects 2xx from `GET {baseUrl}/v1/events?limit=1` on the Inngest REST
+  API with the signing key as a bearer header. Non-critical by default;
+  rejects an empty `signingKey` or an invalid `baseUrl` at construction.
 
 ## 0.1.3
 

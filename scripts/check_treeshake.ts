@@ -60,6 +60,7 @@ const targets: Record<string, Target> = {
     allowed: ["@aws-sdk/client-s3"],
   },
   "@openstatus/health-qstash": { symbol: "qstashProbe", allowed: [] },
+  "@openstatus/health-inngest": { symbol: "inngestProbe", allowed: [] },
 };
 
 const banned = [
