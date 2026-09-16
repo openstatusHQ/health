@@ -31,6 +31,7 @@ import { sentryProbe } from "@openstatus/health-sentry";
 import { posthogProbe } from "@openstatus/health-posthog";
 import { openaiProbe } from "@openstatus/health-openai";
 import { anthropicProbe } from "@openstatus/health-anthropic";
+import { algoliaProbe } from "@openstatus/health-algolia";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { triggerDevProbe } from "@openstatus/health-trigger-dev";
@@ -235,6 +236,11 @@ export function exampleProbes(): Probe[] {
     anthropicProbe({
       apiKey: env("ANTHROPIC_API_KEY") || "unconfigured",
       skip: () => !env("ANTHROPIC_API_KEY"),
+    }),
+    algoliaProbe({
+      appId: env("ALGOLIA_APP_ID") ?? "unconfigured",
+      apiKey: env("ALGOLIA_SEARCH_KEY") ?? "unconfigured",
+      skip: () => env("ALGOLIA_APP_ID") == null,
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

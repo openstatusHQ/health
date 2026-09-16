@@ -129,6 +129,11 @@
   })` expects 2xx from `GET {baseUrl}/v1/models` with the API key in the
   `x-api-key` header and the `anthropic-version` header set. Non-critical by
   default; rejects an empty `apiKey` or an invalid `baseUrl` at construction.
+- New `@openstatus/health-algolia` probe: `algoliaProbe({ appId, apiKey,
+  baseUrl? })` expects 2xx from `GET /1/isalive` on the application DSN host
+  with the Algolia application and API key headers. Non-critical by default;
+  rejects an empty `appId` or `apiKey`, or an invalid `baseUrl`, at
+  construction.
 
 ## 0.1.3
 
