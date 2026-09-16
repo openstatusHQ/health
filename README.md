@@ -221,6 +221,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | Package | JSR | npm | Description |
 | ------- | --- | --- | ----------- |
 | [`@openstatus/health-bullmq`](packages/bullmq) | [![JSR](https://jsr.io/badges/@openstatus/health-bullmq)](https://jsr.io/@openstatus/health-bullmq) | [![npm](https://img.shields.io/npm/v/@openstatus/health-bullmq)](https://www.npmjs.com/package/@openstatus/health-bullmq) | BullMQ waiting-count / backlog probe (`bullmq`) |
+| [`@openstatus/health-clerk`](packages/clerk) | [![JSR](https://jsr.io/badges/@openstatus/health-clerk)](https://jsr.io/@openstatus/health-clerk) | [![npm](https://img.shields.io/npm/v/@openstatus/health-clerk)](https://www.npmjs.com/package/@openstatus/health-clerk) | Clerk Backend API reachability probe |
 | [`@openstatus/health-clickhouse`](packages/clickhouse) | [![JSR](https://jsr.io/badges/@openstatus/health-clickhouse)](https://jsr.io/@openstatus/health-clickhouse) | [![npm](https://img.shields.io/npm/v/@openstatus/health-clickhouse)](https://www.npmjs.com/package/@openstatus/health-clickhouse) | ClickHouse `ping` / `SELECT 1` probe (`@clickhouse/client`) |
 | [`@openstatus/health-cloudflare-d1`](packages/cloudflare-d1) | [![JSR](https://jsr.io/badges/@openstatus/health-cloudflare-d1)](https://jsr.io/@openstatus/health-cloudflare-d1) | [![npm](https://img.shields.io/npm/v/@openstatus/health-cloudflare-d1)](https://www.npmjs.com/package/@openstatus/health-cloudflare-d1) | Cloudflare D1 `select 1` probe over the Workers binding |
 | [`@openstatus/health-cloudflare-kv`](packages/cloudflare-kv) | [![JSR](https://jsr.io/badges/@openstatus/health-cloudflare-kv)](https://jsr.io/@openstatus/health-cloudflare-kv) | [![npm](https://img.shields.io/npm/v/@openstatus/health-cloudflare-kv)](https://www.npmjs.com/package/@openstatus/health-cloudflare-kv) | Cloudflare Workers KV read probe over the Workers binding |
@@ -293,6 +294,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `kafkaProbe({ admin })` | `kafka` | no | `admin.describeCluster()` lists ≥ 1 broker on a connected KafkaJS `Admin` |
 | `stripeProbe({ secretKey, baseUrl? })` | `stripe` | no | `GET {baseUrl}/v1/balance` with the secret key |
 | `resendProbe({ apiKey, baseUrl? })` | `resend` | no | `GET {baseUrl}/domains` with the API key |
+| `clerkProbe({ secretKey, baseUrl? })` | `clerk` | no | `GET {baseUrl}/v1/users?limit=1` with the secret key |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance or a base URL — they never read

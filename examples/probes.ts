@@ -13,6 +13,7 @@ import { Redis as IORedis } from "ioredis";
 import { createClient as createRedisClient } from "redis";
 import { MongoClient } from "mongodb";
 import type { Probe } from "@openstatus/health";
+import { clerkProbe } from "@openstatus/health-clerk";
 import { clickhouseProbe } from "@openstatus/health-clickhouse";
 import { drizzleProbe } from "@openstatus/health-drizzle";
 import { mysqlProbe } from "@openstatus/health-mysql";
@@ -205,6 +206,10 @@ export function exampleProbes(): Probe[] {
     resendProbe({
       apiKey: env("RESEND_API_KEY") || "unconfigured",
       skip: () => !env("RESEND_API_KEY"),
+    }),
+    clerkProbe({
+      secretKey: env("CLERK_SECRET_KEY") ?? "unconfigured",
+      skip: () => env("CLERK_SECRET_KEY") == null,
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
