@@ -64,6 +64,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-trigger-dev": { symbol: "triggerDevProbe", allowed: [] },
   "@openstatus/health-bullmq": { symbol: "bullmqProbe", allowed: [] },
   "@openstatus/health-nats": { symbol: "natsProbe", allowed: [] },
+  "@openstatus/health-kafka": { symbol: "kafkaProbe", allowed: [] },
 };
 
 const banned = [
@@ -92,6 +93,8 @@ const banned = [
   "bullmq",
   "@nats-io/nats-core",
   "nats",
+  "kafkajs",
+  "@confluentinc/kafka-javascript",
 ];
 
 const root: string = dirname(import.meta.dirname!);
