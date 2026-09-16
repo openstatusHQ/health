@@ -55,6 +55,10 @@ const targets: Record<string, Target> = {
   "@openstatus/health-cloudflare-d1": { symbol: "d1Probe", allowed: [] },
   "@openstatus/health-cloudflare-kv": { symbol: "kvProbe", allowed: [] },
   "@openstatus/health-cloudflare-r2": { symbol: "r2Probe", allowed: [] },
+  "@openstatus/health-s3": {
+    symbol: "s3Probe",
+    allowed: ["@aws-sdk/client-s3"],
+  },
 };
 
 const banned = [
@@ -79,6 +83,7 @@ const banned = [
   "ioredis",
   "mongodb",
   "@prisma/client",
+  "@aws-sdk/client-s3",
 ];
 
 const root: string = dirname(import.meta.dirname!);

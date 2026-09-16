@@ -6,7 +6,7 @@
   zero-dependency core; `hono`, `elysia`, `express`, `next`, `tanstack-start`
   are server adapters; `clickhouse`, `cloudflare-d1`, `cloudflare-kv`,
   `cloudflare-r2`, `drizzle`, `mongodb`, `mysql`, `neon`, `planetscale`,
-  `postgres`, `prisma`, `redis`, `supabase`, `tinybird`, `turso`,
+  `postgres`, `prisma`, `redis`, `s3`, `supabase`, `tinybird`, `turso`,
   `turso-serverless`, `unkey`, `upstash` are probes; `fly`, `koyeb`,
   `railway`, `vercel`, `cloudflare` render hosting metadata under `server` via
   the `extend` hook.

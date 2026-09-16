@@ -1,3 +1,4 @@
+import { S3Client } from "@aws-sdk/client-s3";
 import { createClient as createLibsqlClient } from "@libsql/client";
 import { neon } from "@neondatabase/serverless";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
@@ -20,6 +21,7 @@ import { neonProbe } from "@openstatus/health-neon";
 import { planetscaleProbe } from "@openstatus/health-planetscale";
 import { redisProbe } from "@openstatus/health-redis";
 import { mongodbProbe } from "@openstatus/health-mongodb";
+import { s3Probe } from "@openstatus/health-s3";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { tursoProbe } from "@openstatus/health-turso";
@@ -87,6 +89,11 @@ export function exampleProbes(): Probe[] {
     env("MONGODB_URI") ?? "mongodb://localhost:27017",
   );
 
+  const s3 = new S3Client({
+    region: env("AWS_REGION") ?? "us-east-1",
+    endpoint: env("S3_ENDPOINT"),
+  });
+
   const tursoServerless = connectTursoServerless({
     url: env("TURSO_DATABASE_URL") ?? "http://localhost:8080",
     authToken: env("TURSO_AUTH_TOKEN"),
@@ -151,6 +158,11 @@ export function exampleProbes(): Probe[] {
       client: mongo,
       name: "mongodb",
       skip: () => env("MONGODB_URI") == null,
+    }),
+    s3Probe({
+      client: s3,
+      bucket: env("S3_BUCKET") ?? "unconfigured",
+      skip: () => env("S3_BUCKET") == null,
     }),
     tinybirdProbe({
       baseUrl: env("TINYBIRD_URL"),
