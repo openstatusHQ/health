@@ -41,7 +41,8 @@
     "./packages/postgres",
     "./packages/neon",
     "./packages/planetscale",
-    "./packages/redis"
+    "./packages/redis",
+    "./packages/openai"
   ],
   "imports": {
     "@std/path": "jsr:@std/path@^1.1.0",
