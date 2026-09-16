@@ -80,6 +80,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-tcp": { symbol: "tcpProbe", allowed: [] },
   "@openstatus/health-dns": { symbol: "dnsProbe", allowed: [] },
   "@openstatus/health-tls": { symbol: "tlsProbe", allowed: [] },
+  "@openstatus/health-disk": { symbol: "diskProbe", allowed: [] },
 };
 
 const banned = [

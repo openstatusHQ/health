@@ -161,6 +161,11 @@
   `minDaysValid` days (14 by default). Non-critical by default; rejects an
   empty `host`, an invalid `port` or a negative `minDaysValid` at
   construction.
+- New `@openstatus/health-disk` probe: `diskProbe({ path?, minFreePercent?,
+  minFreeBytes? })` reads the filesystem holding `path` with
+  `fs.promises.statfs` and throws `DiskSpaceError` when free space is below
+  10% (or the given thresholds). Non-critical by default; rejects an empty
+  `path` or a negative threshold at construction.
 
 ## 0.1.3
 

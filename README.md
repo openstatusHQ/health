@@ -260,6 +260,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | [`@openstatus/health-tcp`](packages/tcp) | [![JSR](https://jsr.io/badges/@openstatus/health-tcp)](https://jsr.io/@openstatus/health-tcp) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tcp)](https://www.npmjs.com/package/@openstatus/health-tcp) | TCP connect probe for any `host:port` (`node:net`) |
 | [`@openstatus/health-dns`](packages/dns) | [![JSR](https://jsr.io/badges/@openstatus/health-dns)](https://jsr.io/@openstatus/health-dns) | [![npm](https://img.shields.io/npm/v/@openstatus/health-dns)](https://www.npmjs.com/package/@openstatus/health-dns) | DNS lookup probe for a hostname (`node:dns`) |
 | [`@openstatus/health-tls`](packages/tls) | [![JSR](https://jsr.io/badges/@openstatus/health-tls)](https://jsr.io/@openstatus/health-tls) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tls)](https://www.npmjs.com/package/@openstatus/health-tls) | TLS handshake, trust and certificate-expiry probe (`node:tls`) |
+| [`@openstatus/health-disk`](packages/disk) | [![JSR](https://jsr.io/badges/@openstatus/health-disk)](https://jsr.io/@openstatus/health-disk) | [![npm](https://img.shields.io/npm/v/@openstatus/health-disk)](https://www.npmjs.com/package/@openstatus/health-disk) | Free disk space threshold probe (`node:fs` `statfs`) |
 
 ### Hosting metadata
 
@@ -319,6 +320,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `tcpProbe({ host, port })` | `tcp` | no | a TCP connection to `host:port` is accepted |
 | `dnsProbe({ hostname, lookup? })` | `dns` | no | `dns.promises.lookup(hostname)` returns an address |
 | `tlsProbe({ host, port?, minDaysValid? })` | `tls` | no | a TLS handshake with a trusted certificate valid ≥ `minDaysValid` days |
+| `diskProbe({ path?, minFreePercent?, minFreeBytes? })` | `disk` | no | free space of the filesystem holding `path` ≥ threshold |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance, a base URL or, for `tcpProbe`, a
