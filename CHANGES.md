@@ -111,6 +111,11 @@
   expects 2xx from `GET {baseUrl}/organizations?limit=1` with the API key as a
   bearer header. Non-critical by default; rejects an empty `apiKey` or an
   invalid `baseUrl` at construction.
+- New `@openstatus/health-sentry` probe: `sentryProbe({ token?, baseUrl? })`
+  expects 2xx from `GET {baseUrl}/api/0/` on sentry.io or a self-hosted
+  instance, sending the auth token as a bearer header when given. Non-critical
+  by default; rejects an empty `token` or an invalid `baseUrl` at
+  construction.
 
 ## 0.1.3
 

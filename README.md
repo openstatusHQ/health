@@ -241,6 +241,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | [`@openstatus/health-kafka`](packages/kafka) | [![JSR](https://jsr.io/badges/@openstatus/health-kafka)](https://jsr.io/@openstatus/health-kafka) | [![npm](https://img.shields.io/npm/v/@openstatus/health-kafka)](https://www.npmjs.com/package/@openstatus/health-kafka) | Kafka `describeCluster()` probe (`kafkajs`) |
 | [`@openstatus/health-stripe`](packages/stripe) | [![JSR](https://jsr.io/badges/@openstatus/health-stripe)](https://jsr.io/@openstatus/health-stripe) | [![npm](https://img.shields.io/npm/v/@openstatus/health-stripe)](https://www.npmjs.com/package/@openstatus/health-stripe) | Stripe API reachability probe |
 | [`@openstatus/health-resend`](packages/resend) | [![JSR](https://jsr.io/badges/@openstatus/health-resend)](https://jsr.io/@openstatus/health-resend) | [![npm](https://img.shields.io/npm/v/@openstatus/health-resend)](https://www.npmjs.com/package/@openstatus/health-resend) | Resend API reachability probe |
+| [`@openstatus/health-sentry`](packages/sentry) | [![JSR](https://jsr.io/badges/@openstatus/health-sentry)](https://jsr.io/@openstatus/health-sentry) | [![npm](https://img.shields.io/npm/v/@openstatus/health-sentry)](https://www.npmjs.com/package/@openstatus/health-sentry) | Sentry API reachability probe (SaaS or self-hosted) |
 | [`@openstatus/health-supabase`](packages/supabase) | [![JSR](https://jsr.io/badges/@openstatus/health-supabase)](https://jsr.io/@openstatus/health-supabase) | [![npm](https://img.shields.io/npm/v/@openstatus/health-supabase)](https://www.npmjs.com/package/@openstatus/health-supabase) | Supabase connection-pressure probe |
 | [`@openstatus/health-tinybird`](packages/tinybird) | [![JSR](https://jsr.io/badges/@openstatus/health-tinybird)](https://jsr.io/@openstatus/health-tinybird) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tinybird)](https://www.npmjs.com/package/@openstatus/health-tinybird) | Tinybird reachability probe |
 | [`@openstatus/health-trigger-dev`](packages/trigger-dev) | [![JSR](https://jsr.io/badges/@openstatus/health-trigger-dev)](https://jsr.io/@openstatus/health-trigger-dev) | [![npm](https://img.shields.io/npm/v/@openstatus/health-trigger-dev)](https://www.npmjs.com/package/@openstatus/health-trigger-dev) | Trigger.dev API reachability probe |
@@ -297,6 +298,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `resendProbe({ apiKey, baseUrl? })` | `resend` | no | `GET {baseUrl}/domains` with the API key |
 | `clerkProbe({ secretKey, baseUrl? })` | `clerk` | no | `GET {baseUrl}/v1/users?limit=1` with the secret key |
 | `workosProbe({ apiKey, baseUrl? })` | `workos` | no | `GET {baseUrl}/organizations?limit=1` with the API key |
+| `sentryProbe({ token?, baseUrl? })` | `sentry` | no | `GET {baseUrl}/api/0/`, with the auth token when given |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance or a base URL — they never read
