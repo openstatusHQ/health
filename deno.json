@@ -52,7 +52,8 @@
     "./packages/dns",
     "./packages/tls",
     "./packages/disk",
-    "./packages/memory"
+    "./packages/memory",
+    "./packages/grpc"
   ],
   "imports": {
     "@std/path": "jsr:@std/path@^1.1.0",

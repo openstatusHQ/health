@@ -262,6 +262,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | [`@openstatus/health-tls`](packages/tls) | [![JSR](https://jsr.io/badges/@openstatus/health-tls)](https://jsr.io/@openstatus/health-tls) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tls)](https://www.npmjs.com/package/@openstatus/health-tls) | TLS handshake, trust and certificate-expiry probe (`node:tls`) |
 | [`@openstatus/health-disk`](packages/disk) | [![JSR](https://jsr.io/badges/@openstatus/health-disk)](https://jsr.io/@openstatus/health-disk) | [![npm](https://img.shields.io/npm/v/@openstatus/health-disk)](https://www.npmjs.com/package/@openstatus/health-disk) | Free disk space threshold probe (`node:fs` `statfs`) |
 | [`@openstatus/health-memory`](packages/memory) | [![JSR](https://jsr.io/badges/@openstatus/health-memory)](https://jsr.io/@openstatus/health-memory) | [![npm](https://img.shields.io/npm/v/@openstatus/health-memory)](https://www.npmjs.com/package/@openstatus/health-memory) | Heap / RSS memory pressure probe (`node:process`, `node:v8`) |
+| [`@openstatus/health-grpc`](packages/grpc) | [![JSR](https://jsr.io/badges/@openstatus/health-grpc)](https://jsr.io/@openstatus/health-grpc) | [![npm](https://img.shields.io/npm/v/@openstatus/health-grpc)](https://www.npmjs.com/package/@openstatus/health-grpc) | gRPC `Health/Check` probe through a `@grpc/grpc-js` health client |
 
 ### Hosting metadata
 
@@ -323,6 +324,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `tlsProbe({ host, port?, minDaysValid? })` | `tls` | no | a TLS handshake with a trusted certificate valid ≥ `minDaysValid` days |
 | `diskProbe({ path?, minFreePercent?, minFreeBytes? })` | `disk` | no | free space of the filesystem holding `path` ≥ threshold |
 | `memoryProbe({ maxHeapUsedPercent?, maxRssBytes? })` | `memory` | no | heap in use ≤ 90% of the V8 heap limit by default; RSS ≤ budget only when `maxRssBytes` is set |
+| `grpcProbe({ client, service? })` | `grpc` | no | `client.check({ service })` answers `SERVING` on a `grpc.health.v1.Health` client |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance, a base URL or, for `tcpProbe`, a
