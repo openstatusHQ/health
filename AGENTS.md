@@ -27,7 +27,13 @@
 - Deno only: `deno task check`, `deno task test`, `deno task build`,
   `deno task test:node`, `deno task check:treeshake`.
 - Strict TypeScript. Never use `any` or `unknown`; spell out the union you
-  mean or use a structural interface.
+  mean or use a structural interface. The one exception is the loose adapter
+  context defaults (`LooseEnv`, `ExpressLocals`) and the Express
+  `Request`/`Response` generics, where `unknown` satisfies the framework's
+  constraint; keep it there and nowhere else. The one exception is the loose adapter
+  context defaults (`LooseEnv`, `ExpressLocals`) and the Express
+  `Request`/`Response` generics, where `unknown` satisfies the framework's
+  constraint; keep it there and nowhere else.
 - Explicit return types on every exported function (JSR rejects slow types).
 - Every server adapter exports `healthRoute(options)` (mounts `path`) and
   `healthHandler(options)` (a bare handler for that framework; Next.js has
@@ -52,6 +58,14 @@
   `deno test` and `node --test`.
 - All packages share one version; `deno task check:versions` enforces it and
   `deno task update-versions x.y.z` bumps it.
+- `tsdown` stays on `0.12.x`; the root `package.json` pins
+  `rolldown@1.0.0-beta.19` to match it, because newer rolldown rejects the
+  `define` option tsdown passes and prints a warning on every build. Do not
+  bump either without re-checking `deno task build` output.
+- `tsdown` stays on `0.12.x`; the root `package.json` pins
+  `rolldown@1.0.0-beta.19` to match it, because newer rolldown rejects the
+  `define` option tsdown passes and prints a warning on every build. Do not
+  bump either without re-checking `deno task build` output.
 
 ## Releasing
 

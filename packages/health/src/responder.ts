@@ -7,6 +7,7 @@ import type {
   HealthHttpResponse,
   HealthReport,
   HealthResponder,
+  HealthResponseBody,
   HealthSource,
 } from "./types.ts";
 
@@ -73,10 +74,28 @@ export function createHealthResponder<Ctx = Request>(
     respond,
     async toResponse(ctx: Ctx, method = "GET"): Promise<Response> {
       const rendered = await respond(ctx);
-      return new Response(
-        method === "HEAD" ? null : JSON.stringify(rendered.body),
-        { status: rendered.status, headers: rendered.headers },
-      );
+      let payload: string | null = null;
+      if (method !== "HEAD") {
+        try {
+          payload = JSON.stringify(rendered.body);
+        } catch (e) {
+          fail(toError(e), ctx);
+          payload = fallbackBody(rendered.body);
+        }
+      }
+      return new Response(payload, {
+        status: rendered.status,
+        headers: rendered.headers,
+      });
     },
   };
+}
+
+function fallbackBody(body: HealthResponseBody): string {
+  return JSON.stringify({
+    status: body.status,
+    checkedAt: body.checkedAt,
+    ...(body.checks !== undefined ? { checks: body.checks } : {}),
+    ...(body.latencyMs !== undefined ? { latencyMs: body.latencyMs } : {}),
+  });
 }

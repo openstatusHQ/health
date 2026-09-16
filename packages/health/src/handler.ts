@@ -1,4 +1,5 @@
 import { createHealthResponder } from "./responder.ts";
+import { healthHeaders } from "./response.ts";
 import type { HealthRouteOptions } from "./types.ts";
 
 export type HealthHandler<Req extends Request = Request> = (
@@ -17,11 +18,16 @@ export function createHealthHandler<Req extends Request = Request>(
   const path = options.path;
   return (request: Req): Promise<Response> => {
     if (path != null && !matchesPath(request.url, path)) {
-      return Promise.resolve(new Response(null, { status: 404 }));
+      return Promise.resolve(
+        new Response(null, { status: 404, headers: healthHeaders }),
+      );
     }
     if (request.method !== "GET" && request.method !== "HEAD") {
       return Promise.resolve(
-        new Response(null, { status: 405, headers: { allow: "GET, HEAD" } }),
+        new Response(null, {
+          status: 405,
+          headers: { ...healthHeaders, allow: "GET, HEAD" },
+        }),
       );
     }
     return responder.toResponse(request, request.method);

@@ -18,21 +18,23 @@ export function createHealthCheck(options: HealthCheckOptions): HealthCheck {
     | { readonly at: number; readonly report: HealthReport }
     | undefined;
   let pending: Promise<HealthReport> | undefined;
+  let generation = 0;
 
   const refresh = (): Promise<HealthReport> => {
     if (pending != null) return pending;
+    const gen = generation;
     pending = runProbes(options.probes, {
       timeoutMs: options.timeoutMs,
       deadlineMs: options.deadlineMs,
       formatError: options.formatError,
     })
       .then((report) => {
-        cached = { at: Date.now(), report };
+        if (gen === generation) cached = { at: Date.now(), report };
         notify(options.onReport, report);
         return report;
       })
       .finally(() => {
-        pending = undefined;
+        if (gen === generation) pending = undefined;
       });
     return pending;
   };
@@ -51,7 +53,9 @@ export function createHealthCheck(options: HealthCheckOptions): HealthCheck {
       return refresh();
     },
     invalidate(): void {
+      generation++;
       cached = undefined;
+      pending = undefined;
     },
   };
 }
@@ -59,8 +63,7 @@ export function createHealthCheck(options: HealthCheckOptions): HealthCheck {
 function notify(onReport: OnReport | undefined, report: HealthReport): void {
   if (onReport == null) return;
   try {
-    const result = onReport(report);
-    if (result instanceof Promise) result.catch(() => {});
+    Promise.resolve(onReport(report)).catch(() => {});
   } catch {
     return;
   }

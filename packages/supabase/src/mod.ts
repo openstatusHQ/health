@@ -1,8 +1,9 @@
-import type {
-  JsonObject,
-  JsonValue,
-  Probe,
-  ProbeOverrides,
+import {
+  type JsonObject,
+  type JsonValue,
+  type Probe,
+  ProbeConfigError,
+  type ProbeOverrides,
 } from "@openstatus/health";
 
 export const supabaseDefaultName = "supabase";
@@ -56,6 +57,15 @@ export function supabaseProbe(options: SupabaseProbeOptions): Probe {
   const rpc = options.rpc ?? supabaseDefaultRpc;
   const maxConnectionPercent = options.maxConnectionPercent ??
     supabaseDefaultMaxConnectionPercent;
+  if (!Number.isFinite(maxConnectionPercent) || maxConnectionPercent < 0) {
+    throw new ProbeConfigError(
+      "supabaseProbe",
+      "maxConnectionPercent",
+      `must be a non-negative number, got ${
+        String(options.maxConnectionPercent)
+      }`,
+    );
+  }
   return {
     name: options.name ?? supabaseDefaultName,
     critical: options.critical ?? false,
@@ -82,7 +92,7 @@ function assertWithinThreshold(
     throw new Error("unexpected response shape");
   }
   const percent = first.connection_percent;
-  if (typeof percent !== "number") {
+  if (typeof percent !== "number" || !Number.isFinite(percent)) {
     throw new Error("unexpected response shape");
   }
   const row: SupabaseConnectionPressureRow = {

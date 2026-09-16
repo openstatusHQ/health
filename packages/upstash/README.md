@@ -14,13 +14,18 @@ npm install @openstatus/health @openstatus/health-upstash
 import { createHealthHandler, readEnv } from "@openstatus/health";
 import { upstashProbe } from "@openstatus/health-upstash";
 
+const url = readEnv("UPSTASH_REDIS_REST_URL");
+const token = readEnv("UPSTASH_REDIS_REST_TOKEN");
+
 Deno.serve(
   createHealthHandler({
     probes: [
+      // the factory validates `url` and `token` at construction, so pass
+      // placeholders and let `skip` keep the unconfigured check from running.
       upstashProbe({
-        url: readEnv("UPSTASH_REDIS_REST_URL") ?? "",
-        token: readEnv("UPSTASH_REDIS_REST_TOKEN") ?? "",
-        skip: () => readEnv("UPSTASH_REDIS_REST_URL") == null,
+        url: url ?? "http://localhost:8079",
+        token: token ?? "unconfigured",
+        skip: () => url == null,
       }),
     ],
   }),

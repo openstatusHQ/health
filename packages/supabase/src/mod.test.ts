@@ -103,6 +103,44 @@ test("supabaseProbe() fails on an unexpected response shape", async () => {
   assert.equal(report.checks[0].status, "failed");
 });
 
+test("supabaseProbe() fails on a nested array row", async () => {
+  const report = await runProbes([
+    supabaseProbe({ client: fakeClient([[]]) }),
+  ]);
+  assert.equal(report.checks[0].status, "failed");
+});
+
+test("supabaseProbe() fails on a non-finite connection_percent", async () => {
+  const report = await runProbes([
+    supabaseProbe({
+      client: fakeClient({
+        ...belowThreshold(),
+        connection_percent: Number.NaN,
+      }),
+    }),
+  ]);
+  assert.equal(report.checks[0].status, "failed");
+});
+
+test("supabaseProbe() rejects an invalid maxConnectionPercent", () => {
+  assert.throws(
+    () =>
+      supabaseProbe({
+        client: fakeClient(belowThreshold()),
+        maxConnectionPercent: Number.NaN,
+      }),
+    /supabaseProbe: "maxConnectionPercent" must be a non-negative number/,
+  );
+  assert.throws(
+    () =>
+      supabaseProbe({
+        client: fakeClient(belowThreshold()),
+        maxConnectionPercent: -1,
+      }),
+    /must be a non-negative number/,
+  );
+});
+
 test("supabaseProbe() honours an rpc override", async () => {
   const track: Tracked = { rpc: [], signals: [] };
   await runProbes([

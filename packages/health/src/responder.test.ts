@@ -119,6 +119,28 @@ test("createHealthResponder() reports a rejected extend and a thrown onError", a
   assert.equal(rendered.body.status, "ok");
 });
 
+test("createHealthResponder() serves the report when an extend rejection cannot become a string", async () => {
+  const errors: Error[] = [];
+  const responder = createHealthResponder<Ctx>({
+    probes: [failingProbe("a", true)],
+    extend: () => Promise.reject({ toString: 0, code: "PRIVATE_FAILURE" }),
+    onError: (error) => errors.push(error),
+  });
+  const rendered = await responder.respond({});
+  assert.equal(rendered.status, 503);
+  assert.equal(rendered.body.status, "unhealthy");
+  assert.equal(rendered.body.checks?.[0].status, "failed");
+  assert.deepEqual(Object.keys(rendered.body).sort(), [
+    "checkedAt",
+    "checks",
+    "latencyMs",
+    "status",
+  ]);
+  assert.equal(errors.length, 1);
+  assert.ok(errors[0] instanceof Error);
+  assert.doesNotMatch(errors[0].message, /PRIVATE_FAILURE/);
+});
+
 test("createHealthResponder() treats a throwing exposeChecks as false", async () => {
   const seen: Error[] = [];
   const responder = createHealthResponder<Ctx>({
@@ -135,6 +157,29 @@ test("createHealthResponder() treats a throwing exposeChecks as false", async ()
   assert.equal(rendered.body.checks, undefined);
   assert.equal(rendered.body.region, undefined);
   assert.equal(seen[0]?.message, "auth down");
+});
+
+test("createHealthResponder() hides details when an exposeChecks rejection cannot become a string", async () => {
+  const errors: Error[] = [];
+  let extended = false;
+  const responder = createHealthResponder<Ctx>({
+    probes: [failingProbe("a", true)],
+    exposeChecks: () =>
+      Promise.reject({ toString: 0, code: "PRIVATE_FAILURE" }),
+    extend: () => {
+      extended = true;
+      return { secret: "private" };
+    },
+    onError: (error) => errors.push(error),
+  });
+  const rendered = await responder.respond({});
+  assert.equal(rendered.status, 503);
+  assert.equal(rendered.body.status, "unhealthy");
+  assert.deepEqual(Object.keys(rendered.body).sort(), ["checkedAt", "status"]);
+  assert.equal(extended, false);
+  assert.equal(errors.length, 1);
+  assert.ok(errors[0] instanceof Error);
+  assert.doesNotMatch(errors[0].message, /PRIVATE_FAILURE/);
 });
 
 test("createHealthResponder() passes the context to onError", async () => {
@@ -183,4 +228,26 @@ test("createHealthResponder().toResponse() drops the body on HEAD", async () => 
   assert.equal(head.status, 503);
   assert.equal(await head.text(), "");
   assert.equal(head.headers.get("cache-control"), "no-store");
+});
+
+test("createHealthResponder() survives a non-serializable extend", async () => {
+  const circular: { self?: object } = {};
+  circular.self = circular;
+  const errors: Error[] = [];
+  const responder = createHealthResponder<Ctx>({
+    probes: [okProbe("a")],
+    extend: () => circular,
+    onError: (error) => errors.push(error),
+  });
+  const res = await responder.toResponse({});
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.equal(body.status, "ok");
+  assert.deepEqual(Object.keys(body).sort(), [
+    "checkedAt",
+    "checks",
+    "latencyMs",
+    "status",
+  ]);
+  assert.equal(errors.length, 1);
 });

@@ -95,6 +95,10 @@ test("drizzleProbe() throws at construction on an unsupported instance", () => {
     () => drizzleProbe({ db: { query: 1 } as DrizzleLikeDb }),
     /got an object with keys query/,
   );
+  assert.throws(
+    () => drizzleProbe({ db: 42 as unknown as DrizzleLikeDb }),
+    /got number/,
+  );
 });
 
 test("drizzleProbe() honours name, critical and skip overrides", async () => {

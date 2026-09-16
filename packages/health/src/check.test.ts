@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
+import { runInNewContext } from "node:vm";
 import { createHealthCheck } from "./check.ts";
 import { DuplicateProbeError } from "./errors.ts";
 import type { Probe } from "./types.ts";
@@ -150,6 +151,20 @@ test("createHealthCheck() swallows onReport errors", async () => {
   assert.equal((await rejecting.report()).status, "ok");
 });
 
+test("createHealthCheck() swallows onReport rejections from another realm", async () => {
+  const { probe } = counting("a");
+  const ForeignPromise: PromiseConstructor = runInNewContext("Promise");
+  assert.notEqual(ForeignPromise, Promise);
+  const check = createHealthCheck({
+    probes: [probe],
+    onReport: () => ForeignPromise.reject(new Error("logger down")),
+  });
+  const report = await check.report();
+  assert.equal(report.status, "ok");
+  await delay(0);
+  assert.equal(await check.report(), report);
+});
+
 test("createHealthCheck() accepts the formatError presets", async () => {
   const { probe } = counting("a", true);
   const generic = await createHealthCheck({ probes: [probe] }).report();
@@ -220,4 +235,29 @@ test("createHealthCheck() accepts a prebuilt check through resolveHealthCheck", 
   assert.notEqual(built, check);
   await built.report();
   assert.equal(calls(), 1);
+});
+
+test("createHealthCheck().invalidate() abandons an in-flight round", async () => {
+  const gate = Promise.withResolvers<void>();
+  let calls = 0;
+  const check = createHealthCheck({
+    probes: [{
+      name: "a",
+      run: async () => {
+        calls++;
+        if (calls === 1) await gate.promise;
+      },
+    }],
+    cacheMs: 1000,
+  });
+  const first = check.report();
+  check.invalidate();
+  const second = check.report();
+  gate.resolve();
+  const [firstReport, secondReport] = await Promise.all([first, second]);
+  await delay(0);
+  assert.equal(calls, 2);
+  assert.notEqual(firstReport, secondReport);
+  assert.equal(await check.report(), secondReport);
+  assert.equal(calls, 2);
 });

@@ -31,13 +31,33 @@ test("createHealthHandler() answers HEAD without a body", async () => {
   assert.equal(await res.text(), "");
 });
 
-test("createHealthHandler() rejects other methods with 405", async () => {
-  const handler = createHealthHandler({ probes: [ok] });
-  const res = await handler(
-    new Request("http://localhost/health", { method: "POST" }),
-  );
-  assert.equal(res.status, 405);
-  assert.equal(res.headers.get("allow"), "GET, HEAD");
+test("createHealthHandler() rejects requests without caching or running probes", async () => {
+  let runs = 0;
+  const handler = createHealthHandler({
+    path: "/health",
+    probes: [{ name: "a", run: () => runs++ }],
+  });
+  for (
+    const { path, method, status, allow } of [
+      { path: "/other", method: "GET", status: 404, allow: null },
+      { path: "/other", method: "HEAD", status: 404, allow: null },
+      { path: "/other", method: "POST", status: 404, allow: null },
+      { path: "/health", method: "POST", status: 405, allow: "GET, HEAD" },
+    ]
+  ) {
+    const res = await handler(
+      new Request(`http://localhost${path}`, { method }),
+    );
+    assert.equal(res.status, status);
+    assert.equal(res.headers.get("allow"), allow);
+    assert.equal(res.headers.get("cache-control"), "no-store");
+    assert.equal(
+      res.headers.get("content-type"),
+      "application/json; charset=utf-8",
+    );
+    assert.equal(await res.text(), "");
+    assert.equal(runs, 0);
+  }
 });
 
 test("createHealthHandler() passes the request to extend", async () => {

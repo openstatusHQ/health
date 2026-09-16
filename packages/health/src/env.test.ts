@@ -4,6 +4,8 @@ import { readEnv } from "./env.ts";
 
 type ProcessLike = { env?: Readonly<Record<string, string | undefined>> };
 
+const missing = "OPENSTATUS_HEALTH_TEST_MISSING";
+
 function withProcess(replacement: ProcessLike | undefined, run: () => void) {
   const runtime = globalThis as { process?: ProcessLike };
   const original = runtime.process;
@@ -23,7 +25,7 @@ test("readEnv() prefers an explicit source", () => {
 });
 
 test("readEnv() returns undefined for a name missing from the source", () => {
-  assert.equal(readEnv("TOKEN", {}), undefined);
+  assert.equal(readEnv(missing, {}), undefined);
 });
 
 test("readEnv() falls back to process.env", () => {
@@ -34,7 +36,7 @@ test("readEnv() falls back to process.env", () => {
 
 test("readEnv() returns undefined when process is absent", () => {
   withProcess(undefined, () => {
-    assert.equal(readEnv("TOKEN"), undefined);
+    assert.equal(readEnv(missing), undefined);
   });
 });
 
@@ -45,6 +47,19 @@ test("readEnv() returns undefined when reading process.env throws", () => {
     },
   };
   withProcess(throwing, () => {
-    assert.equal(readEnv("TOKEN"), undefined);
+    assert.equal(readEnv(missing), undefined);
   });
+});
+
+test("readEnv() falls back to Deno.env when process is absent", {
+  skip: typeof Deno === "undefined",
+}, () => {
+  Deno.env.set(missing, "from-deno");
+  try {
+    withProcess(undefined, () => {
+      assert.equal(readEnv(missing), "from-deno");
+    });
+  } finally {
+    Deno.env.delete(missing);
+  }
 });

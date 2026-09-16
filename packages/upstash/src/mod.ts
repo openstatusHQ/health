@@ -22,11 +22,13 @@ export function upstashProbe(options: UpstashProbeOptions): Probe {
     value: options.url,
     path: "/ping",
   });
-  if (typeof options.token !== "string") {
+  if (typeof options.token !== "string" || options.token.length === 0) {
     throw new ProbeConfigError(
       "upstashProbe",
       "token",
-      `must be a string, got ${String(options.token)}`,
+      typeof options.token !== "string"
+        ? `must be a string, got ${String(options.token)}`
+        : "must not be empty",
     );
   }
   const headers = { authorization: `Bearer ${options.token}` };
