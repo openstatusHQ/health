@@ -42,7 +42,8 @@
     "./packages/neon",
     "./packages/planetscale",
     "./packages/redis",
-    "./packages/openai"
+    "./packages/openai",
+    "./packages/anthropic"
   ],
   "imports": {
     "@std/path": "jsr:@std/path@^1.1.0",
