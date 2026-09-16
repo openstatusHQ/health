@@ -155,6 +155,12 @@
   resolves a hostname with `dns.promises.lookup` (or a custom `lookup`) and
   fails the check when no address comes back. Non-critical by default; rejects
   an empty `hostname` at construction.
+- New `@openstatus/health-tls` probe: `tlsProbe({ host, port?, minDaysValid?
+  })` completes a handshake with `node:tls`, fails when the certificate is not
+  trusted and throws `TlsCertificateExpiryError` when it expires within
+  `minDaysValid` days (14 by default). Non-critical by default; rejects an
+  empty `host`, an invalid `port` or a negative `minDaysValid` at
+  construction.
 
 ## 0.1.3
 

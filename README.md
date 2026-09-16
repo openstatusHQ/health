@@ -259,6 +259,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | [`@openstatus/health-convex`](packages/convex) | [![JSR](https://jsr.io/badges/@openstatus/health-convex)](https://jsr.io/@openstatus/health-convex) | [![npm](https://img.shields.io/npm/v/@openstatus/health-convex)](https://www.npmjs.com/package/@openstatus/health-convex) | Convex query probe over the deployment HTTP API |
 | [`@openstatus/health-tcp`](packages/tcp) | [![JSR](https://jsr.io/badges/@openstatus/health-tcp)](https://jsr.io/@openstatus/health-tcp) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tcp)](https://www.npmjs.com/package/@openstatus/health-tcp) | TCP connect probe for any `host:port` (`node:net`) |
 | [`@openstatus/health-dns`](packages/dns) | [![JSR](https://jsr.io/badges/@openstatus/health-dns)](https://jsr.io/@openstatus/health-dns) | [![npm](https://img.shields.io/npm/v/@openstatus/health-dns)](https://www.npmjs.com/package/@openstatus/health-dns) | DNS lookup probe for a hostname (`node:dns`) |
+| [`@openstatus/health-tls`](packages/tls) | [![JSR](https://jsr.io/badges/@openstatus/health-tls)](https://jsr.io/@openstatus/health-tls) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tls)](https://www.npmjs.com/package/@openstatus/health-tls) | TLS handshake, trust and certificate-expiry probe (`node:tls`) |
 
 ### Hosting metadata
 
@@ -317,6 +318,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `convexProbe({ url, path, args?, token? })` | `database` | yes | `POST {url}/api/query` running `path` answers `status: "success"` |
 | `tcpProbe({ host, port })` | `tcp` | no | a TCP connection to `host:port` is accepted |
 | `dnsProbe({ hostname, lookup? })` | `dns` | no | `dns.promises.lookup(hostname)` returns an address |
+| `tlsProbe({ host, port?, minDaysValid? })` | `tls` | no | a TLS handshake with a trusted certificate valid ≥ `minDaysValid` days |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance, a base URL or, for `tcpProbe`, a
