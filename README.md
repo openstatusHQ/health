@@ -254,6 +254,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | [`@openstatus/health-openai`](packages/openai) | [![JSR](https://jsr.io/badges/@openstatus/health-openai)](https://jsr.io/@openstatus/health-openai) | [![npm](https://img.shields.io/npm/v/@openstatus/health-openai)](https://www.npmjs.com/package/@openstatus/health-openai) | OpenAI API reachability probe (or any OpenAI-compatible host) |
 | [`@openstatus/health-anthropic`](packages/anthropic) | [![JSR](https://jsr.io/badges/@openstatus/health-anthropic)](https://jsr.io/@openstatus/health-anthropic) | [![npm](https://img.shields.io/npm/v/@openstatus/health-anthropic)](https://www.npmjs.com/package/@openstatus/health-anthropic) | Anthropic API reachability probe |
 | [`@openstatus/health-algolia`](packages/algolia) | [![JSR](https://jsr.io/badges/@openstatus/health-algolia)](https://jsr.io/@openstatus/health-algolia) | [![npm](https://img.shields.io/npm/v/@openstatus/health-algolia)](https://www.npmjs.com/package/@openstatus/health-algolia) | Algolia `/1/isalive` reachability probe |
+| [`@openstatus/health-meilisearch`](packages/meilisearch) | [![JSR](https://jsr.io/badges/@openstatus/health-meilisearch)](https://jsr.io/@openstatus/health-meilisearch) | [![npm](https://img.shields.io/npm/v/@openstatus/health-meilisearch)](https://www.npmjs.com/package/@openstatus/health-meilisearch) | Meilisearch `/health` probe (cloud or self-hosted) |
 
 ### Hosting metadata
 
@@ -307,6 +308,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `openaiProbe({ apiKey, baseUrl? })` | `openai` | no | `GET {baseUrl}/v1/models` with the API key |
 | `anthropicProbe({ apiKey, baseUrl? })` | `anthropic` | no | `GET {baseUrl}/v1/models` with the `x-api-key` header |
 | `algoliaProbe({ appId, apiKey, baseUrl? })` | `search` | no | `GET {baseUrl}/1/isalive` with the app headers; `baseUrl` defaults to `https://{appId}-dsn.algolia.net` |
+| `meilisearchProbe({ host, apiKey? })` | `search` | no | `GET {host}/health` answers `status: "available"` |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance or a base URL — they never read

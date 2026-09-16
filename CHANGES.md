@@ -134,6 +134,10 @@
   with the Algolia application and API key headers. Non-critical by default;
   rejects an empty `appId` or `apiKey`, or an invalid `baseUrl`, at
   construction.
+- New `@openstatus/health-meilisearch` probe: `meilisearchProbe({ host,
+  apiKey? })` expects `GET {host}/health` to answer 2xx with `status:
+  "available"`, sending the API key as a bearer token when given. Non-critical
+  by default; rejects an invalid `host` or an empty `apiKey` at construction.
 
 ## 0.1.3
 
