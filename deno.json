@@ -20,7 +20,8 @@
     "./packages/unkey",
     "./packages/upstash",
     "./packages/mysql",
-    "./packages/postgres"
+    "./packages/postgres",
+    "./packages/neon"
   ],
   "imports": {
     "@std/path": "jsr:@std/path@^1.1.0",
@@ -41,7 +42,8 @@
     "mysql2": "npm:mysql2@^3.14.0",
     "pg": "npm:pg@^8.16.0",
     "@types/pg": "npm:@types/pg@^8.15.0",
-    "postgres": "npm:postgres@^3.4.0"
+    "postgres": "npm:postgres@^3.4.0",
+    "@neondatabase/serverless": "npm:@neondatabase/serverless@^1.0.0"
   },
   "exclude": [
     "**/dist/",

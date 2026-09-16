@@ -5,13 +5,14 @@
     "jsr:@std/path@^1.1.0": "1.1.4",
     "npm:@clickhouse/client@^1.23.1": "1.23.1",
     "npm:@libsql/client@0.15": "0.15.15",
+    "npm:@neondatabase/serverless@1": "1.1.0",
     "npm:@supabase/supabase-js@2": "2.116.0",
     "npm:@tanstack/react-router@^1.170.35": "1.170.35_react@19.3.0_react-dom@19.3.0",
     "npm:@tanstack/start-client-core@^1.170.29": "1.170.29",
     "npm:@tursodatabase/serverless@^1.4.0": "1.4.0",
     "npm:@types/express@^5.0.6": "5.0.6",
     "npm:@types/pg@^8.15.0": "8.23.1",
-    "npm:drizzle-orm@0.44": "0.44.7_@libsql+client@0.15.15_@types+pg@8.23.1_mysql2@3.24.4_pg@8.23.0_postgres@3.4.9",
+    "npm:drizzle-orm@0.44": "0.44.7_@libsql+client@0.15.15_@neondatabase+serverless@1.1.0_@types+pg@8.23.1_mysql2@3.24.4_pg@8.23.0_postgres@3.4.9",
     "npm:elysia@^1.4.0": "1.4.30_@sinclair+typebox@0.34.52_exact-mirror@0.2.7_file-type@22.0.2_openapi-types@12.1.3_typescript@5.9.3",
     "npm:esbuild@0.25": "0.25.12",
     "npm:express@^5.2.1": "5.2.1",
@@ -490,6 +491,9 @@
     "@neon-rs/load@0.0.4": {
       "integrity": "sha512-kTPhdZyTQxB+2wpiRcFWrDcejc4JI6tkPuS7UZCG4l6Zvc5kU/gGQ/ozvHTh1XR5tS+UlfAfGuPajjzQjCiHCw=="
     },
+    "@neondatabase/serverless@1.1.0": {
+      "integrity": "sha512-r3ZZhRjEcfEdKIZnoB1RusNgvHuaBRqfCzV4Gi+5A9yUX0S4HTws/ASWqt13wL4y4I+0rqsWGdA2w7EQXHi3+Q=="
+    },
     "@next/env@15.5.19": {
       "integrity": "sha512-sWWluFvcv5v3Fxznmf2ZfjyoVQt/64oCnYqS90inQWGzMPK1VjvekPiz3OPHKmFT30EnHrjlbyaHLt3M0vWabw=="
     },
@@ -922,11 +926,12 @@
     "diff@8.0.4": {
       "integrity": "sha512-DPi0FmjiSU5EvQV0++GFDOJ9ASQUVFh5kD+OzOnYdi7n3Wpm9hWWGfB/O2blfHcMVTL5WkQXSnRiK9makhrcnw=="
     },
-    "drizzle-orm@0.44.7_@libsql+client@0.15.15_@types+pg@8.23.1_mysql2@3.24.4_pg@8.23.0_postgres@3.4.9": {
+    "drizzle-orm@0.44.7_@libsql+client@0.15.15_@neondatabase+serverless@1.1.0_@types+pg@8.23.1_mysql2@3.24.4_pg@8.23.0_postgres@3.4.9": {
       "integrity": "sha512-quIpnYznjU9lHshEOAYLoZ9s3jweleHlZIAWR/jX9gAWNg/JhQ1wj0KGRf7/Zm+obRrYd9GjPVJg790QY9N5AQ==",
       "dependencies": [
         "@cloudflare/workers-types",
         "@libsql/client",
+        "@neondatabase/serverless",
         "@types/pg",
         "mysql2",
         "pg",
@@ -935,6 +940,7 @@
       "optionalPeers": [
         "@cloudflare/workers-types",
         "@libsql/client",
+        "@neondatabase/serverless",
         "@types/pg",
         "mysql2",
         "pg",
@@ -1797,6 +1803,7 @@
       "jsr:@std/path@^1.1.0",
       "npm:@clickhouse/client@^1.23.1",
       "npm:@libsql/client@0.15",
+      "npm:@neondatabase/serverless@1",
       "npm:@supabase/supabase-js@2",
       "npm:@tanstack/react-router@^1.170.35",
       "npm:@tanstack/start-client-core@^1.170.29",
@@ -1905,6 +1912,15 @@
         "packageJson": {
           "dependencies": [
             "npm:mysql2@^3.14.0",
+            "npm:tsdown@~0.12.7",
+            "npm:typescript@^5.8.3"
+          ]
+        }
+      },
+      "packages/neon": {
+        "packageJson": {
+          "dependencies": [
+            "npm:@neondatabase/serverless@1",
             "npm:tsdown@~0.12.7",
             "npm:typescript@^5.8.3"
           ]

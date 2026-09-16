@@ -1,4 +1,5 @@
 import { createClient as createLibsqlClient } from "@libsql/client";
+import { neon } from "@neondatabase/serverless";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { createClient as createClickHouseClient } from "@clickhouse/client";
 import { connect as connectTursoServerless } from "@tursodatabase/serverless";
@@ -11,6 +12,7 @@ import { clickhouseProbe } from "@openstatus/health-clickhouse";
 import { drizzleProbe } from "@openstatus/health-drizzle";
 import { mysqlProbe } from "@openstatus/health-mysql";
 import { postgresProbe } from "@openstatus/health-postgres";
+import { neonProbe } from "@openstatus/health-neon";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { tursoProbe } from "@openstatus/health-turso";
@@ -45,6 +47,10 @@ export function exampleProbes(): Probe[] {
     connectionString: env("DATABASE_URL") ?? "postgres://localhost:5432/app",
   });
   const sql = postgres(env("DATABASE_URL") ?? "postgres://localhost:5432/app");
+
+  const neonSql = neon(
+    env("NEON_DATABASE_URL") ?? "postgres://user:pass@localhost:5432/app",
+  );
 
   const tursoServerless = connectTursoServerless({
     url: env("TURSO_DATABASE_URL") ?? "http://localhost:8080",
@@ -85,6 +91,11 @@ export function exampleProbes(): Probe[] {
       client: sql,
       name: "postgres-js",
       skip: () => env("DATABASE_URL") == null,
+    }),
+    neonProbe({
+      client: neonSql,
+      name: "neon",
+      skip: () => env("NEON_DATABASE_URL") == null,
     }),
     tinybirdProbe({
       baseUrl: env("TINYBIRD_URL"),

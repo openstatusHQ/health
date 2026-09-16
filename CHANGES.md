@@ -14,6 +14,11 @@
   structurally, so `pg` and `postgres` stay optional peers for their types.
   Throws `ProbeConfigError` at construction when the client has neither
   method.
+- New `@openstatus/health-neon` probe: `neonProbe({ client })` runs `select 1`
+  through `@neondatabase/serverless` — the HTTP `neon()` driver or a `Pool` /
+  `Client`. Critical by default; the client is typed structurally, so the
+  driver stays an optional peer for its types. Throws `ProbeConfigError` at
+  construction when the client has no `query()`.
 
 ## 0.1.3
 
