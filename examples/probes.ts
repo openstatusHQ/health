@@ -36,6 +36,7 @@ import { meilisearchProbe } from "@openstatus/health-meilisearch";
 import { typesenseProbe } from "@openstatus/health-typesense";
 import { convexProbe } from "@openstatus/health-convex";
 import { tcpProbe } from "@openstatus/health-tcp";
+import { dnsProbe } from "@openstatus/health-dns";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { triggerDevProbe } from "@openstatus/health-trigger-dev";
@@ -266,6 +267,10 @@ export function exampleProbes(): Probe[] {
       host: env("SMTP_HOST") || "localhost",
       port: env("SMTP_HOST") ? Number(env("SMTP_PORT") || 587) : 587,
       skip: () => !env("SMTP_HOST"),
+    }),
+    dnsProbe({
+      hostname: env("DNS_HOSTNAME") ?? "localhost",
+      skip: () => env("DNS_HOSTNAME") == null,
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

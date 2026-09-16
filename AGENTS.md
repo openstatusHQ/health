@@ -5,7 +5,7 @@
 - `packages/<name>/` — one npm/JSR package per concern. `health` is the
   zero-dependency core; `hono`, `elysia`, `express`, `next`, `tanstack-start`
   are server adapters; `algolia`, `anthropic`, `bullmq`, `clerk`, `clickhouse`,
-  `cloudflare-d1`, `cloudflare-kv`, `cloudflare-r2`, `convex`, `drizzle`,
+  `cloudflare-d1`, `cloudflare-kv`, `cloudflare-r2`, `convex`, `dns`, `drizzle`,
   `inngest`, `kafka`, `meilisearch`, `mongodb`, `mysql`, `nats`, `neon`,
   `openai`, `planetscale`, `postgres`, `posthog`, `prisma`, `qstash`, `redis`,
   `resend`, `s3`, `sentry`, `stripe`, `supabase`, `tcp`, `tinybird`,

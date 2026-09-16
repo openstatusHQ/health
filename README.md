@@ -258,6 +258,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | [`@openstatus/health-typesense`](packages/typesense) | [![JSR](https://jsr.io/badges/@openstatus/health-typesense)](https://jsr.io/@openstatus/health-typesense) | [![npm](https://img.shields.io/npm/v/@openstatus/health-typesense)](https://www.npmjs.com/package/@openstatus/health-typesense) | Typesense `/health` probe (cloud or self-hosted) |
 | [`@openstatus/health-convex`](packages/convex) | [![JSR](https://jsr.io/badges/@openstatus/health-convex)](https://jsr.io/@openstatus/health-convex) | [![npm](https://img.shields.io/npm/v/@openstatus/health-convex)](https://www.npmjs.com/package/@openstatus/health-convex) | Convex query probe over the deployment HTTP API |
 | [`@openstatus/health-tcp`](packages/tcp) | [![JSR](https://jsr.io/badges/@openstatus/health-tcp)](https://jsr.io/@openstatus/health-tcp) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tcp)](https://www.npmjs.com/package/@openstatus/health-tcp) | TCP connect probe for any `host:port` (`node:net`) |
+| [`@openstatus/health-dns`](packages/dns) | [![JSR](https://jsr.io/badges/@openstatus/health-dns)](https://jsr.io/@openstatus/health-dns) | [![npm](https://img.shields.io/npm/v/@openstatus/health-dns)](https://www.npmjs.com/package/@openstatus/health-dns) | DNS lookup probe for a hostname (`node:dns`) |
 
 ### Hosting metadata
 
@@ -315,6 +316,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `typesenseProbe({ host, apiKey? })` | `search` | no | `GET {host}/health` answers `ok: true` |
 | `convexProbe({ url, path, args?, token? })` | `database` | yes | `POST {url}/api/query` running `path` answers `status: "success"` |
 | `tcpProbe({ host, port })` | `tcp` | no | a TCP connection to `host:port` is accepted |
+| `dnsProbe({ hostname, lookup? })` | `dns` | no | `dns.promises.lookup(hostname)` returns an address |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance, a base URL or, for `tcpProbe`, a
