@@ -1,3 +1,13 @@
+/**
+ * Shallow field removal, used by the hosting packages' `omit` option.
+ *
+ * @module
+ */
+
+/**
+ * A shallow copy of `value` without `keys`, or `value` itself when there is
+ * nothing to omit.
+ */
 export function omitFields<T extends object>(
   value: T,
   keys: readonly (keyof T)[] | undefined,

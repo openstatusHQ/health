@@ -50,7 +50,13 @@
 - Probes take a client or URL; they never read the environment themselves.
   Factories validate their options at construction and throw
   `ProbeConfigError` naming the probe and field; use `probeUrl()` for URLs.
-- No comments or JSDoc unless they explain something the code cannot.
+- Every entrypoint (`mod.ts`, `testing.ts`) starts with a `/** ... @module */`
+  block, and every exported symbol — including interface members, class
+  members and constructors — carries a one-line JSDoc summary. JSR scores
+  both; `deno doc --lint packages/<name>/src/mod.ts` must report no
+  `missing-jsdoc` (its `private-type-ref` errors on cross-package imports are
+  a single-file false positive). No other comments unless they explain
+  something the code cannot.
 - Client libraries are imported with `import type` only. Runtime imports are
   limited to what is actually called.
 - No top-level side effects in any `src/*.ts`.

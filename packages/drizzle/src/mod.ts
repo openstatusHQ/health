@@ -1,3 +1,15 @@
+/**
+ * Drizzle ORM probe for `@openstatus/health`: runs `select 1` through any Drizzle database.
+ *
+ * ```ts
+ * import { drizzleProbe } from "@openstatus/health-drizzle";
+ *
+ * const probe = drizzleProbe({ db });
+ * ```
+ *
+ * @module
+ */
+
 import { type SQL, sql } from "drizzle-orm";
 import {
   type Probe,
@@ -6,17 +18,24 @@ import {
   type ProbeResult,
 } from "@openstatus/health";
 
+/** Probe name when `name` is unset. */
 export const drizzleDefaultName = "database";
 
+/** The subset of a Drizzle database the probe uses; one of the two methods must exist. */
 export interface DrizzleLikeDb {
+  /** Postgres and MySQL drivers. */
   execute?(query: SQL): PromiseLike<ProbeResult>;
+  /** SQLite drivers. */
   run?(query: SQL): PromiseLike<ProbeResult>;
 }
 
+/** Options for `drizzleProbe()`. */
 export interface DrizzleProbeOptions extends ProbeOverrides {
+  /** A Drizzle database instance. */
   readonly db: DrizzleLikeDb;
 }
 
+/** A probe that runs `select 1`; critical by default. Throws `ProbeConfigError` without `execute()` or `run()`. */
 export function drizzleProbe(options: DrizzleProbeOptions): Probe {
   const db = options.db;
   const query = sql`select 1`;

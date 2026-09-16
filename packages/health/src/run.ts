@@ -1,3 +1,9 @@
+/**
+ * One uncached round of probes: timeouts, skipping and status aggregation.
+ *
+ * @module
+ */
+
 import { ProbeTimeoutError, resolveFormatError, toError } from "./errors.ts";
 import type {
   CheckResult,
@@ -8,6 +14,7 @@ import type {
   RunProbesOptions,
 } from "./types.ts";
 
+/** Per-probe timeout used when neither the probe nor the options set one. */
 export const defaultTimeoutMs = 5000;
 
 function normalizeTimeout(value: number | undefined): number | undefined {
@@ -27,6 +34,11 @@ function effectiveTimeoutMs(
   return deadline == null ? chosen : Math.min(chosen, deadline);
 }
 
+/**
+ * Run every probe concurrently once, with no caching, and aggregate the
+ * results into a report. Never rejects: a throwing or hanging probe becomes
+ * a `failed` or `timeout` check.
+ */
 export async function runProbes(
   probes: readonly Probe[],
   options: RunProbesOptions = {},
@@ -43,6 +55,10 @@ export async function runProbes(
   };
 }
 
+/**
+ * `unhealthy` when a critical check failed or timed out, `degraded` when a
+ * non-critical one did, `ok` otherwise.
+ */
 export function aggregate(checks: readonly CheckResult[]): HealthStatus {
   let status: HealthStatus = "ok";
   for (const check of checks) {

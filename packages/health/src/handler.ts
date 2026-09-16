@@ -1,16 +1,28 @@
+/**
+ * Fetch-API handlers for runtimes that speak `(Request) => Response`.
+ *
+ * @module
+ */
+
 import { createHealthResponder } from "./responder.ts";
 import { healthHeaders } from "./response.ts";
 import type { HealthRouteOptions } from "./types.ts";
 
+/** A `(request) => Response` handler from `createHealthHandler()`. */
 export type HealthHandler<Req extends Request = Request> = (
   request: Req,
 ) => Promise<Response>;
 
+/** A `(request, env) => Response` handler from `createLazyHealthHandler()`. */
 export type LazyHealthHandler<Req extends Request = Request, Env = never> = (
   request: Req,
   env: Env,
 ) => Promise<Response>;
 
+/**
+ * Build a Fetch-API handler. Answers `GET` and `HEAD`, `405` otherwise; with
+ * `path` set, any other URL gets `404`, a trailing slash tolerated.
+ */
 export function createHealthHandler<Req extends Request = Request>(
   options: HealthRouteOptions<Req>,
 ): HealthHandler<Req> {
@@ -34,6 +46,11 @@ export function createHealthHandler<Req extends Request = Request>(
   };
 }
 
+/**
+ * The same as `createHealthHandler()`, but `build` runs on the first request
+ * and the handler it returns is reused. For runtimes where configuration only
+ * exists per request, such as Cloudflare Workers' `fetch(request, env)`.
+ */
 export function createLazyHealthHandler<
   Req extends Request = Request,
   Env = never,
