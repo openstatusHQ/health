@@ -35,6 +35,12 @@
   Critical by default; the client is typed structurally, so `mongodb` stays an
   optional peer for its types. Throws `ProbeConfigError` at construction when
   the client has no `db()`.
+- New `@openstatus/health-prisma` probe: `prismaProbe({ client })` runs
+  `select 1` through `$queryRawUnsafe()` on SQL connectors or `{ ping: 1 }`
+  through `$runCommandRaw()` on MongoDB. Critical by default; the client is
+  typed structurally, so `@prisma/client` stays an optional peer for its
+  types. Throws `ProbeConfigError` at construction when the client has neither
+  method.
 
 ## 0.1.3
 

@@ -51,6 +51,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-planetscale": { symbol: "planetscaleProbe", allowed: [] },
   "@openstatus/health-redis": { symbol: "redisProbe", allowed: [] },
   "@openstatus/health-mongodb": { symbol: "mongodbProbe", allowed: [] },
+  "@openstatus/health-prisma": { symbol: "prismaProbe", allowed: [] },
 };
 
 const banned = [
@@ -74,6 +75,7 @@ const banned = [
   "redis",
   "ioredis",
   "mongodb",
+  "@prisma/client",
 ];
 
 const root: string = dirname(import.meta.dirname!);

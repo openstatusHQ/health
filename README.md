@@ -228,6 +228,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | [`@openstatus/health-planetscale`](packages/planetscale) | [![JSR](https://jsr.io/badges/@openstatus/health-planetscale)](https://jsr.io/@openstatus/health-planetscale) | [![npm](https://img.shields.io/npm/v/@openstatus/health-planetscale)](https://www.npmjs.com/package/@openstatus/health-planetscale) | PlanetScale `select 1` probe over the serverless driver (`@planetscale/database`) |
 | [`@openstatus/health-redis`](packages/redis) | [![JSR](https://jsr.io/badges/@openstatus/health-redis)](https://jsr.io/@openstatus/health-redis) | [![npm](https://img.shields.io/npm/v/@openstatus/health-redis)](https://www.npmjs.com/package/@openstatus/health-redis) | Redis / Valkey `PING` probe (node-redis, ioredis, `@upstash/redis`) |
 | [`@openstatus/health-mongodb`](packages/mongodb) | [![JSR](https://jsr.io/badges/@openstatus/health-mongodb)](https://jsr.io/@openstatus/health-mongodb) | [![npm](https://img.shields.io/npm/v/@openstatus/health-mongodb)](https://www.npmjs.com/package/@openstatus/health-mongodb) | MongoDB `ping` command probe (`mongodb`) |
+| [`@openstatus/health-prisma`](packages/prisma) | [![JSR](https://jsr.io/badges/@openstatus/health-prisma)](https://jsr.io/@openstatus/health-prisma) | [![npm](https://img.shields.io/npm/v/@openstatus/health-prisma)](https://www.npmjs.com/package/@openstatus/health-prisma) | Prisma `select 1` / `ping` probe (`@prisma/client`) |
 | [`@openstatus/health-supabase`](packages/supabase) | [![JSR](https://jsr.io/badges/@openstatus/health-supabase)](https://jsr.io/@openstatus/health-supabase) | [![npm](https://img.shields.io/npm/v/@openstatus/health-supabase)](https://www.npmjs.com/package/@openstatus/health-supabase) | Supabase connection-pressure probe |
 | [`@openstatus/health-tinybird`](packages/tinybird) | [![JSR](https://jsr.io/badges/@openstatus/health-tinybird)](https://jsr.io/@openstatus/health-tinybird) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tinybird)](https://www.npmjs.com/package/@openstatus/health-tinybird) | Tinybird reachability probe |
 | [`@openstatus/health-turso`](packages/turso) | [![JSR](https://jsr.io/badges/@openstatus/health-turso)](https://jsr.io/@openstatus/health-turso) | [![npm](https://img.shields.io/npm/v/@openstatus/health-turso)](https://www.npmjs.com/package/@openstatus/health-turso) | Turso libSQL `select 1` probe (`@libsql/client`) |
@@ -267,6 +268,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `planetscaleProbe({ connection })` | `database` | yes | `connection.execute("select 1")` on a `@planetscale/database` connection |
 | `redisProbe({ client })` | `redis` | no | `client.ping()` answers `PONG` on a node-redis, ioredis or Upstash client |
 | `mongodbProbe({ client, db? })` | `database` | yes | `client.db("admin").command({ ping: 1 })` on a `MongoClient` |
+| `prismaProbe({ client })` | `database` | yes | `client.$queryRawUnsafe("select 1")`, or `client.$runCommandRaw({ ping: 1 })` on MongoDB |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance or a base URL — they never read
