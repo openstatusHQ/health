@@ -116,6 +116,11 @@
   instance, sending the auth token as a bearer header when given. Non-critical
   by default; rejects an empty `token` or an invalid `baseUrl` at
   construction.
+- New `@openstatus/health-posthog` probe: `posthogProbe({ personalApiKey,
+  baseUrl? })` expects 2xx from `GET {baseUrl}/api/projects/@current/` with a
+  personal API key as a bearer header, against PostHog Cloud (US by default,
+  EU via `baseUrl`) or a self-hosted instance. Non-critical by default;
+  rejects an empty `personalApiKey` or an invalid `baseUrl` at construction.
 
 ## 0.1.3
 
