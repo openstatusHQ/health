@@ -95,6 +95,10 @@
   `@confluentinc/kafka-javascript` stay optional peers for their types. Throws
   `ProbeConfigError` at construction when the client has no
   `describeCluster()`.
+- New `@openstatus/health-stripe` probe: `stripeProbe({ secretKey, baseUrl?
+  })` expects 2xx from `GET {baseUrl}/v1/balance` with the secret key as a
+  bearer header. Non-critical by default; rejects an empty `secretKey` or an
+  invalid `baseUrl` at construction.
 
 ## 0.1.3
 

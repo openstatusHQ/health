@@ -7,7 +7,7 @@
   are server adapters; `bullmq`, `clickhouse`, `cloudflare-d1`,
   `cloudflare-kv`, `cloudflare-r2`, `drizzle`, `inngest`, `kafka`, `mongodb`,
   `mysql`, `nats`, `neon`, `planetscale`, `postgres`, `prisma`, `qstash`,
-  `redis`, `s3`, `supabase`, `tinybird`, `trigger-dev`, `turso`,
+  `redis`, `s3`, `stripe`, `supabase`, `tinybird`, `trigger-dev`, `turso`,
   `turso-serverless`, `unkey`, `upstash` are probes; `fly`, `koyeb`,
   `railway`, `vercel`, `cloudflare` render hosting metadata under `server` via
   the `extend` hook.

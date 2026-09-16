@@ -65,6 +65,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-bullmq": { symbol: "bullmqProbe", allowed: [] },
   "@openstatus/health-nats": { symbol: "natsProbe", allowed: [] },
   "@openstatus/health-kafka": { symbol: "kafkaProbe", allowed: [] },
+  "@openstatus/health-stripe": { symbol: "stripeProbe", allowed: [] },
 };
 
 const banned = [
