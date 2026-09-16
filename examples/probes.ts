@@ -8,6 +8,8 @@ import { drizzle } from "drizzle-orm/libsql/http";
 import { createPool as createMysqlPool } from "mysql2/promise";
 import { Pool } from "pg";
 import postgres from "postgres";
+import { Redis as IORedis } from "ioredis";
+import { createClient as createRedisClient } from "redis";
 import type { Probe } from "@openstatus/health";
 import { clickhouseProbe } from "@openstatus/health-clickhouse";
 import { drizzleProbe } from "@openstatus/health-drizzle";
@@ -15,6 +17,7 @@ import { mysqlProbe } from "@openstatus/health-mysql";
 import { postgresProbe } from "@openstatus/health-postgres";
 import { neonProbe } from "@openstatus/health-neon";
 import { planetscaleProbe } from "@openstatus/health-planetscale";
+import { redisProbe } from "@openstatus/health-redis";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { tursoProbe } from "@openstatus/health-turso";
@@ -57,6 +60,13 @@ export function exampleProbes(): Probe[] {
   const planetscale = connectPlanetScale({
     url: env("PLANETSCALE_URL") ||
       "mysql://user:pass@aws.connect.psdb.cloud/app",
+  });
+
+  const ioredis = new IORedis(env("REDIS_URL") ?? "redis://localhost:6379", {
+    lazyConnect: true,
+  });
+  const nodeRedis = createRedisClient({
+    url: env("REDIS_URL") ?? "redis://localhost:6379",
   });
 
   const tursoServerless = connectTursoServerless({
@@ -108,6 +118,16 @@ export function exampleProbes(): Probe[] {
       connection: planetscale,
       name: "planetscale",
       skip: () => !env("PLANETSCALE_URL"),
+    }),
+    redisProbe({
+      client: ioredis,
+      name: "ioredis",
+      skip: () => env("REDIS_URL") == null,
+    }),
+    redisProbe({
+      client: nodeRedis,
+      name: "node-redis",
+      skip: () => env("REDIS_URL") == null,
     }),
     tinybirdProbe({
       baseUrl: env("TINYBIRD_URL"),

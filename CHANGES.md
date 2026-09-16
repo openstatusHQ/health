@@ -24,6 +24,12 @@
   `@planetscale/database`. Critical by default; the connection is typed
   structurally, so the driver stays an optional peer for its types. Throws
   `ProbeConfigError` at construction when the connection has no `execute()`.
+- New `@openstatus/health-redis` probe: `redisProbe({ client })` sends `PING`
+  through node-redis, ioredis, `@upstash/redis` or any client with `ping()`
+  and fails the check unless the reply is `PONG`. Non-critical by default; the
+  client is typed structurally, so `redis` and `ioredis` stay optional peers
+  for their types. Throws `ProbeConfigError` at construction when the client
+  has no `ping()`.
 
 ## 0.1.3
 
