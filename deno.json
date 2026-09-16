@@ -19,6 +19,7 @@
     "./packages/supabase",
     "./packages/unkey",
     "./packages/upstash",
+    "./packages/trigger-dev",
     "./packages/inngest",
     "./packages/qstash",
     "./packages/s3",

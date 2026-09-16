@@ -61,6 +61,7 @@ const targets: Record<string, Target> = {
   },
   "@openstatus/health-qstash": { symbol: "qstashProbe", allowed: [] },
   "@openstatus/health-inngest": { symbol: "inngestProbe", allowed: [] },
+  "@openstatus/health-trigger-dev": { symbol: "triggerDevProbe", allowed: [] },
 };
 
 const banned = [
