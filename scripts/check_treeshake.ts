@@ -54,6 +54,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-prisma": { symbol: "prismaProbe", allowed: [] },
   "@openstatus/health-cloudflare-d1": { symbol: "d1Probe", allowed: [] },
   "@openstatus/health-cloudflare-kv": { symbol: "kvProbe", allowed: [] },
+  "@openstatus/health-cloudflare-r2": { symbol: "r2Probe", allowed: [] },
 };
 
 const banned = [
