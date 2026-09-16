@@ -19,6 +19,11 @@
   `Client`. Critical by default; the client is typed structurally, so the
   driver stays an optional peer for its types. Throws `ProbeConfigError` at
   construction when the client has no `query()`.
+- New `@openstatus/health-planetscale` probe: `planetscaleProbe({ connection
+  })` runs `select 1` over the serverless HTTP driver from
+  `@planetscale/database`. Critical by default; the connection is typed
+  structurally, so the driver stays an optional peer for its types. Throws
+  `ProbeConfigError` at construction when the connection has no `execute()`.
 
 ## 0.1.3
 
