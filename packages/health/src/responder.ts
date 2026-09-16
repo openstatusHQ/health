@@ -1,3 +1,9 @@
+/**
+ * The framework-agnostic responder every adapter is built on.
+ *
+ * @module
+ */
+
 import { createHealthCheck } from "./check.ts";
 import { toError } from "./errors.ts";
 import { renderHealthResponse } from "./response.ts";
@@ -11,11 +17,18 @@ import type {
   HealthSource,
 } from "./types.ts";
 
+/** The `check` you passed, or one built from `probes`. */
 export function resolveHealthCheck(source: HealthSource): HealthCheck {
   if (source.check != null) return source.check;
   return createHealthCheck(source);
 }
 
+/**
+ * Build a `HealthResponder` for a framework whose request context is `Ctx`.
+ * `respond` renders `{ status, headers, body }`; `toResponse` builds a Fetch
+ * `Response` and drops the body on `HEAD`. Errors from `extend` and
+ * `exposeChecks` go to `onError` and never fail the request.
+ */
 export function createHealthResponder<Ctx = Request>(
   options: HealthHandlerOptions<Ctx>,
 ): HealthResponder<Ctx> {

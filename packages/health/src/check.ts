@@ -1,3 +1,10 @@
+/**
+ * A cached health check with in-flight de-duplication and
+ * stale-while-revalidate.
+ *
+ * @module
+ */
+
 import { runProbes } from "./run.ts";
 import type {
   HealthCheck,
@@ -7,8 +14,14 @@ import type {
 } from "./types.ts";
 import { assertUniqueProbeNames } from "./validate.ts";
 
+/** How long an `ok` report is reused when `cacheMs` is unset. */
 export const defaultCacheMs = 5000;
 
+/**
+ * Build a `HealthCheck` that runs `options.probes` at most once per cache
+ * window, shares one round between concurrent callers, and can serve a stale
+ * report while refreshing. Throws `DuplicateProbeError` for repeated names.
+ */
 export function createHealthCheck(options: HealthCheckOptions): HealthCheck {
   assertUniqueProbeNames(options.probes);
   const cacheMs = options.cacheMs ?? defaultCacheMs;

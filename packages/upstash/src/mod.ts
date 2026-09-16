@@ -1,3 +1,15 @@
+/**
+ * Upstash Redis probe for `@openstatus/health`, against the REST API's `/ping`.
+ *
+ * ```ts
+ * import { upstashProbe } from "@openstatus/health-upstash";
+ *
+ * const probe = upstashProbe({ url, token });
+ * ```
+ *
+ * @module
+ */
+
 import {
   expectOk,
   type Probe,
@@ -6,14 +18,20 @@ import {
   probeUrl,
 } from "@openstatus/health";
 
+/** Probe name when `name` is unset. */
 export const upstashDefaultName = "redis";
 
+/** Options for `upstashProbe()`. */
 export interface UpstashProbeOptions extends ProbeOverrides {
+  /** The REST URL, `UPSTASH_REDIS_REST_URL`. */
   readonly url: string | URL;
+  /** The REST token, `UPSTASH_REDIS_REST_TOKEN`. */
   readonly token: string;
+  /** Replacement `fetch`, for tests. */
   readonly fetch?: typeof fetch;
 }
 
+/** A probe that expects 2xx from `GET {url}/ping`; non-critical by default. Throws `ProbeConfigError` for a bad `url` or empty `token`. */
 export function upstashProbe(options: UpstashProbeOptions): Probe {
   const doFetch = options.fetch ?? globalThis.fetch;
   const url = probeUrl({

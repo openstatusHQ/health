@@ -1,3 +1,19 @@
+/**
+ * Framework-agnostic core for health endpoints: a probe runner, a cached
+ * checker, response rendering and a Fetch-API handler. Zero dependencies.
+ *
+ * ```ts
+ * import { createHealthHandler, httpProbe } from "@openstatus/health";
+ *
+ * const handler = createHealthHandler({
+ *   path: "/health",
+ *   probes: [httpProbe({ name: "unkey", url: "https://api.unkey.com/v2/liveness" })],
+ * });
+ * ```
+ *
+ * @module
+ */
+
 export type {
   CheckResult,
   CheckStatus,
