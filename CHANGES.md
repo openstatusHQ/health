@@ -63,6 +63,10 @@
   Non-critical by default; `@aws-sdk/client-s3` is a required peer because
   `HeadBucketCommand` is imported at runtime. Throws `ProbeConfigError` at
   construction when the client has no `send()` or `bucket` is empty.
+- New `@openstatus/health-qstash` probe: `qstashProbe({ token, baseUrl? })`
+  expects 2xx from `GET {baseUrl}/v2/queues` with the QStash token as a bearer
+  header. Non-critical by default; rejects an empty `token` or an invalid
+  `baseUrl` at construction.
 
 ## 0.1.3
 
