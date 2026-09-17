@@ -46,6 +46,11 @@
   is typed structurally, so the package needs no `@cloudflare/workers-types`.
   Throws `ProbeConfigError` at construction when the binding has no
   `prepare()`.
+- New `@openstatus/health-cloudflare-kv` probe: `kvProbe({ namespace, key? })`
+  reads one key (`health` by default) through a Workers `KVNamespace` binding;
+  a miss is healthy, an error is not. Non-critical by default; the binding is
+  typed structurally. Throws `ProbeConfigError` at construction when the
+  binding has no `get()` or `key` is empty.
 
 ## 0.1.3
 

@@ -19,6 +19,7 @@
     "./packages/supabase",
     "./packages/unkey",
     "./packages/upstash",
+    "./packages/cloudflare-kv",
     "./packages/cloudflare-d1",
     "./packages/prisma",
     "./packages/mongodb",

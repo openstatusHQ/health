@@ -53,6 +53,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-mongodb": { symbol: "mongodbProbe", allowed: [] },
   "@openstatus/health-prisma": { symbol: "prismaProbe", allowed: [] },
   "@openstatus/health-cloudflare-d1": { symbol: "d1Probe", allowed: [] },
+  "@openstatus/health-cloudflare-kv": { symbol: "kvProbe", allowed: [] },
 };
 
 const banned = [
