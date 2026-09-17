@@ -52,7 +52,7 @@ The queue is typed structurally as `{ getWaitingCount(): PromiseLike<number> }`,
 so `bullmq` is an optional peer dependency for its types only and the probe
 adds no runtime import of it. The factory throws `ProbeConfigError` at
 construction when the queue has no `getWaitingCount()` or `maxWaiting` is
-negative.
+not a finite number of zero or more.
 
 ## About openstatus
 

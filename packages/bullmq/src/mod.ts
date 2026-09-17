@@ -49,7 +49,7 @@ export class BullmqBacklogError extends Error {
   }
 }
 
-/** A probe that counts waiting jobs and fails above `maxWaiting`; non-critical by default. Throws `ProbeConfigError` without `getWaitingCount()` or for a negative `maxWaiting`. */
+/** A probe that counts waiting jobs and fails above `maxWaiting`; non-critical by default. Throws `ProbeConfigError` without `getWaitingCount()` or when `maxWaiting` is not a finite number of zero or more. */
 export function bullmqProbe(options: BullmqProbeOptions): Probe {
   const queue = options.queue;
   if (typeof queue?.getWaitingCount !== "function") {
