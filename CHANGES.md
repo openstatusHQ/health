@@ -99,6 +99,10 @@
   })` expects 2xx from `GET {baseUrl}/v1/balance` with the secret key as a
   bearer header. Non-critical by default; rejects an empty `secretKey` or an
   invalid `baseUrl` at construction.
+- New `@openstatus/health-resend` probe: `resendProbe({ apiKey, baseUrl? })`
+  expects 2xx from `GET {baseUrl}/domains` with the API key as a bearer
+  header. Non-critical by default; rejects an empty `apiKey` or an invalid
+  `baseUrl` at construction.
 
 ## 0.1.3
 

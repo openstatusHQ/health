@@ -19,6 +19,7 @@
     "./packages/supabase",
     "./packages/unkey",
     "./packages/upstash",
+    "./packages/resend",
     "./packages/stripe",
     "./packages/kafka",
     "./packages/nats",
