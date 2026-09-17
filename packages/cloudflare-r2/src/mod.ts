@@ -3,9 +3,14 @@
  * object through an `R2Bucket` binding.
  *
  * ```ts
+ * import { createLazyHealthHandler } from "@openstatus/health";
  * import { r2Probe } from "@openstatus/health-cloudflare-r2";
  *
- * const probe = r2Probe({ bucket: env.UPLOADS });
+ * export default {
+ *   fetch: createLazyHealthHandler<Request, Env>((env) => ({
+ *     probes: [r2Probe({ bucket: env.UPLOADS })],
+ *   })),
+ * };
  * ```
  *
  * @module
@@ -15,7 +20,6 @@ import {
   type Probe,
   ProbeConfigError,
   type ProbeOverrides,
-  type ProbeResult,
 } from "@openstatus/health";
 
 /** Probe name when `name` is unset. */
@@ -26,7 +30,7 @@ export const r2DefaultKey = "health";
 /** The subset of an `R2Bucket` binding the probe uses. */
 export interface R2LikeBucket {
   /** Fetch one object's metadata; resolves with `null` when it does not exist. */
-  head(key: string): PromiseLike<ProbeResult>;
+  head(key: string): PromiseLike<object | null>;
 }
 
 /** Options for `r2Probe()`. */

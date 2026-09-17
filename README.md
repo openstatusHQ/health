@@ -274,7 +274,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `prismaProbe({ client })` | `database` | yes | `client.$queryRawUnsafe("select 1")`, or `client.$runCommandRaw({ ping: 1 })` on MongoDB |
 | `d1Probe({ db })` | `database` | yes | `db.prepare("select 1").first()` on a Workers `D1Database` binding |
 | `kvProbe({ namespace, key? })` | `kv` | no | `namespace.get("health")` on a Workers `KVNamespace` binding |
-| `r2Probe({ bucket, key? })` | `storage` | no | `bucket.head("health")` on a Workers `R2Bucket` binding |
+| `r2Probe({ bucket, key? })` | `storage` | no | `bucket.head(key ?? "health")` on a Workers `R2Bucket` binding |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance or a base URL — they never read

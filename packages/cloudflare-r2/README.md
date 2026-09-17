@@ -11,7 +11,7 @@ npm install @openstatus/health @openstatus/health-cloudflare-r2
 ```
 
 ```ts
-import { createHealthHandler } from "@openstatus/health";
+import { createLazyHealthHandler } from "@openstatus/health";
 import { r2Probe } from "@openstatus/health-cloudflare-r2";
 
 interface Env {
@@ -19,19 +19,19 @@ interface Env {
 }
 
 export default {
-  fetch(request: Request, env: Env): Promise<Response> {
-    const handler = createHealthHandler({
-      path: "/health",
-      probes: [r2Probe({ bucket: env.UPLOADS })],
-    });
-    return handler(request);
-  },
+  fetch: createLazyHealthHandler<Request, Env>((env) => ({
+    path: "/health",
+    probes: [r2Probe({ bucket: env.UPLOADS })],
+  })),
 };
 ```
 
-Bindings only exist per request in Workers, so build the probe inside
-`fetch` — or, with Hono, inside a route handler that receives `c.env`. The
-probe calls `bucket.head("health")`, the cheapest R2 operation that still
+Bindings only exist inside `fetch(request, env)` in Workers, but the handler
+must be built once or every request gets a fresh cache and the probe runs on
+every poll. `createLazyHealthHandler` runs your callback on the first request
+and reuses the handler it builds; with Hono, build the probe once inside a
+route handler that receives `c.env` and memoise it the same way. The probe
+calls `bucket.head("health")`, the cheapest R2 operation that still
 reaches the bucket; pass `key` to check an object your Worker actually
 serves. For an R2 bucket reached over its S3 API from outside Workers, use
 `@openstatus/health-s3` instead.
@@ -44,9 +44,13 @@ r2Probe({
   name: "uploads",
   critical: true,
   timeoutMs: 1000,
-  skip: () => env.UPLOADS == null,
+  skip: () => env.HEALTH_SKIP_R2 === "true",
 });
 ```
+
+The factory validates `bucket` when it is called, before `skip` is ever
+consulted, so `skip` cannot stand in for a missing binding; leave the probe
+out of `probes` instead when the Worker may run without R2.
 
 Non-critical by default: object storage usually backs uploads and assets
 whose outage degrades the report instead of taking the Worker out of
