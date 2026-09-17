@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { runProbes } from "@openstatus/health";
 import { fakeFetch, hangFetch } from "@openstatus/health/testing";
-import { triggerDevDefaultBaseUrl, triggerDevProbe } from "./mod.ts";
+import { triggerDevProbe } from "./mod.ts";
 
 const secretKey = "secret";
 
@@ -20,7 +20,7 @@ test("triggerDevProbe() sends an authenticated GET /api/v1/runs?page[size]=1", a
     }),
   ]);
   assert.deepEqual(calls, [
-    `GET ${triggerDevDefaultBaseUrl}/api/v1/runs?page[size]=1 Bearer secret`,
+    "GET https://api.trigger.dev/api/v1/runs?page[size]=1 Bearer secret",
   ]);
 });
 

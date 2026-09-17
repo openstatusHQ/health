@@ -23,8 +23,8 @@ Deno.serve(
       // the factory validates `secretKey` at construction, so pass a
       // placeholder and let `skip` keep the unconfigured check from running.
       triggerDevProbe({
-        secretKey: secretKey ?? "unconfigured",
-        skip: () => secretKey == null,
+        secretKey: secretKey || "unconfigured",
+        skip: () => !secretKey,
       }),
     ],
   }),
@@ -44,11 +44,12 @@ are triggered through, not that a worker is online to run them.
 ```ts
 triggerDevProbe({
   secretKey,
+  baseUrl: readEnv("TRIGGER_API_URL"), // self-hosted; undefined keeps the default
   // optional overrides from the Probe contract
   name: "jobs",
   critical: true,
   timeoutMs: 2000,
-  skip: () => env.TRIGGER_SECRET_KEY == null,
+  skip: () => !secretKey,
 });
 ```
 

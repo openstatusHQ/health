@@ -192,9 +192,9 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("INNGEST_SIGNING_KEY"),
     }),
     triggerDevProbe({
-      secretKey: env("TRIGGER_SECRET_KEY") ?? "unconfigured",
+      secretKey: env("TRIGGER_SECRET_KEY") || "unconfigured",
       baseUrl: env("TRIGGER_API_URL"),
-      skip: () => env("TRIGGER_SECRET_KEY") == null,
+      skip: () => !env("TRIGGER_SECRET_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
