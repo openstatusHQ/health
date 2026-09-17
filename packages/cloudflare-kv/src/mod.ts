@@ -3,9 +3,14 @@
  * through a `KVNamespace` binding.
  *
  * ```ts
+ * import { createLazyHealthHandler } from "@openstatus/health";
  * import { kvProbe } from "@openstatus/health-cloudflare-kv";
  *
- * const probe = kvProbe({ namespace: env.CACHE });
+ * export default {
+ *   fetch: createLazyHealthHandler<Request, Env>((env) => ({
+ *     probes: [kvProbe({ namespace: env.CACHE })],
+ *   })),
+ * };
  * ```
  *
  * @module
@@ -47,7 +52,7 @@ export function kvProbe(options: KVProbeOptions): Probe {
       `must expose get(), got ${describe(namespace)}`,
     );
   }
-  const key = options.key ?? kvDefaultKey;
+  const key = options.key === undefined ? kvDefaultKey : options.key;
   if (typeof key !== "string" || key.length === 0) {
     throw new ProbeConfigError(
       "kvProbe",

@@ -11,7 +11,7 @@ npm install @openstatus/health @openstatus/health-cloudflare-kv
 ```
 
 ```ts
-import { createHealthHandler } from "@openstatus/health";
+import { createLazyHealthHandler } from "@openstatus/health";
 import { kvProbe } from "@openstatus/health-cloudflare-kv";
 
 interface Env {
@@ -19,19 +19,19 @@ interface Env {
 }
 
 export default {
-  fetch(request: Request, env: Env): Promise<Response> {
-    const handler = createHealthHandler({
-      path: "/health",
-      probes: [kvProbe({ namespace: env.CACHE })],
-    });
-    return handler(request);
-  },
+  fetch: createLazyHealthHandler<Request, Env>((env) => ({
+    path: "/health",
+    probes: [kvProbe({ namespace: env.CACHE })],
+  })),
 };
 ```
 
-Bindings only exist per request in Workers, so build the probe inside
-`fetch` — or, with Hono, inside a route handler that receives `c.env`. The
-probe calls `namespace.get("health")`; pass `key` to read a key your Worker
+Bindings only exist inside `fetch(request, env)` in Workers, but the handler
+must be built once or every request gets a fresh cache and the probe runs on
+every poll. `createLazyHealthHandler` runs your callback on the first request
+and reuses the handler it builds; with Hono, build the probe once inside a
+route handler that receives `c.env` and memoise it the same way. The probe
+calls `namespace.get("health")`; pass `key` to read a key your Worker
 actually depends on. KV reads are served from the edge cache, so a
 successful probe proves the binding and the nearest cache answer, not that
 a write would reach the origin.
@@ -44,9 +44,13 @@ kvProbe({
   name: "sessions",
   critical: true,
   timeoutMs: 1000,
-  skip: () => env.CACHE == null,
+  skip: () => env.HEALTH_SKIP_KV === "true",
 });
 ```
+
+The factory validates `namespace` when it is called, before `skip` is ever
+consulted, so `skip` cannot stand in for a missing binding; leave the probe
+out of `probes` instead when the Worker may run without KV.
 
 Non-critical by default: KV is usually a cache or configuration store whose
 outage degrades the report instead of taking the Worker out of rotation.

@@ -28,8 +28,12 @@ test("kvProbe() reads the default key and passes on a miss", async () => {
 
 test("kvProbe() honours the key option", async () => {
   const calls: string[] = [];
-  await runProbes([kvProbe({ namespace: fakeNamespace(calls), key: "ping" })]);
+  const report = await runProbes([
+    kvProbe({ namespace: fakeNamespace(calls), key: "ping" }),
+  ]);
   assert.deepEqual(calls, ["ping"]);
+  assert.equal(report.status, "ok");
+  assert.equal(report.checks[0].status, "ok");
 });
 
 test("kvProbe() reports degraded when get() rejects", async () => {
