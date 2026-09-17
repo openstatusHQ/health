@@ -248,6 +248,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | [`@openstatus/health-turso-serverless`](packages/turso-serverless) | [![JSR](https://jsr.io/badges/@openstatus/health-turso-serverless)](https://jsr.io/@openstatus/health-turso-serverless) | [![npm](https://img.shields.io/npm/v/@openstatus/health-turso-serverless)](https://www.npmjs.com/package/@openstatus/health-turso-serverless) | Turso `select 1` probe over the serverless driver (`@tursodatabase/serverless`) |
 | [`@openstatus/health-unkey`](packages/unkey) | [![JSR](https://jsr.io/badges/@openstatus/health-unkey)](https://jsr.io/@openstatus/health-unkey) | [![npm](https://img.shields.io/npm/v/@openstatus/health-unkey)](https://www.npmjs.com/package/@openstatus/health-unkey) | Unkey liveness probe |
 | [`@openstatus/health-upstash`](packages/upstash) | [![JSR](https://jsr.io/badges/@openstatus/health-upstash)](https://jsr.io/@openstatus/health-upstash) | [![npm](https://img.shields.io/npm/v/@openstatus/health-upstash)](https://www.npmjs.com/package/@openstatus/health-upstash) | Upstash Redis `PING` probe over REST |
+| [`@openstatus/health-workos`](packages/workos) | [![JSR](https://jsr.io/badges/@openstatus/health-workos)](https://jsr.io/@openstatus/health-workos) | [![npm](https://img.shields.io/npm/v/@openstatus/health-workos)](https://www.npmjs.com/package/@openstatus/health-workos) | WorkOS API reachability probe |
 
 ### Hosting metadata
 
@@ -295,6 +296,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `stripeProbe({ secretKey, baseUrl? })` | `stripe` | no | `GET {baseUrl}/v1/balance` with the secret key |
 | `resendProbe({ apiKey, baseUrl? })` | `resend` | no | `GET {baseUrl}/domains` with the API key |
 | `clerkProbe({ secretKey, baseUrl? })` | `clerk` | no | `GET {baseUrl}/v1/users?limit=1` with the secret key |
+| `workosProbe({ apiKey, baseUrl? })` | `workos` | no | `GET {baseUrl}/organizations?limit=1` with the API key |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance or a base URL — they never read

@@ -1,0 +1,62 @@
+{
+  "name": "@openstatus/health-workos",
+  "version": "0.1.4-dev.0",
+  "description": "WorkOS API probe for @openstatus/health",
+  "keywords": [
+    "openstatus",
+    "health",
+    "healthcheck",
+    "workos",
+    "auth",
+    "sso",
+    "authkit"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "openstatus",
+    "url": "https://www.openstatus.dev/"
+  },
+  "homepage": "https://github.com/openstatusHQ/health",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openstatusHQ/health.git",
+    "directory": "packages/workos/"
+  },
+  "bugs": {
+    "url": "https://github.com/openstatusHQ/health/issues"
+  },
+  "type": "module",
+  "module": "./dist/mod.js",
+  "main": "./dist/mod.cjs",
+  "types": "./dist/mod.d.ts",
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/mod.d.ts",
+        "require": "./dist/mod.d.cts"
+      },
+      "import": "./dist/mod.js",
+      "require": "./dist/mod.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist/"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "peerDependencies": {
+    "@openstatus/health": "^0.1.4-dev.0"
+  },
+  "devDependencies": {
+    "tsdown": "^0.12.7",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "prepack": "tsdown",
+    "test": "node --experimental-transform-types --test"
+  }
+}

@@ -34,6 +34,7 @@ import { tursoProbe } from "@openstatus/health-turso";
 import { tursoServerlessProbe } from "@openstatus/health-turso-serverless";
 import { unkeyProbe } from "@openstatus/health-unkey";
 import { upstashProbe } from "@openstatus/health-upstash";
+import { workosProbe } from "@openstatus/health-workos";
 
 const env = (name: string): string | undefined => Deno.env.get(name);
 
@@ -210,6 +211,10 @@ export function exampleProbes(): Probe[] {
     clerkProbe({
       secretKey: env("CLERK_SECRET_KEY") || "unconfigured",
       skip: () => !env("CLERK_SECRET_KEY"),
+    }),
+    workosProbe({
+      apiKey: env("WORKOS_API_KEY") || "unconfigured",
+      skip: () => !env("WORKOS_API_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
