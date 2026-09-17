@@ -218,51 +218,93 @@ Runnable projects for each adapter live in [`examples/`](examples).
 
 ### Probes
 
+#### Databases
+
+| Package | JSR | npm | Description |
+| ------- | --- | --- | ----------- |
+| [`@openstatus/health-clickhouse`](packages/clickhouse) | [![JSR](https://jsr.io/badges/@openstatus/health-clickhouse)](https://jsr.io/@openstatus/health-clickhouse) | [![npm](https://img.shields.io/npm/v/@openstatus/health-clickhouse)](https://www.npmjs.com/package/@openstatus/health-clickhouse) | ClickHouse `ping` / `SELECT 1` probe (`@clickhouse/client`) |
+| [`@openstatus/health-cloudflare-d1`](packages/cloudflare-d1) | [![JSR](https://jsr.io/badges/@openstatus/health-cloudflare-d1)](https://jsr.io/@openstatus/health-cloudflare-d1) | [![npm](https://img.shields.io/npm/v/@openstatus/health-cloudflare-d1)](https://www.npmjs.com/package/@openstatus/health-cloudflare-d1) | Cloudflare D1 `select 1` probe over the Workers binding |
+| [`@openstatus/health-convex`](packages/convex) | [![JSR](https://jsr.io/badges/@openstatus/health-convex)](https://jsr.io/@openstatus/health-convex) | [![npm](https://img.shields.io/npm/v/@openstatus/health-convex)](https://www.npmjs.com/package/@openstatus/health-convex) | Convex query probe over the deployment HTTP API |
+| [`@openstatus/health-drizzle`](packages/drizzle) | [![JSR](https://jsr.io/badges/@openstatus/health-drizzle)](https://jsr.io/@openstatus/health-drizzle) | [![npm](https://img.shields.io/npm/v/@openstatus/health-drizzle)](https://www.npmjs.com/package/@openstatus/health-drizzle) | Drizzle ORM `select 1` probe |
+| [`@openstatus/health-mongodb`](packages/mongodb) | [![JSR](https://jsr.io/badges/@openstatus/health-mongodb)](https://jsr.io/@openstatus/health-mongodb) | [![npm](https://img.shields.io/npm/v/@openstatus/health-mongodb)](https://www.npmjs.com/package/@openstatus/health-mongodb) | MongoDB `ping` command probe (`mongodb`) |
+| [`@openstatus/health-mysql`](packages/mysql) | [![JSR](https://jsr.io/badges/@openstatus/health-mysql)](https://jsr.io/@openstatus/health-mysql) | [![npm](https://img.shields.io/npm/v/@openstatus/health-mysql)](https://www.npmjs.com/package/@openstatus/health-mysql) | MySQL / MariaDB `select 1` probe (`mysql2/promise`) |
+| [`@openstatus/health-neon`](packages/neon) | [![JSR](https://jsr.io/badges/@openstatus/health-neon)](https://jsr.io/@openstatus/health-neon) | [![npm](https://img.shields.io/npm/v/@openstatus/health-neon)](https://www.npmjs.com/package/@openstatus/health-neon) | Neon serverless Postgres `select 1` probe (`@neondatabase/serverless`) |
+| [`@openstatus/health-planetscale`](packages/planetscale) | [![JSR](https://jsr.io/badges/@openstatus/health-planetscale)](https://jsr.io/@openstatus/health-planetscale) | [![npm](https://img.shields.io/npm/v/@openstatus/health-planetscale)](https://www.npmjs.com/package/@openstatus/health-planetscale) | PlanetScale `select 1` probe over the serverless driver (`@planetscale/database`) |
+| [`@openstatus/health-postgres`](packages/postgres) | [![JSR](https://jsr.io/badges/@openstatus/health-postgres)](https://jsr.io/@openstatus/health-postgres) | [![npm](https://img.shields.io/npm/v/@openstatus/health-postgres)](https://www.npmjs.com/package/@openstatus/health-postgres) | Postgres `select 1` probe (`pg`, postgres.js, Neon, Vercel Postgres) |
+| [`@openstatus/health-prisma`](packages/prisma) | [![JSR](https://jsr.io/badges/@openstatus/health-prisma)](https://jsr.io/@openstatus/health-prisma) | [![npm](https://img.shields.io/npm/v/@openstatus/health-prisma)](https://www.npmjs.com/package/@openstatus/health-prisma) | Prisma `select 1` / `ping` probe (`@prisma/client`) |
+| [`@openstatus/health-supabase`](packages/supabase) | [![JSR](https://jsr.io/badges/@openstatus/health-supabase)](https://jsr.io/@openstatus/health-supabase) | [![npm](https://img.shields.io/npm/v/@openstatus/health-supabase)](https://www.npmjs.com/package/@openstatus/health-supabase) | Supabase connection-pressure probe |
+| [`@openstatus/health-tinybird`](packages/tinybird) | [![JSR](https://jsr.io/badges/@openstatus/health-tinybird)](https://jsr.io/@openstatus/health-tinybird) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tinybird)](https://www.npmjs.com/package/@openstatus/health-tinybird) | Tinybird reachability probe |
+| [`@openstatus/health-turso`](packages/turso) | [![JSR](https://jsr.io/badges/@openstatus/health-turso)](https://jsr.io/@openstatus/health-turso) | [![npm](https://img.shields.io/npm/v/@openstatus/health-turso)](https://www.npmjs.com/package/@openstatus/health-turso) | Turso libSQL `select 1` probe (`@libsql/client`) |
+| [`@openstatus/health-turso-serverless`](packages/turso-serverless) | [![JSR](https://jsr.io/badges/@openstatus/health-turso-serverless)](https://jsr.io/@openstatus/health-turso-serverless) | [![npm](https://img.shields.io/npm/v/@openstatus/health-turso-serverless)](https://www.npmjs.com/package/@openstatus/health-turso-serverless) | Turso `select 1` probe over the serverless driver (`@tursodatabase/serverless`) |
+
+#### Caches & KV
+
+| Package | JSR | npm | Description |
+| ------- | --- | --- | ----------- |
+| [`@openstatus/health-cloudflare-kv`](packages/cloudflare-kv) | [![JSR](https://jsr.io/badges/@openstatus/health-cloudflare-kv)](https://jsr.io/@openstatus/health-cloudflare-kv) | [![npm](https://img.shields.io/npm/v/@openstatus/health-cloudflare-kv)](https://www.npmjs.com/package/@openstatus/health-cloudflare-kv) | Cloudflare Workers KV read probe over the Workers binding |
+| [`@openstatus/health-redis`](packages/redis) | [![JSR](https://jsr.io/badges/@openstatus/health-redis)](https://jsr.io/@openstatus/health-redis) | [![npm](https://img.shields.io/npm/v/@openstatus/health-redis)](https://www.npmjs.com/package/@openstatus/health-redis) | Redis / Valkey `PING` probe (node-redis, ioredis, `@upstash/redis`) |
+| [`@openstatus/health-upstash`](packages/upstash) | [![JSR](https://jsr.io/badges/@openstatus/health-upstash)](https://jsr.io/@openstatus/health-upstash) | [![npm](https://img.shields.io/npm/v/@openstatus/health-upstash)](https://www.npmjs.com/package/@openstatus/health-upstash) | Upstash Redis `PING` probe over REST |
+
+#### Object storage
+
+| Package | JSR | npm | Description |
+| ------- | --- | --- | ----------- |
+| [`@openstatus/health-cloudflare-r2`](packages/cloudflare-r2) | [![JSR](https://jsr.io/badges/@openstatus/health-cloudflare-r2)](https://jsr.io/@openstatus/health-cloudflare-r2) | [![npm](https://img.shields.io/npm/v/@openstatus/health-cloudflare-r2)](https://www.npmjs.com/package/@openstatus/health-cloudflare-r2) | Cloudflare R2 `HEAD` probe over the Workers binding |
+| [`@openstatus/health-s3`](packages/s3) | [![JSR](https://jsr.io/badges/@openstatus/health-s3)](https://jsr.io/@openstatus/health-s3) | [![npm](https://img.shields.io/npm/v/@openstatus/health-s3)](https://www.npmjs.com/package/@openstatus/health-s3) | S3 `HeadBucket` probe (`@aws-sdk/client-s3`; AWS, R2, Tigris, MinIO) |
+
+#### Queues & workflows
+
 | Package | JSR | npm | Description |
 | ------- | --- | --- | ----------- |
 | [`@openstatus/health-bullmq`](packages/bullmq) | [![JSR](https://jsr.io/badges/@openstatus/health-bullmq)](https://jsr.io/@openstatus/health-bullmq) | [![npm](https://img.shields.io/npm/v/@openstatus/health-bullmq)](https://www.npmjs.com/package/@openstatus/health-bullmq) | BullMQ waiting-count / backlog probe (`bullmq`) |
-| [`@openstatus/health-clerk`](packages/clerk) | [![JSR](https://jsr.io/badges/@openstatus/health-clerk)](https://jsr.io/@openstatus/health-clerk) | [![npm](https://img.shields.io/npm/v/@openstatus/health-clerk)](https://www.npmjs.com/package/@openstatus/health-clerk) | Clerk Backend API reachability probe |
-| [`@openstatus/health-clickhouse`](packages/clickhouse) | [![JSR](https://jsr.io/badges/@openstatus/health-clickhouse)](https://jsr.io/@openstatus/health-clickhouse) | [![npm](https://img.shields.io/npm/v/@openstatus/health-clickhouse)](https://www.npmjs.com/package/@openstatus/health-clickhouse) | ClickHouse `ping` / `SELECT 1` probe (`@clickhouse/client`) |
-| [`@openstatus/health-cloudflare-d1`](packages/cloudflare-d1) | [![JSR](https://jsr.io/badges/@openstatus/health-cloudflare-d1)](https://jsr.io/@openstatus/health-cloudflare-d1) | [![npm](https://img.shields.io/npm/v/@openstatus/health-cloudflare-d1)](https://www.npmjs.com/package/@openstatus/health-cloudflare-d1) | Cloudflare D1 `select 1` probe over the Workers binding |
-| [`@openstatus/health-cloudflare-kv`](packages/cloudflare-kv) | [![JSR](https://jsr.io/badges/@openstatus/health-cloudflare-kv)](https://jsr.io/@openstatus/health-cloudflare-kv) | [![npm](https://img.shields.io/npm/v/@openstatus/health-cloudflare-kv)](https://www.npmjs.com/package/@openstatus/health-cloudflare-kv) | Cloudflare Workers KV read probe over the Workers binding |
-| [`@openstatus/health-cloudflare-r2`](packages/cloudflare-r2) | [![JSR](https://jsr.io/badges/@openstatus/health-cloudflare-r2)](https://jsr.io/@openstatus/health-cloudflare-r2) | [![npm](https://img.shields.io/npm/v/@openstatus/health-cloudflare-r2)](https://www.npmjs.com/package/@openstatus/health-cloudflare-r2) | Cloudflare R2 `HEAD` probe over the Workers binding |
-| [`@openstatus/health-drizzle`](packages/drizzle) | [![JSR](https://jsr.io/badges/@openstatus/health-drizzle)](https://jsr.io/@openstatus/health-drizzle) | [![npm](https://img.shields.io/npm/v/@openstatus/health-drizzle)](https://www.npmjs.com/package/@openstatus/health-drizzle) | Drizzle ORM `select 1` probe |
-| [`@openstatus/health-mysql`](packages/mysql) | [![JSR](https://jsr.io/badges/@openstatus/health-mysql)](https://jsr.io/@openstatus/health-mysql) | [![npm](https://img.shields.io/npm/v/@openstatus/health-mysql)](https://www.npmjs.com/package/@openstatus/health-mysql) | MySQL / MariaDB `select 1` probe (`mysql2/promise`) |
-| [`@openstatus/health-postgres`](packages/postgres) | [![JSR](https://jsr.io/badges/@openstatus/health-postgres)](https://jsr.io/@openstatus/health-postgres) | [![npm](https://img.shields.io/npm/v/@openstatus/health-postgres)](https://www.npmjs.com/package/@openstatus/health-postgres) | Postgres `select 1` probe (`pg`, postgres.js, Neon, Vercel Postgres) |
-| [`@openstatus/health-neon`](packages/neon) | [![JSR](https://jsr.io/badges/@openstatus/health-neon)](https://jsr.io/@openstatus/health-neon) | [![npm](https://img.shields.io/npm/v/@openstatus/health-neon)](https://www.npmjs.com/package/@openstatus/health-neon) | Neon serverless Postgres `select 1` probe (`@neondatabase/serverless`) |
-| [`@openstatus/health-planetscale`](packages/planetscale) | [![JSR](https://jsr.io/badges/@openstatus/health-planetscale)](https://jsr.io/@openstatus/health-planetscale) | [![npm](https://img.shields.io/npm/v/@openstatus/health-planetscale)](https://www.npmjs.com/package/@openstatus/health-planetscale) | PlanetScale `select 1` probe over the serverless driver (`@planetscale/database`) |
-| [`@openstatus/health-redis`](packages/redis) | [![JSR](https://jsr.io/badges/@openstatus/health-redis)](https://jsr.io/@openstatus/health-redis) | [![npm](https://img.shields.io/npm/v/@openstatus/health-redis)](https://www.npmjs.com/package/@openstatus/health-redis) | Redis / Valkey `PING` probe (node-redis, ioredis, `@upstash/redis`) |
-| [`@openstatus/health-mongodb`](packages/mongodb) | [![JSR](https://jsr.io/badges/@openstatus/health-mongodb)](https://jsr.io/@openstatus/health-mongodb) | [![npm](https://img.shields.io/npm/v/@openstatus/health-mongodb)](https://www.npmjs.com/package/@openstatus/health-mongodb) | MongoDB `ping` command probe (`mongodb`) |
-| [`@openstatus/health-prisma`](packages/prisma) | [![JSR](https://jsr.io/badges/@openstatus/health-prisma)](https://jsr.io/@openstatus/health-prisma) | [![npm](https://img.shields.io/npm/v/@openstatus/health-prisma)](https://www.npmjs.com/package/@openstatus/health-prisma) | Prisma `select 1` / `ping` probe (`@prisma/client`) |
-| [`@openstatus/health-s3`](packages/s3) | [![JSR](https://jsr.io/badges/@openstatus/health-s3)](https://jsr.io/@openstatus/health-s3) | [![npm](https://img.shields.io/npm/v/@openstatus/health-s3)](https://www.npmjs.com/package/@openstatus/health-s3) | S3 `HeadBucket` probe (`@aws-sdk/client-s3`; AWS, R2, Tigris, MinIO) |
-| [`@openstatus/health-qstash`](packages/qstash) | [![JSR](https://jsr.io/badges/@openstatus/health-qstash)](https://jsr.io/@openstatus/health-qstash) | [![npm](https://img.shields.io/npm/v/@openstatus/health-qstash)](https://www.npmjs.com/package/@openstatus/health-qstash) | Upstash QStash reachability probe over REST |
 | [`@openstatus/health-inngest`](packages/inngest) | [![JSR](https://jsr.io/badges/@openstatus/health-inngest)](https://jsr.io/@openstatus/health-inngest) | [![npm](https://img.shields.io/npm/v/@openstatus/health-inngest)](https://www.npmjs.com/package/@openstatus/health-inngest) | Inngest REST API reachability probe |
-| [`@openstatus/health-nats`](packages/nats) | [![JSR](https://jsr.io/badges/@openstatus/health-nats)](https://jsr.io/@openstatus/health-nats) | [![npm](https://img.shields.io/npm/v/@openstatus/health-nats)](https://www.npmjs.com/package/@openstatus/health-nats) | NATS `flush()` round-trip probe (`@nats-io/*`, `nats`) |
-| [`@openstatus/health-kafka`](packages/kafka) | [![JSR](https://jsr.io/badges/@openstatus/health-kafka)](https://jsr.io/@openstatus/health-kafka) | [![npm](https://img.shields.io/npm/v/@openstatus/health-kafka)](https://www.npmjs.com/package/@openstatus/health-kafka) | Kafka `describeCluster()` probe (`kafkajs`) |
-| [`@openstatus/health-stripe`](packages/stripe) | [![JSR](https://jsr.io/badges/@openstatus/health-stripe)](https://jsr.io/@openstatus/health-stripe) | [![npm](https://img.shields.io/npm/v/@openstatus/health-stripe)](https://www.npmjs.com/package/@openstatus/health-stripe) | Stripe API reachability probe |
-| [`@openstatus/health-resend`](packages/resend) | [![JSR](https://jsr.io/badges/@openstatus/health-resend)](https://jsr.io/@openstatus/health-resend) | [![npm](https://img.shields.io/npm/v/@openstatus/health-resend)](https://www.npmjs.com/package/@openstatus/health-resend) | Resend API reachability probe |
-| [`@openstatus/health-sentry`](packages/sentry) | [![JSR](https://jsr.io/badges/@openstatus/health-sentry)](https://jsr.io/@openstatus/health-sentry) | [![npm](https://img.shields.io/npm/v/@openstatus/health-sentry)](https://www.npmjs.com/package/@openstatus/health-sentry) | Sentry API reachability probe (SaaS or self-hosted) |
-| [`@openstatus/health-posthog`](packages/posthog) | [![JSR](https://jsr.io/badges/@openstatus/health-posthog)](https://jsr.io/@openstatus/health-posthog) | [![npm](https://img.shields.io/npm/v/@openstatus/health-posthog)](https://www.npmjs.com/package/@openstatus/health-posthog) | PostHog API reachability probe (cloud or self-hosted) |
-| [`@openstatus/health-supabase`](packages/supabase) | [![JSR](https://jsr.io/badges/@openstatus/health-supabase)](https://jsr.io/@openstatus/health-supabase) | [![npm](https://img.shields.io/npm/v/@openstatus/health-supabase)](https://www.npmjs.com/package/@openstatus/health-supabase) | Supabase connection-pressure probe |
-| [`@openstatus/health-tinybird`](packages/tinybird) | [![JSR](https://jsr.io/badges/@openstatus/health-tinybird)](https://jsr.io/@openstatus/health-tinybird) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tinybird)](https://www.npmjs.com/package/@openstatus/health-tinybird) | Tinybird reachability probe |
+| [`@openstatus/health-qstash`](packages/qstash) | [![JSR](https://jsr.io/badges/@openstatus/health-qstash)](https://jsr.io/@openstatus/health-qstash) | [![npm](https://img.shields.io/npm/v/@openstatus/health-qstash)](https://www.npmjs.com/package/@openstatus/health-qstash) | Upstash QStash reachability probe over REST |
 | [`@openstatus/health-trigger-dev`](packages/trigger-dev) | [![JSR](https://jsr.io/badges/@openstatus/health-trigger-dev)](https://jsr.io/@openstatus/health-trigger-dev) | [![npm](https://img.shields.io/npm/v/@openstatus/health-trigger-dev)](https://www.npmjs.com/package/@openstatus/health-trigger-dev) | Trigger.dev API reachability probe |
-| [`@openstatus/health-turso`](packages/turso) | [![JSR](https://jsr.io/badges/@openstatus/health-turso)](https://jsr.io/@openstatus/health-turso) | [![npm](https://img.shields.io/npm/v/@openstatus/health-turso)](https://www.npmjs.com/package/@openstatus/health-turso) | Turso libSQL `select 1` probe (`@libsql/client`) |
-| [`@openstatus/health-turso-serverless`](packages/turso-serverless) | [![JSR](https://jsr.io/badges/@openstatus/health-turso-serverless)](https://jsr.io/@openstatus/health-turso-serverless) | [![npm](https://img.shields.io/npm/v/@openstatus/health-turso-serverless)](https://www.npmjs.com/package/@openstatus/health-turso-serverless) | Turso `select 1` probe over the serverless driver (`@tursodatabase/serverless`) |
-| [`@openstatus/health-unkey`](packages/unkey) | [![JSR](https://jsr.io/badges/@openstatus/health-unkey)](https://jsr.io/@openstatus/health-unkey) | [![npm](https://img.shields.io/npm/v/@openstatus/health-unkey)](https://www.npmjs.com/package/@openstatus/health-unkey) | Unkey liveness probe |
-| [`@openstatus/health-upstash`](packages/upstash) | [![JSR](https://jsr.io/badges/@openstatus/health-upstash)](https://jsr.io/@openstatus/health-upstash) | [![npm](https://img.shields.io/npm/v/@openstatus/health-upstash)](https://www.npmjs.com/package/@openstatus/health-upstash) | Upstash Redis `PING` probe over REST |
-| [`@openstatus/health-workos`](packages/workos) | [![JSR](https://jsr.io/badges/@openstatus/health-workos)](https://jsr.io/@openstatus/health-workos) | [![npm](https://img.shields.io/npm/v/@openstatus/health-workos)](https://www.npmjs.com/package/@openstatus/health-workos) | WorkOS API reachability probe |
-| [`@openstatus/health-openai`](packages/openai) | [![JSR](https://jsr.io/badges/@openstatus/health-openai)](https://jsr.io/@openstatus/health-openai) | [![npm](https://img.shields.io/npm/v/@openstatus/health-openai)](https://www.npmjs.com/package/@openstatus/health-openai) | OpenAI API reachability probe (or any OpenAI-compatible host) |
-| [`@openstatus/health-anthropic`](packages/anthropic) | [![JSR](https://jsr.io/badges/@openstatus/health-anthropic)](https://jsr.io/@openstatus/health-anthropic) | [![npm](https://img.shields.io/npm/v/@openstatus/health-anthropic)](https://www.npmjs.com/package/@openstatus/health-anthropic) | Anthropic API reachability probe |
+
+#### Messaging
+
+| Package | JSR | npm | Description |
+| ------- | --- | --- | ----------- |
+| [`@openstatus/health-kafka`](packages/kafka) | [![JSR](https://jsr.io/badges/@openstatus/health-kafka)](https://jsr.io/@openstatus/health-kafka) | [![npm](https://img.shields.io/npm/v/@openstatus/health-kafka)](https://www.npmjs.com/package/@openstatus/health-kafka) | Kafka `describeCluster()` probe (`kafkajs`) |
+| [`@openstatus/health-nats`](packages/nats) | [![JSR](https://jsr.io/badges/@openstatus/health-nats)](https://jsr.io/@openstatus/health-nats) | [![npm](https://img.shields.io/npm/v/@openstatus/health-nats)](https://www.npmjs.com/package/@openstatus/health-nats) | NATS `flush()` round-trip probe (`@nats-io/*`, `nats`) |
+
+#### Search
+
+| Package | JSR | npm | Description |
+| ------- | --- | --- | ----------- |
 | [`@openstatus/health-algolia`](packages/algolia) | [![JSR](https://jsr.io/badges/@openstatus/health-algolia)](https://jsr.io/@openstatus/health-algolia) | [![npm](https://img.shields.io/npm/v/@openstatus/health-algolia)](https://www.npmjs.com/package/@openstatus/health-algolia) | Algolia `/1/isalive` reachability probe |
 | [`@openstatus/health-meilisearch`](packages/meilisearch) | [![JSR](https://jsr.io/badges/@openstatus/health-meilisearch)](https://jsr.io/@openstatus/health-meilisearch) | [![npm](https://img.shields.io/npm/v/@openstatus/health-meilisearch)](https://www.npmjs.com/package/@openstatus/health-meilisearch) | Meilisearch `/health` probe (cloud or self-hosted) |
 | [`@openstatus/health-typesense`](packages/typesense) | [![JSR](https://jsr.io/badges/@openstatus/health-typesense)](https://jsr.io/@openstatus/health-typesense) | [![npm](https://img.shields.io/npm/v/@openstatus/health-typesense)](https://www.npmjs.com/package/@openstatus/health-typesense) | Typesense `/health` probe (cloud or self-hosted) |
-| [`@openstatus/health-convex`](packages/convex) | [![JSR](https://jsr.io/badges/@openstatus/health-convex)](https://jsr.io/@openstatus/health-convex) | [![npm](https://img.shields.io/npm/v/@openstatus/health-convex)](https://www.npmjs.com/package/@openstatus/health-convex) | Convex query probe over the deployment HTTP API |
-| [`@openstatus/health-tcp`](packages/tcp) | [![JSR](https://jsr.io/badges/@openstatus/health-tcp)](https://jsr.io/@openstatus/health-tcp) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tcp)](https://www.npmjs.com/package/@openstatus/health-tcp) | TCP connect probe for any `host:port` (`node:net`) |
+
+#### SaaS APIs
+
+| Package | JSR | npm | Description |
+| ------- | --- | --- | ----------- |
+| [`@openstatus/health-anthropic`](packages/anthropic) | [![JSR](https://jsr.io/badges/@openstatus/health-anthropic)](https://jsr.io/@openstatus/health-anthropic) | [![npm](https://img.shields.io/npm/v/@openstatus/health-anthropic)](https://www.npmjs.com/package/@openstatus/health-anthropic) | Anthropic API reachability probe |
+| [`@openstatus/health-clerk`](packages/clerk) | [![JSR](https://jsr.io/badges/@openstatus/health-clerk)](https://jsr.io/@openstatus/health-clerk) | [![npm](https://img.shields.io/npm/v/@openstatus/health-clerk)](https://www.npmjs.com/package/@openstatus/health-clerk) | Clerk Backend API reachability probe |
+| [`@openstatus/health-openai`](packages/openai) | [![JSR](https://jsr.io/badges/@openstatus/health-openai)](https://jsr.io/@openstatus/health-openai) | [![npm](https://img.shields.io/npm/v/@openstatus/health-openai)](https://www.npmjs.com/package/@openstatus/health-openai) | OpenAI API reachability probe (or any OpenAI-compatible host) |
+| [`@openstatus/health-posthog`](packages/posthog) | [![JSR](https://jsr.io/badges/@openstatus/health-posthog)](https://jsr.io/@openstatus/health-posthog) | [![npm](https://img.shields.io/npm/v/@openstatus/health-posthog)](https://www.npmjs.com/package/@openstatus/health-posthog) | PostHog API reachability probe (cloud or self-hosted) |
+| [`@openstatus/health-resend`](packages/resend) | [![JSR](https://jsr.io/badges/@openstatus/health-resend)](https://jsr.io/@openstatus/health-resend) | [![npm](https://img.shields.io/npm/v/@openstatus/health-resend)](https://www.npmjs.com/package/@openstatus/health-resend) | Resend API reachability probe |
+| [`@openstatus/health-sentry`](packages/sentry) | [![JSR](https://jsr.io/badges/@openstatus/health-sentry)](https://jsr.io/@openstatus/health-sentry) | [![npm](https://img.shields.io/npm/v/@openstatus/health-sentry)](https://www.npmjs.com/package/@openstatus/health-sentry) | Sentry API reachability probe (SaaS or self-hosted) |
+| [`@openstatus/health-stripe`](packages/stripe) | [![JSR](https://jsr.io/badges/@openstatus/health-stripe)](https://jsr.io/@openstatus/health-stripe) | [![npm](https://img.shields.io/npm/v/@openstatus/health-stripe)](https://www.npmjs.com/package/@openstatus/health-stripe) | Stripe API reachability probe |
+| [`@openstatus/health-unkey`](packages/unkey) | [![JSR](https://jsr.io/badges/@openstatus/health-unkey)](https://jsr.io/@openstatus/health-unkey) | [![npm](https://img.shields.io/npm/v/@openstatus/health-unkey)](https://www.npmjs.com/package/@openstatus/health-unkey) | Unkey liveness probe |
+| [`@openstatus/health-workos`](packages/workos) | [![JSR](https://jsr.io/badges/@openstatus/health-workos)](https://jsr.io/@openstatus/health-workos) | [![npm](https://img.shields.io/npm/v/@openstatus/health-workos)](https://www.npmjs.com/package/@openstatus/health-workos) | WorkOS API reachability probe |
+
+#### Network & protocols
+
+| Package | JSR | npm | Description |
+| ------- | --- | --- | ----------- |
 | [`@openstatus/health-dns`](packages/dns) | [![JSR](https://jsr.io/badges/@openstatus/health-dns)](https://jsr.io/@openstatus/health-dns) | [![npm](https://img.shields.io/npm/v/@openstatus/health-dns)](https://www.npmjs.com/package/@openstatus/health-dns) | DNS lookup probe for a hostname (`node:dns`) |
+| [`@openstatus/health-grpc`](packages/grpc) | [![JSR](https://jsr.io/badges/@openstatus/health-grpc)](https://jsr.io/@openstatus/health-grpc) | [![npm](https://img.shields.io/npm/v/@openstatus/health-grpc)](https://www.npmjs.com/package/@openstatus/health-grpc) | gRPC `Health/Check` probe through a `@grpc/grpc-js` health client |
+| [`@openstatus/health-tcp`](packages/tcp) | [![JSR](https://jsr.io/badges/@openstatus/health-tcp)](https://jsr.io/@openstatus/health-tcp) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tcp)](https://www.npmjs.com/package/@openstatus/health-tcp) | TCP connect probe for any `host:port` (`node:net`) |
 | [`@openstatus/health-tls`](packages/tls) | [![JSR](https://jsr.io/badges/@openstatus/health-tls)](https://jsr.io/@openstatus/health-tls) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tls)](https://www.npmjs.com/package/@openstatus/health-tls) | TLS handshake, trust and certificate-expiry probe (`node:tls`) |
+
+#### System
+
+| Package | JSR | npm | Description |
+| ------- | --- | --- | ----------- |
 | [`@openstatus/health-disk`](packages/disk) | [![JSR](https://jsr.io/badges/@openstatus/health-disk)](https://jsr.io/@openstatus/health-disk) | [![npm](https://img.shields.io/npm/v/@openstatus/health-disk)](https://www.npmjs.com/package/@openstatus/health-disk) | Free disk space threshold probe (`node:fs` `statfs`) |
 | [`@openstatus/health-memory`](packages/memory) | [![JSR](https://jsr.io/badges/@openstatus/health-memory)](https://jsr.io/@openstatus/health-memory) | [![npm](https://img.shields.io/npm/v/@openstatus/health-memory)](https://www.npmjs.com/package/@openstatus/health-memory) | Heap / RSS memory pressure probe (`node:process`, `node:v8`) |
-| [`@openstatus/health-grpc`](packages/grpc) | [![JSR](https://jsr.io/badges/@openstatus/health-grpc)](https://jsr.io/@openstatus/health-grpc) | [![npm](https://img.shields.io/npm/v/@openstatus/health-grpc)](https://www.npmjs.com/package/@openstatus/health-grpc) | gRPC `Health/Check` probe through a `@grpc/grpc-js` health client |
 
 ### Hosting metadata
 
@@ -280,51 +322,93 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 
 ## Probes
 
+### Databases
+
 | Probe | Default name | Critical | Checks |
 | ----- | ------------ | -------- | ------ |
-| `tinybirdProbe({ baseUrl? })` | `tinybird` | no | `GET {baseUrl}/v0/health` |
-| `unkeyProbe({ baseUrl? })` | `unkey` | no | `GET {baseUrl}/v2/liveness` |
 | `clickhouseProbe({ client, select? })` | `clickhouse` | no | `client.ping({ select: true })` on a `@clickhouse/client` client |
-| `tursoProbe({ client })` | `database` | yes | `client.execute("select 1")` on a Turso libSQL client |
-| `tursoServerlessProbe({ connection })` | `database` | yes | `connection.get("select 1")` on a Turso serverless `Connection` |
+| `convexProbe({ url, path, args?, token? })` | `database` | yes | `POST {url}/api/query` running `path` answers `status: "success"` |
+| `d1Probe({ db })` | `database` | yes | `db.prepare("select 1").first()` on a Workers `D1Database` binding |
 | `drizzleProbe({ db })` | `database` | yes | `db.execute(sql\`select 1\`)` or `db.run(...)` |
-| `supabaseProbe({ client, maxConnectionPercent? })` | `supabase` | no | `rpc("health_connection_pressure")` ≤ threshold |
-| `upstashProbe({ url, token })` | `redis` | no | `GET {url}/ping` with the REST token |
+| `mongodbProbe({ client, db? })` | `database` | yes | `client.db("admin").command({ ping: 1 })` on a `MongoClient` |
 | `mysqlProbe({ client })` | `database` | yes | `client.query("select 1")` on a `mysql2/promise` pool or connection |
-| `postgresProbe({ client })` | `database` | yes | `client.query("select 1")` on a `pg` pool, or `sql.unsafe("select 1")` on postgres.js |
 | `neonProbe({ client })` | `database` | yes | `client.query("select 1")` on `neon()`, or a Neon `Pool` / `Client` |
 | `planetscaleProbe({ connection })` | `database` | yes | `connection.execute("select 1")` on a `@planetscale/database` connection |
-| `redisProbe({ client })` | `redis` | no | `client.ping()` answers `PONG` on a node-redis, ioredis or Upstash client |
-| `mongodbProbe({ client, db? })` | `database` | yes | `client.db("admin").command({ ping: 1 })` on a `MongoClient` |
+| `postgresProbe({ client })` | `database` | yes | `client.query("select 1")` on a `pg` pool, or `sql.unsafe("select 1")` on postgres.js |
 | `prismaProbe({ client })` | `database` | yes | `client.$queryRawUnsafe("select 1")`, or `client.$runCommandRaw({ ping: 1 })` on MongoDB |
-| `d1Probe({ db })` | `database` | yes | `db.prepare("select 1").first()` on a Workers `D1Database` binding |
+| `supabaseProbe({ client, maxConnectionPercent? })` | `supabase` | no | `rpc("health_connection_pressure")` ≤ threshold |
+| `tinybirdProbe({ baseUrl? })` | `tinybird` | no | `GET {baseUrl}/v0/health` |
+| `tursoProbe({ client })` | `database` | yes | `client.execute("select 1")` on a Turso libSQL client |
+| `tursoServerlessProbe({ connection })` | `database` | yes | `connection.get("select 1")` on a Turso serverless `Connection` |
+
+### Caches & KV
+
+| Probe | Default name | Critical | Checks |
+| ----- | ------------ | -------- | ------ |
 | `kvProbe({ namespace, key? })` | `kv` | no | `namespace.get("health")` on a Workers `KVNamespace` binding |
+| `redisProbe({ client })` | `redis` | no | `client.ping()` answers `PONG` on a node-redis, ioredis or Upstash client |
+| `upstashProbe({ url, token })` | `redis` | no | `GET {url}/ping` with the REST token |
+
+### Object storage
+
+| Probe | Default name | Critical | Checks |
+| ----- | ------------ | -------- | ------ |
 | `r2Probe({ bucket, key? })` | `storage` | no | `bucket.head(key ?? "health")` on a Workers `R2Bucket` binding |
 | `s3Probe({ client, bucket })` | `storage` | no | `client.send(new HeadBucketCommand({ Bucket }))` on an `S3Client` |
-| `qstashProbe({ token, baseUrl? })` | `qstash` | no | `GET {baseUrl}/v2/queues` with the token |
-| `inngestProbe({ signingKey, baseUrl? })` | `inngest` | no | `GET {baseUrl}/v1/events?limit=1` with the signing key |
-| `triggerDevProbe({ secretKey, baseUrl? })` | `trigger` | no | `GET {baseUrl}/api/v1/runs?page[size]=1` with the secret key |
+
+### Queues & workflows
+
+| Probe | Default name | Critical | Checks |
+| ----- | ------------ | -------- | ------ |
 | `bullmqProbe({ queue, maxWaiting? })` | `queue` | no | `queue.getWaitingCount()` on a BullMQ `Queue`, ≤ threshold |
-| `natsProbe({ connection })` | `nats` | no | `connection.flush()` on an open `NatsConnection` |
+| `inngestProbe({ signingKey, baseUrl? })` | `inngest` | no | `GET {baseUrl}/v1/events?limit=1` with the signing key |
+| `qstashProbe({ token, baseUrl? })` | `qstash` | no | `GET {baseUrl}/v2/queues` with the token |
+| `triggerDevProbe({ secretKey, baseUrl? })` | `trigger` | no | `GET {baseUrl}/api/v1/runs?page[size]=1` with the secret key |
+
+### Messaging
+
+| Probe | Default name | Critical | Checks |
+| ----- | ------------ | -------- | ------ |
 | `kafkaProbe({ admin })` | `kafka` | no | `admin.describeCluster()` lists ≥ 1 broker on a connected KafkaJS `Admin` |
-| `stripeProbe({ secretKey, baseUrl? })` | `stripe` | no | `GET {baseUrl}/v1/balance` with the secret key |
-| `resendProbe({ apiKey, baseUrl? })` | `resend` | no | `GET {baseUrl}/domains` with the API key |
-| `clerkProbe({ secretKey, baseUrl? })` | `clerk` | no | `GET {baseUrl}/v1/users?limit=1` with the secret key |
-| `workosProbe({ apiKey, baseUrl? })` | `workos` | no | `GET {baseUrl}/organizations?limit=1` with the API key |
-| `sentryProbe({ token?, baseUrl? })` | `sentry` | no | `GET {baseUrl}/api/0/`, with the auth token when given |
-| `posthogProbe({ personalApiKey, baseUrl? })` | `posthog` | no | `GET {baseUrl}/api/projects/@current/` with the personal API key |
-| `openaiProbe({ apiKey, baseUrl? })` | `openai` | no | `GET {baseUrl}/v1/models` with the API key |
-| `anthropicProbe({ apiKey, baseUrl? })` | `anthropic` | no | `GET {baseUrl}/v1/models` with the `x-api-key` header |
+| `natsProbe({ connection })` | `nats` | no | `connection.flush()` on an open `NatsConnection` |
+
+### Search
+
+| Probe | Default name | Critical | Checks |
+| ----- | ------------ | -------- | ------ |
 | `algoliaProbe({ appId, apiKey, baseUrl? })` | `search` | no | `GET {baseUrl}/1/isalive` with the app headers; `baseUrl` defaults to `https://{appId}-dsn.algolia.net` |
 | `meilisearchProbe({ host, apiKey? })` | `search` | no | `GET {host}/health` answers `status: "available"` |
 | `typesenseProbe({ host, apiKey? })` | `search` | no | `GET {host}/health` answers `ok: true` |
-| `convexProbe({ url, path, args?, token? })` | `database` | yes | `POST {url}/api/query` running `path` answers `status: "success"` |
-| `tcpProbe({ host, port })` | `tcp` | no | a TCP connection to `host:port` is accepted |
+
+### SaaS APIs
+
+| Probe | Default name | Critical | Checks |
+| ----- | ------------ | -------- | ------ |
+| `anthropicProbe({ apiKey, baseUrl? })` | `anthropic` | no | `GET {baseUrl}/v1/models` with the `x-api-key` header |
+| `clerkProbe({ secretKey, baseUrl? })` | `clerk` | no | `GET {baseUrl}/v1/users?limit=1` with the secret key |
+| `openaiProbe({ apiKey, baseUrl? })` | `openai` | no | `GET {baseUrl}/v1/models` with the API key |
+| `posthogProbe({ personalApiKey, baseUrl? })` | `posthog` | no | `GET {baseUrl}/api/projects/@current/` with the personal API key |
+| `resendProbe({ apiKey, baseUrl? })` | `resend` | no | `GET {baseUrl}/domains` with the API key |
+| `sentryProbe({ token?, baseUrl? })` | `sentry` | no | `GET {baseUrl}/api/0/`, with the auth token when given |
+| `stripeProbe({ secretKey, baseUrl? })` | `stripe` | no | `GET {baseUrl}/v1/balance` with the secret key |
+| `unkeyProbe({ baseUrl? })` | `unkey` | no | `GET {baseUrl}/v2/liveness` |
+| `workosProbe({ apiKey, baseUrl? })` | `workos` | no | `GET {baseUrl}/organizations?limit=1` with the API key |
+
+### Network & protocols
+
+| Probe | Default name | Critical | Checks |
+| ----- | ------------ | -------- | ------ |
 | `dnsProbe({ hostname, lookup? })` | `dns` | no | `dns.promises.lookup(hostname)` returns an address |
+| `grpcProbe({ client, service? })` | `grpc` | no | `client.check({ service })` answers `SERVING` on a `grpc.health.v1.Health` client |
+| `tcpProbe({ host, port })` | `tcp` | no | a TCP connection to `host:port` is accepted |
 | `tlsProbe({ host, port?, minDaysValid? })` | `tls` | no | a TLS handshake with a trusted certificate valid ≥ `minDaysValid` days |
+
+### System
+
+| Probe | Default name | Critical | Checks |
+| ----- | ------------ | -------- | ------ |
 | `diskProbe({ path?, minFreePercent?, minFreeBytes? })` | `disk` | no | free space of the filesystem holding `path` ≥ threshold |
 | `memoryProbe({ maxHeapUsedPercent?, maxRssBytes? })` | `memory` | no | heap in use ≤ 90% of the V8 heap limit by default; RSS ≤ budget only when `maxRssBytes` is set |
-| `grpcProbe({ client, service? })` | `grpc` | no | `client.check({ service })` answers `SERVING` on a `grpc.health.v1.Health` client |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance, a base URL or, for `tcpProbe`, a
