@@ -121,6 +121,10 @@
   personal API key as a bearer header, against PostHog Cloud (US by default,
   EU via `baseUrl`) or a self-hosted instance. Non-critical by default;
   rejects an empty `personalApiKey` or an invalid `baseUrl` at construction.
+- New `@openstatus/health-openai` probe: `openaiProbe({ apiKey, baseUrl? })`
+  expects 2xx from `GET {baseUrl}/v1/models` with the API key as a bearer
+  header, against OpenAI or any OpenAI-compatible host. Non-critical by
+  default; rejects an empty `apiKey` or an invalid `baseUrl` at construction.
 
 ## 0.1.3
 

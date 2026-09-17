@@ -1,0 +1,105 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { runProbes } from "@openstatus/health";
+import { fakeFetch, hangFetch } from "@openstatus/health/testing";
+import { openaiDefaultBaseUrl, openaiProbe } from "./mod.ts";
+
+const apiKey = "secret";
+
+test("openaiProbe() sends an authenticated GET /v1/models", async () => {
+  const calls: string[] = [];
+  await runProbes([
+    openaiProbe({
+      apiKey,
+      fetch: fakeFetch({
+        onFetch: (call) =>
+          calls.push(
+            `${call.method} ${call.url} ${call.headers.get("authorization")}`,
+          ),
+      }),
+    }),
+  ]);
+  assert.deepEqual(calls, [
+    `GET ${openaiDefaultBaseUrl}/v1/models Bearer secret`,
+  ]);
+});
+
+test("openaiProbe() honours a custom base URL", async () => {
+  const calls: string[] = [];
+  await runProbes([
+    openaiProbe({
+      apiKey,
+      baseUrl: "https://example.test/ignored",
+      fetch: fakeFetch({ onFetch: (call) => calls.push(call.url) }),
+    }),
+  ]);
+  assert.deepEqual(calls, ["https://example.test/v1/models"]);
+});
+
+test("openaiProbe() reports ok on a 200", async () => {
+  const report = await runProbes([
+    openaiProbe({ apiKey, fetch: fakeFetch({ status: 200 }) }),
+  ]);
+  assert.equal(report.status, "ok");
+  assert.equal(report.checks[0].name, "openai");
+  assert.equal(report.checks[0].status, "ok");
+  assert.equal(report.checks[0].critical, false);
+});
+
+test("openaiProbe() reports degraded on a non-2xx response", async () => {
+  const report = await runProbes([
+    openaiProbe({ apiKey, fetch: fakeFetch({ status: 401 }) }),
+  ]);
+  assert.equal(report.status, "degraded");
+  assert.equal(report.checks[0].status, "failed");
+  assert.equal(report.checks[0].error, "failed");
+});
+
+test("openaiProbe() makes the report unhealthy when critical", async () => {
+  const report = await runProbes([
+    openaiProbe({ apiKey, critical: true, fetch: fakeFetch({ status: 500 }) }),
+  ]);
+  assert.equal(report.status, "unhealthy");
+});
+
+test("openaiProbe() times out and aborts the signal", async () => {
+  const track = { aborted: false };
+  const report = await runProbes([
+    openaiProbe({ apiKey, fetch: hangFetch(track), timeoutMs: 20 }),
+  ]);
+  assert.equal(report.checks[0].status, "timeout");
+  assert.equal(track.aborted, true);
+});
+
+test("openaiProbe() names the invalid option at construction", () => {
+  assert.throws(
+    () => openaiProbe({ apiKey, baseUrl: "not a url" }),
+    /openaiProbe: "baseUrl" must be an absolute URL, got "not a url"/,
+  );
+  assert.throws(
+    () => openaiProbe({ apiKey: undefined as unknown as string }),
+    /openaiProbe: "apiKey" must be a string, got undefined/,
+  );
+  assert.throws(
+    () => openaiProbe({ apiKey: "" }),
+    /openaiProbe: "apiKey" must not be empty/,
+  );
+});
+
+test("openaiProbe() honours name, critical and skip overrides", async () => {
+  const calls: string[] = [];
+  const report = await runProbes([
+    openaiProbe({
+      apiKey,
+      name: "billing",
+      critical: true,
+      skip: () => true,
+      fetch: fakeFetch({ onFetch: (call) => calls.push(call.url) }),
+    }),
+  ]);
+  const check = report.checks[0];
+  assert.equal(check.name, "billing");
+  assert.equal(check.critical, true);
+  assert.equal(check.status, "skipped");
+  assert.deepEqual(calls, []);
+});
