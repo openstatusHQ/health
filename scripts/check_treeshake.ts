@@ -47,6 +47,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-upstash": { symbol: "upstashProbe", allowed: [] },
   "@openstatus/health-mysql": { symbol: "mysqlProbe", allowed: [] },
   "@openstatus/health-postgres": { symbol: "postgresProbe", allowed: [] },
+  "@openstatus/health-neon": { symbol: "neonProbe", allowed: [] },
 };
 
 const banned = [
@@ -65,6 +66,7 @@ const banned = [
   "mysql2",
   "pg",
   "postgres",
+  "@neondatabase/serverless",
 ];
 
 const root: string = dirname(import.meta.dirname!);
