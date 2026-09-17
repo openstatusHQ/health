@@ -24,10 +24,19 @@ export const mongodbDefaultName = "database";
 /** Database the `ping` command runs against when `db` is unset. */
 export const mongodbDefaultDb = "admin";
 
+/** What the probe passes to `command()`. */
+export interface MongoCommandOptions {
+  /** Aborts when the probe times out. */
+  readonly signal?: AbortSignal;
+}
+
 /** The subset of a `mongodb` `Db` the probe uses. */
 export interface MongoLikeDb {
   /** Run a database command. */
-  command(command: { readonly ping: 1 }): PromiseLike<ProbeResult>;
+  command(
+    command: { readonly ping: 1 },
+    options?: MongoCommandOptions,
+  ): PromiseLike<ProbeResult>;
 }
 
 /** The subset of a `MongoClient` the probe uses. */
@@ -60,8 +69,8 @@ export function mongodbProbe(options: MongodbProbeOptions): Probe {
     critical: options.critical ?? true,
     timeoutMs: options.timeoutMs,
     skip: options.skip,
-    run: async () => {
-      await client.db(dbName).command({ ping: 1 });
+    run: async (signal) => {
+      await client.db(dbName).command({ ping: 1 }, { signal });
     },
   };
 }

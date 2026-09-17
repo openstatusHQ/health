@@ -6,6 +6,7 @@ import { mongodbProbe, type MongoLikeClient } from "./mod.ts";
 interface Call {
   readonly db: string | undefined;
   readonly command: { readonly ping: 1 };
+  readonly signal: AbortSignal | undefined;
 }
 
 function fakeClient(
@@ -14,8 +15,8 @@ function fakeClient(
 ): MongoLikeClient {
   return {
     db: (name) => ({
-      command: (command) => {
-        calls.push({ db: name, command });
+      command: (command, options) => {
+        calls.push({ db: name, command, signal: options?.signal });
         return result();
       },
     }),
@@ -25,7 +26,10 @@ function fakeClient(
 test("mongodbProbe() runs ping on the admin database", async () => {
   const calls: Call[] = [];
   const report = await runProbes([mongodbProbe({ client: fakeClient(calls) })]);
-  assert.deepEqual(calls, [{ db: "admin", command: { ping: 1 } }]);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].db, "admin");
+  assert.deepEqual(calls[0].command, { ping: 1 });
+  assert.ok(calls[0].signal instanceof AbortSignal);
   assert.equal(report.status, "ok");
   assert.equal(report.checks[0].name, "database");
   assert.equal(report.checks[0].critical, true);
@@ -50,12 +54,19 @@ test("mongodbProbe() reports unhealthy when the command rejects", async () => {
   assert.equal(report.checks[0].error, "MongoServerSelectionError");
 });
 
-test("mongodbProbe() times out on a hanging command", async () => {
+test("mongodbProbe() times out on a hanging command and aborts the signal", async () => {
+  let signal: AbortSignal | undefined;
   const client: MongoLikeClient = {
-    db: () => ({ command: () => new Promise(() => {}) }),
+    db: () => ({
+      command: (_command, options) => {
+        signal = options?.signal;
+        return new Promise(() => {});
+      },
+    }),
   };
   const report = await runProbes([mongodbProbe({ client, timeoutMs: 20 })]);
   assert.equal(report.checks[0].status, "timeout");
+  assert.equal(signal?.aborted, true);
 });
 
 test("mongodbProbe() throws at construction without db()", () => {

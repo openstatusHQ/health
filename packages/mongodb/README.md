@@ -26,8 +26,9 @@ Deno.serve(
 `ping` is the command MongoDB recommends for connectivity checks: it needs
 no privileges beyond being authenticated, touches no collection and returns
 as soon as the server selected by the driver responds. It runs against the
-`admin` database by default; pass `db` to target the database your
-application uses, which also proves the credentials can reach it.
+`admin` database by default; pass `db` to send the command to the database
+your application uses. Note that `ping` does not verify the credentials can
+read or write that database's collections.
 
 ```ts
 mongodbProbe({
