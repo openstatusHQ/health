@@ -237,6 +237,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | [`@openstatus/health-qstash`](packages/qstash) | [![JSR](https://jsr.io/badges/@openstatus/health-qstash)](https://jsr.io/@openstatus/health-qstash) | [![npm](https://img.shields.io/npm/v/@openstatus/health-qstash)](https://www.npmjs.com/package/@openstatus/health-qstash) | Upstash QStash reachability probe over REST |
 | [`@openstatus/health-inngest`](packages/inngest) | [![JSR](https://jsr.io/badges/@openstatus/health-inngest)](https://jsr.io/@openstatus/health-inngest) | [![npm](https://img.shields.io/npm/v/@openstatus/health-inngest)](https://www.npmjs.com/package/@openstatus/health-inngest) | Inngest REST API reachability probe |
 | [`@openstatus/health-nats`](packages/nats) | [![JSR](https://jsr.io/badges/@openstatus/health-nats)](https://jsr.io/@openstatus/health-nats) | [![npm](https://img.shields.io/npm/v/@openstatus/health-nats)](https://www.npmjs.com/package/@openstatus/health-nats) | NATS `flush()` round-trip probe (`@nats-io/*`, `nats`) |
+| [`@openstatus/health-kafka`](packages/kafka) | [![JSR](https://jsr.io/badges/@openstatus/health-kafka)](https://jsr.io/@openstatus/health-kafka) | [![npm](https://img.shields.io/npm/v/@openstatus/health-kafka)](https://www.npmjs.com/package/@openstatus/health-kafka) | Kafka `describeCluster()` probe (`kafkajs`) |
 | [`@openstatus/health-supabase`](packages/supabase) | [![JSR](https://jsr.io/badges/@openstatus/health-supabase)](https://jsr.io/@openstatus/health-supabase) | [![npm](https://img.shields.io/npm/v/@openstatus/health-supabase)](https://www.npmjs.com/package/@openstatus/health-supabase) | Supabase connection-pressure probe |
 | [`@openstatus/health-tinybird`](packages/tinybird) | [![JSR](https://jsr.io/badges/@openstatus/health-tinybird)](https://jsr.io/@openstatus/health-tinybird) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tinybird)](https://www.npmjs.com/package/@openstatus/health-tinybird) | Tinybird reachability probe |
 | [`@openstatus/health-trigger-dev`](packages/trigger-dev) | [![JSR](https://jsr.io/badges/@openstatus/health-trigger-dev)](https://jsr.io/@openstatus/health-trigger-dev) | [![npm](https://img.shields.io/npm/v/@openstatus/health-trigger-dev)](https://www.npmjs.com/package/@openstatus/health-trigger-dev) | Trigger.dev API reachability probe |
@@ -287,6 +288,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `triggerDevProbe({ secretKey, baseUrl? })` | `trigger` | no | `GET {baseUrl}/api/v1/runs?page[size]=1` with the secret key |
 | `bullmqProbe({ queue, maxWaiting? })` | `queue` | no | `queue.getWaitingCount()` on a BullMQ `Queue`, ≤ threshold |
 | `natsProbe({ connection })` | `nats` | no | `connection.flush()` on an open `NatsConnection` |
+| `kafkaProbe({ admin })` | `kafka` | no | `admin.describeCluster()` lists ≥ 1 broker on a connected KafkaJS `Admin` |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance or a base URL — they never read

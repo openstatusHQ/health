@@ -88,6 +88,13 @@
   connection is typed structurally, so the NATS packages stay optional peers
   for their types. Throws `ProbeConfigError` at construction when the
   connection has no `flush()`.
+- New `@openstatus/health-kafka` probe: `kafkaProbe({ admin })` describes the
+  cluster through a connected KafkaJS-style `Admin` client and fails the check
+  when the request fails or no broker is listed. Non-critical by default; the
+  client is typed structurally, so `kafkajs` and
+  `@confluentinc/kafka-javascript` stay optional peers for their types. Throws
+  `ProbeConfigError` at construction when the client has no
+  `describeCluster()`.
 
 ## 0.1.3
 
