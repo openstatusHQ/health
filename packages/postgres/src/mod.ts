@@ -10,6 +10,9 @@
  * const probe = postgresProbe({ client: new Pool({ connectionString }) });
  * ```
  *
+ * A timed-out check is reported `timeout` without cancelling the in-flight
+ * driver query: none of the supported clients accept an `AbortSignal`.
+ *
  * @module
  */
 
@@ -57,6 +60,8 @@ export function postgresProbe(options: PostgresProbeOptions): Probe {
     critical: options.critical ?? true,
     timeoutMs: options.timeoutMs,
     skip: options.skip,
+    // The signal is ignored: no supported driver takes an AbortSignal, so a
+    // timed-out query keeps running. See the README.
     run: async () => {
       await run();
     },

@@ -35,6 +35,12 @@ Pass a pool rather than a single connection where you can: a pool checks a
 connection out per probe and hands it back, so the health endpoint never
 holds one open and never collides with request traffic on a shared client.
 
+A timed-out check is reported `timeout` and the round moves on; the driver
+query is not cancelled, because none of the supported clients expose a
+portable abort (`pg` and `@vercel/postgres` take query text only, and
+postgres.js cancels through the pending query's `.cancel()` rather than a
+signal). With a pool, the connection returns to it once the query settles.
+
 ```ts
 postgresProbe({
   client: pool,
