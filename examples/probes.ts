@@ -26,6 +26,7 @@ import { qstashProbe } from "@openstatus/health-qstash";
 import { inngestProbe } from "@openstatus/health-inngest";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
+import { triggerDevProbe } from "@openstatus/health-trigger-dev";
 import { tursoProbe } from "@openstatus/health-turso";
 import { tursoServerlessProbe } from "@openstatus/health-turso-serverless";
 import { unkeyProbe } from "@openstatus/health-unkey";
@@ -189,6 +190,11 @@ export function exampleProbes(): Probe[] {
       signingKey: env("INNGEST_SIGNING_KEY") || "unconfigured",
       baseUrl: env("INNGEST_API_URL"),
       skip: () => !env("INNGEST_SIGNING_KEY"),
+    }),
+    triggerDevProbe({
+      secretKey: env("TRIGGER_SECRET_KEY") || "unconfigured",
+      baseUrl: env("TRIGGER_API_URL"),
+      skip: () => !env("TRIGGER_SECRET_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

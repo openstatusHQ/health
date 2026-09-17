@@ -237,6 +237,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | [`@openstatus/health-inngest`](packages/inngest) | [![JSR](https://jsr.io/badges/@openstatus/health-inngest)](https://jsr.io/@openstatus/health-inngest) | [![npm](https://img.shields.io/npm/v/@openstatus/health-inngest)](https://www.npmjs.com/package/@openstatus/health-inngest) | Inngest REST API reachability probe |
 | [`@openstatus/health-supabase`](packages/supabase) | [![JSR](https://jsr.io/badges/@openstatus/health-supabase)](https://jsr.io/@openstatus/health-supabase) | [![npm](https://img.shields.io/npm/v/@openstatus/health-supabase)](https://www.npmjs.com/package/@openstatus/health-supabase) | Supabase connection-pressure probe |
 | [`@openstatus/health-tinybird`](packages/tinybird) | [![JSR](https://jsr.io/badges/@openstatus/health-tinybird)](https://jsr.io/@openstatus/health-tinybird) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tinybird)](https://www.npmjs.com/package/@openstatus/health-tinybird) | Tinybird reachability probe |
+| [`@openstatus/health-trigger-dev`](packages/trigger-dev) | [![JSR](https://jsr.io/badges/@openstatus/health-trigger-dev)](https://jsr.io/@openstatus/health-trigger-dev) | [![npm](https://img.shields.io/npm/v/@openstatus/health-trigger-dev)](https://www.npmjs.com/package/@openstatus/health-trigger-dev) | Trigger.dev API reachability probe |
 | [`@openstatus/health-turso`](packages/turso) | [![JSR](https://jsr.io/badges/@openstatus/health-turso)](https://jsr.io/@openstatus/health-turso) | [![npm](https://img.shields.io/npm/v/@openstatus/health-turso)](https://www.npmjs.com/package/@openstatus/health-turso) | Turso libSQL `select 1` probe (`@libsql/client`) |
 | [`@openstatus/health-turso-serverless`](packages/turso-serverless) | [![JSR](https://jsr.io/badges/@openstatus/health-turso-serverless)](https://jsr.io/@openstatus/health-turso-serverless) | [![npm](https://img.shields.io/npm/v/@openstatus/health-turso-serverless)](https://www.npmjs.com/package/@openstatus/health-turso-serverless) | Turso `select 1` probe over the serverless driver (`@tursodatabase/serverless`) |
 | [`@openstatus/health-unkey`](packages/unkey) | [![JSR](https://jsr.io/badges/@openstatus/health-unkey)](https://jsr.io/@openstatus/health-unkey) | [![npm](https://img.shields.io/npm/v/@openstatus/health-unkey)](https://www.npmjs.com/package/@openstatus/health-unkey) | Unkey liveness probe |
@@ -281,6 +282,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `s3Probe({ client, bucket })` | `storage` | no | `client.send(new HeadBucketCommand({ Bucket }))` on an `S3Client` |
 | `qstashProbe({ token, baseUrl? })` | `qstash` | no | `GET {baseUrl}/v2/queues` with the token |
 | `inngestProbe({ signingKey, baseUrl? })` | `inngest` | no | `GET {baseUrl}/v1/events?limit=1` with the signing key |
+| `triggerDevProbe({ secretKey, baseUrl? })` | `trigger` | no | `GET {baseUrl}/api/v1/runs?page[size]=1` with the secret key |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance or a base URL — they never read
