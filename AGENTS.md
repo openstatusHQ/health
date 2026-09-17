@@ -6,12 +6,13 @@
   zero-dependency core; `hono`, `elysia`, `express`, `next`, `tanstack-start`
   are server adapters; `algolia`, `anthropic`, `bullmq`, `clerk`, `clickhouse`,
   `cloudflare-d1`, `cloudflare-kv`, `cloudflare-r2`, `convex`, `disk`, `dns`,
-  `drizzle`, `inngest`, `kafka`, `meilisearch`, `memory`, `mongodb`, `mysql`,
-  `nats`, `neon`, `openai`, `planetscale`, `postgres`, `posthog`, `prisma`,
-  `qstash`, `redis`, `resend`, `s3`, `sentry`, `stripe`, `supabase`, `tcp`,
-  `tinybird`, `tls`, `trigger-dev`, `turso`, `turso-serverless`, `typesense`,
-  `unkey`, `upstash`, `workos` are probes; `fly`, `koyeb`, `railway`, `vercel`,
-  `cloudflare` render hosting metadata under `server` via the `extend` hook.
+  `drizzle`, `grpc`, `inngest`, `kafka`, `meilisearch`, `memory`, `mongodb`,
+  `mysql`, `nats`, `neon`, `openai`, `planetscale`, `postgres`, `posthog`,
+  `prisma`, `qstash`, `redis`, `resend`, `s3`, `sentry`, `stripe`, `supabase`,
+  `tcp`, `tinybird`, `tls`, `trigger-dev`, `turso`, `turso-serverless`,
+  `typesense`, `unkey`, `upstash`, `workos` are probes; `fly`, `koyeb`,
+  `railway`, `vercel`, `cloudflare` render hosting metadata under `server` via
+  the `extend` hook.
 - Each package has `deno.json` (`exports: ./src/mod.ts`), `package.json`
   (`exports -> dist/`, `sideEffects: false`), `tsdown.config.ts`, `README.md`
   and `src/` with `mod.ts`, implementation files and one `*.test.ts` per file.

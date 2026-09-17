@@ -171,6 +171,13 @@
   `v8.getHeapStatistics().heap_size_limit` and throws `MemoryPressureError`
   above 90% heap use (or the given thresholds). Non-critical by default;
   rejects a negative or non-finite threshold at construction.
+- New `@openstatus/health-grpc` probe: `grpcProbe({ client, service? })` calls
+  `grpc.health.v1.Health/Check` through a generated `@grpc/grpc-js` health
+  client and fails the check unless the status is `SERVING` (as `1` or
+  `"SERVING"`); a timeout cancels the call. Non-critical by default; the
+  client is typed structurally, so `@grpc/grpc-js` stays an optional peer for
+  its types. Throws `ProbeConfigError` at construction when the client has no
+  `check()`.
 
 ## 0.1.3
 

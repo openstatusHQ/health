@@ -82,6 +82,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-tls": { symbol: "tlsProbe", allowed: [] },
   "@openstatus/health-disk": { symbol: "diskProbe", allowed: [] },
   "@openstatus/health-memory": { symbol: "memoryProbe", allowed: [] },
+  "@openstatus/health-grpc": { symbol: "grpcProbe", allowed: [] },
 };
 
 const banned = [
@@ -112,6 +113,8 @@ const banned = [
   "nats",
   "kafkajs",
   "@confluentinc/kafka-javascript",
+  "@grpc/grpc-js",
+  "grpc-health-check",
 ];
 
 const root: string = dirname(import.meta.dirname!);
