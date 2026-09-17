@@ -56,6 +56,13 @@
   a missing object is healthy, an error is not. Non-critical by default; the
   binding is typed structurally. Throws `ProbeConfigError` at construction
   when the binding has no `head()` or `key` is empty.
+- New `@openstatus/health-s3` probe: `s3Probe({ client, bucket })` sends
+  `HeadBucket` through an `@aws-sdk/client-s3` client, covering AWS S3,
+  Cloudflare R2, Tigris, MinIO and other S3-compatible stores. The probe
+  signal is forwarded as `abortSignal`, so `timeoutMs` cancels the request.
+  Non-critical by default; `@aws-sdk/client-s3` is a required peer because
+  `HeadBucketCommand` is imported at runtime. Throws `ProbeConfigError` at
+  construction when the client has no `send()` or `bucket` is empty.
 
 ## 0.1.3
 
