@@ -63,10 +63,10 @@ export function dnsProbe(options: DnsProbeOptions): Probe {
     run: async () => {
       const result = await lookup(hostname);
       const addresses = Array.isArray(result) ? result : [result];
-      const address = addresses[0]?.address;
-      if (typeof address !== "string" || address.length === 0) {
-        throw new Error(`no address for ${hostname}`);
-      }
+      const address = addresses.find((entry) =>
+        typeof entry?.address === "string" && entry.address.length > 0
+      )?.address;
+      if (address == null) throw new Error(`no address for ${hostname}`);
       return { address };
     },
   };

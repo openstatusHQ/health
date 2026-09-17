@@ -269,8 +269,8 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("SMTP_HOST"),
     }),
     dnsProbe({
-      hostname: env("DNS_HOSTNAME") ?? "localhost",
-      skip: () => env("DNS_HOSTNAME") == null,
+      hostname: env("DNS_HOSTNAME") || "localhost",
+      skip: () => !env("DNS_HOSTNAME"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

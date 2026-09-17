@@ -23,12 +23,12 @@ Deno.serve(
 ```
 
 The probe calls `dns.promises.lookup(hostname)`, which uses the same path
-your `fetch` and sockets use — the OS resolver, `/etc/hosts` and the
-runtime's cache — so it answers "would a connection to this name find an
+your `fetch` and sockets use — the OS resolver, `/etc/hosts` and whatever
+cache the OS keeps — so it answers "would a connection to this name find an
 address" rather than "what do the authoritative servers say". Pass
-`lookup` to resolve through something else, such as `dns.promises.resolve4`
-bound to a specific resolver, and give each probe a `name` when you mount
-more than one.
+`lookup` to resolve through something else, such as a `Resolver` pointed at
+specific servers with its `resolve4` result mapped to `{ address }` as
+below, and give each probe a `name` when you mount more than one.
 
 ```ts
 import { Resolver } from "node:dns/promises";

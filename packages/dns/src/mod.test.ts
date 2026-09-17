@@ -34,6 +34,15 @@ test("dnsProbe() accepts an array of addresses", async () => {
   assert.equal(report.status, "ok");
 });
 
+test("dnsProbe() skips empty entries to find an address", async () => {
+  const lookup = fakeLookup(
+    [],
+    () => Promise.resolve([{ address: "" }, { address: "127.0.0.1" }]),
+  );
+  const report = await runProbes([dnsProbe({ hostname: "localhost", lookup })]);
+  assert.equal(report.checks[0].status, "ok");
+});
+
 test("dnsProbe() fails when no address comes back", async () => {
   for (
     const result of [
