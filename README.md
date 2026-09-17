@@ -252,6 +252,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | [`@openstatus/health-upstash`](packages/upstash) | [![JSR](https://jsr.io/badges/@openstatus/health-upstash)](https://jsr.io/@openstatus/health-upstash) | [![npm](https://img.shields.io/npm/v/@openstatus/health-upstash)](https://www.npmjs.com/package/@openstatus/health-upstash) | Upstash Redis `PING` probe over REST |
 | [`@openstatus/health-workos`](packages/workos) | [![JSR](https://jsr.io/badges/@openstatus/health-workos)](https://jsr.io/@openstatus/health-workos) | [![npm](https://img.shields.io/npm/v/@openstatus/health-workos)](https://www.npmjs.com/package/@openstatus/health-workos) | WorkOS API reachability probe |
 | [`@openstatus/health-openai`](packages/openai) | [![JSR](https://jsr.io/badges/@openstatus/health-openai)](https://jsr.io/@openstatus/health-openai) | [![npm](https://img.shields.io/npm/v/@openstatus/health-openai)](https://www.npmjs.com/package/@openstatus/health-openai) | OpenAI API reachability probe (or any OpenAI-compatible host) |
+| [`@openstatus/health-anthropic`](packages/anthropic) | [![JSR](https://jsr.io/badges/@openstatus/health-anthropic)](https://jsr.io/@openstatus/health-anthropic) | [![npm](https://img.shields.io/npm/v/@openstatus/health-anthropic)](https://www.npmjs.com/package/@openstatus/health-anthropic) | Anthropic API reachability probe |
 
 ### Hosting metadata
 
@@ -303,6 +304,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `sentryProbe({ token?, baseUrl? })` | `sentry` | no | `GET {baseUrl}/api/0/`, with the auth token when given |
 | `posthogProbe({ personalApiKey, baseUrl? })` | `posthog` | no | `GET {baseUrl}/api/projects/@current/` with the personal API key |
 | `openaiProbe({ apiKey, baseUrl? })` | `openai` | no | `GET {baseUrl}/v1/models` with the API key |
+| `anthropicProbe({ apiKey, baseUrl? })` | `anthropic` | no | `GET {baseUrl}/v1/models` with the `x-api-key` header |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance or a base URL — they never read

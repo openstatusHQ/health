@@ -125,6 +125,10 @@
   expects 2xx from `GET {baseUrl}/v1/models` with the API key as a bearer
   header, against OpenAI or any OpenAI-compatible host. Non-critical by
   default; rejects an empty `apiKey` or an invalid `baseUrl` at construction.
+- New `@openstatus/health-anthropic` probe: `anthropicProbe({ apiKey, baseUrl?
+  })` expects 2xx from `GET {baseUrl}/v1/models` with the API key in the
+  `x-api-key` header and the `anthropic-version` header set. Non-critical by
+  default; rejects an empty `apiKey` or an invalid `baseUrl` at construction.
 
 ## 0.1.3
 

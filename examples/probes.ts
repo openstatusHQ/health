@@ -30,6 +30,7 @@ import { resendProbe } from "@openstatus/health-resend";
 import { sentryProbe } from "@openstatus/health-sentry";
 import { posthogProbe } from "@openstatus/health-posthog";
 import { openaiProbe } from "@openstatus/health-openai";
+import { anthropicProbe } from "@openstatus/health-anthropic";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { triggerDevProbe } from "@openstatus/health-trigger-dev";
@@ -230,6 +231,10 @@ export function exampleProbes(): Probe[] {
     openaiProbe({
       apiKey: env("OPENAI_API_KEY") || "unconfigured",
       skip: () => !env("OPENAI_API_KEY"),
+    }),
+    anthropicProbe({
+      apiKey: env("ANTHROPIC_API_KEY") || "unconfigured",
+      skip: () => !env("ANTHROPIC_API_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
