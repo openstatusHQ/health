@@ -203,8 +203,8 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("STRIPE_SECRET_KEY"),
     }),
     resendProbe({
-      apiKey: env("RESEND_API_KEY") ?? "unconfigured",
-      skip: () => env("RESEND_API_KEY") == null,
+      apiKey: env("RESEND_API_KEY") || "unconfigured",
+      skip: () => !env("RESEND_API_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
