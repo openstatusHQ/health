@@ -5,13 +5,14 @@
  */
 
 /**
- * A shallow copy of `value` without `keys`, or `value` itself when there is
- * nothing to omit.
+ * A shallow copy of `value` without `keys`, typed without them too. Returns
+ * `value` itself when there is nothing to omit. `K` defaults to `never`, so
+ * omitting nothing keeps the original type.
  */
-export function omitFields<T extends object>(
+export function omitFields<T extends object, K extends keyof T = never>(
   value: T,
-  keys: readonly (keyof T)[] | undefined,
-): T {
+  keys?: readonly K[],
+): Omit<T, K> {
   if (keys == null || keys.length === 0) return value;
   const blocked: ReadonlySet<keyof T> = new Set(keys);
   const result: Partial<T> = {};
@@ -19,5 +20,5 @@ export function omitFields<T extends object>(
     if (blocked.has(key)) continue;
     result[key] = value[key];
   }
-  return result as T;
+  return result as Omit<T, K>;
 }

@@ -4,9 +4,10 @@
  * @module
  */
 
-type EnvSource = Readonly<Record<string, string | undefined>>;
+/** A record of environment variables, as `process.env` or a test double. */
+export type ServerEnv = Readonly<Record<string, string | undefined>>;
 
-type ProcessLike = { env?: EnvSource };
+type ProcessLike = { env?: ServerEnv };
 
 type DenoLike = { env?: { get(name: string): string | undefined } };
 
@@ -17,11 +18,37 @@ type DenoLike = { env?: { get(name: string): string | undefined } };
  */
 export function readEnv(
   name: string,
-  source?: Readonly<Record<string, string | undefined>>,
+  source?: ServerEnv,
 ): string | undefined {
   if (source != null) return source[name];
   const runtime = globalThis as { process?: ProcessLike; Deno?: DenoLike };
   return readProcessEnv(runtime, name) ?? readDenoEnv(runtime, name);
+}
+
+/**
+ * Read one environment variable as non-empty text: `undefined` when the
+ * variable is missing or set to `""`.
+ */
+export function readEnvText(
+  name: string,
+  source?: ServerEnv,
+): string | undefined {
+  const value = readEnv(name, source);
+  return value == null || value === "" ? undefined : value;
+}
+
+/**
+ * Read one environment variable as a finite number: `undefined` when the
+ * variable is missing, empty, or not a number.
+ */
+export function readEnvCount(
+  name: string,
+  source?: ServerEnv,
+): number | undefined {
+  const value = readEnvText(name, source);
+  if (value == null) return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
 }
 
 function readProcessEnv(

@@ -18,7 +18,7 @@
  * @module
  */
 
-import type { HealthReport, JsonObject } from "@openstatus/health";
+import type { HealthReport, JsonObject, OmitOptions } from "@openstatus/health";
 import { omitFields } from "@openstatus/health";
 
 /** A `Request` carrying Cloudflare's `cf` properties. */
@@ -48,15 +48,19 @@ export type CloudflareServerInfo = {
 };
 
 /** Options for `cloudflareServer()`. */
-export type CloudflareServerOptions = {
+export type CloudflareServerOptions<
+  K extends keyof CloudflareServerInfo = keyof CloudflareServerInfo,
+> = OmitOptions<CloudflareServerInfo, K> & {
+  /** The `version_metadata` binding. */
+  readonly version?: CloudflareVersionMetadata;
+};
+
+/** Options for `cloudflareExtend()`. */
+export type CloudflareExtendOptions<Ctx> = {
   /** The `version_metadata` binding. */
   readonly version?: CloudflareVersionMetadata;
   /** Fields to leave out of the rendered object. */
   readonly omit?: readonly (keyof CloudflareServerInfo)[];
-};
-
-/** Options for `cloudflareExtend()`. */
-export type CloudflareExtendOptions<Ctx> = CloudflareServerOptions & {
   /** Pick the `Request` out of the framework context when it is not the context itself. */
   readonly request?: (ctx: Ctx) => CloudflareRequestLike;
 };
@@ -66,10 +70,12 @@ function text(value: string | undefined): string | undefined {
 }
 
 /** Read Cloudflare metadata from a request; `undefined` when `request.cf` is missing. */
-export function cloudflareServer(
+export function cloudflareServer<
+  K extends keyof CloudflareServerInfo = never,
+>(
   request: CloudflareRequestLike,
-  options?: CloudflareServerOptions,
-): CloudflareServerInfo | undefined {
+  options?: CloudflareServerOptions<K>,
+): Omit<CloudflareServerInfo, K> | undefined {
   if (request?.cf == null) return undefined;
 
   const region = text(request.cf.colo);

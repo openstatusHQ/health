@@ -48,6 +48,8 @@ test("vercelServer() omits the requested fields", () => {
 
 test("vercelServer() can omit the platform itself", () => {
   const server = vercelServer({ env: fullEnv, omit: ["platform"] });
+  // @ts-expect-error `platform` was omitted, so it is gone from the result type
+  server?.platform;
   assert.equal("platform" in (server ?? {}), false);
 });
 

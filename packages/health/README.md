@@ -130,7 +130,10 @@ const redis = probe({
 Bun, Deno and Workers with `nodejs_compat`, and answers `undefined` instead of
 throwing where env access is denied — Deno without `--allow-env` throws on both
 `process.env` and `Deno.env.get`. Pass `source` to supply the values yourself,
-which is how tests avoid mutating the environment.
+which is how tests avoid mutating the environment. `readEnvText(name, source?)`
+and `readEnvCount(name, source?)` build on it for the hosting packages: the
+first treats `""` as absent, the second parses a finite number and drops
+anything else.
 
 Status aggregation:
 
@@ -213,7 +216,9 @@ The defaults are exported as `defaultTimeoutMs`, `defaultCacheMs`,
   ```
 
 - `readEnv(name, source?)` — portable environment lookup that never throws.
-- `omitFields(value, keys?)` — shallow copy of `value` with the named keys removed, or `value` itself when nothing is omitted. The hosting packages use it for their `omit` option.
+- `readEnvText(name, source?)` / `readEnvCount(name, source?)` — the same lookup, reading non-empty text or a finite number.
+- `omitFields(value, keys?)` — shallow copy of `value` with the named keys removed, or `value` itself when nothing is omitted. The result type omits the keys too, so a required field you drop is a compile error to read. The hosting packages use it for their `omit` option.
+- `serverExtend(read)` — memoise a `() => serverInfo | undefined` reader into an `extend` hook that renders `{ server }` once and `{}` off-platform; the shared shape behind every hosting package's `*Extend()`. `OmitOptions<TInfo, K>` and `ServerEnvOptions<TInfo, K>` are the option types hosting packages build on.
 - `probeUrl({ probe, field, value, path? })` — parse a URL option at construction and throw a `ProbeConfigError` that names the probe and the field (`upstashProbe: "url" must be an absolute URL, got undefined`) instead of a bare `Invalid URL` from inside the library. Use it in your own probe factories.
 
 ## Errors

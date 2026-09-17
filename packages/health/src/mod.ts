@@ -53,8 +53,13 @@ export {
   ProbeConfigError,
   ProbeTimeoutError,
 } from "./errors.ts";
-export { readEnv } from "./env.ts";
+export { readEnv, readEnvCount, readEnvText, type ServerEnv } from "./env.ts";
 export { omitFields } from "./omit.ts";
+export {
+  type OmitOptions,
+  type ServerEnvOptions,
+  serverExtend,
+} from "./server.ts";
 export { defaultTimeoutMs, runProbes } from "./run.ts";
 export { createHealthCheck, defaultCacheMs } from "./check.ts";
 export { createHealthResponder, resolveHealthCheck } from "./responder.ts";

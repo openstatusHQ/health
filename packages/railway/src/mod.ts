@@ -11,8 +11,8 @@
  * @module
  */
 
-import type { JsonObject } from "@openstatus/health";
-import { omitFields, readEnv } from "@openstatus/health";
+import type { JsonObject, ServerEnvOptions } from "@openstatus/health";
+import { omitFields, readEnvText, serverExtend } from "@openstatus/health";
 
 /** The `server` object rendered on Railway; fields Railway does not set are absent. */
 export type RailwayServerInfo = {
@@ -35,31 +35,24 @@ export type RailwayServerInfo = {
 };
 
 /** Options for `railwayServer()` and `railwayExtend()`. */
-export type RailwayServerOptions = {
-  /** Environment to read instead of the process environment; for tests. */
-  readonly env?: Readonly<Record<string, string | undefined>>;
-  /** Fields to leave out of the rendered object. */
-  readonly omit?: readonly (keyof RailwayServerInfo)[];
-};
-
-function text(value: string | undefined): string | undefined {
-  return value == null || value === "" ? undefined : value;
-}
+export type RailwayServerOptions<
+  K extends keyof RailwayServerInfo = keyof RailwayServerInfo,
+> = ServerEnvOptions<RailwayServerInfo, K>;
 
 /** Read Railway metadata from the environment; `undefined` off Railway. */
-export function railwayServer(
-  options?: RailwayServerOptions,
-): RailwayServerInfo | undefined {
+export function railwayServer<K extends keyof RailwayServerInfo = never>(
+  options?: RailwayServerOptions<K>,
+): Omit<RailwayServerInfo, K> | undefined {
   const env = options?.env;
-  const instanceId = text(readEnv("RAILWAY_REPLICA_ID", env));
-  const service = text(readEnv("RAILWAY_SERVICE_NAME", env));
+  const instanceId = readEnvText("RAILWAY_REPLICA_ID", env);
+  const service = readEnvText("RAILWAY_SERVICE_NAME", env);
   if (instanceId == null && service == null) return undefined;
 
-  const region = text(readEnv("RAILWAY_REPLICA_REGION", env));
-  const version = text(readEnv("RAILWAY_DEPLOYMENT_ID", env));
-  const environment = text(readEnv("RAILWAY_ENVIRONMENT_NAME", env));
-  const project = text(readEnv("RAILWAY_PROJECT_NAME", env));
-  const commitSha = text(readEnv("RAILWAY_GIT_COMMIT_SHA", env));
+  const region = readEnvText("RAILWAY_REPLICA_REGION", env);
+  const version = readEnvText("RAILWAY_DEPLOYMENT_ID", env);
+  const environment = readEnvText("RAILWAY_ENVIRONMENT_NAME", env);
+  const project = readEnvText("RAILWAY_PROJECT_NAME", env);
+  const commitSha = readEnvText("RAILWAY_GIT_COMMIT_SHA", env);
 
   const info: RailwayServerInfo = {
     platform: "railway",
@@ -75,15 +68,8 @@ export function railwayServer(
 }
 
 /** An `extend` hook that renders `{ server }` on Railway and `{}` elsewhere, computed once. */
-export function railwayExtend(
-  options?: RailwayServerOptions,
+export function railwayExtend<K extends keyof RailwayServerInfo = never>(
+  options?: RailwayServerOptions<K>,
 ): () => JsonObject {
-  let cached: JsonObject | undefined;
-  return (): JsonObject => {
-    if (cached == null) {
-      const server = railwayServer(options);
-      cached = server == null ? {} : { server };
-    }
-    return cached;
-  };
+  return serverExtend(() => railwayServer(options));
 }

@@ -22,3 +22,17 @@ test("omitFields() does not mutate the original", () => {
   omitFields(value, ["a"]);
   assert.deepEqual(value, { a: 1, b: 2 });
 });
+
+test("omitFields() types the result without the omitted keys", () => {
+  const value: { a: number; b?: number } = { a: 1, b: 2 };
+  const omitted = omitFields(value, ["a"]);
+  // @ts-expect-error `a` was omitted, so it is gone from the result type
+  omitted.a;
+  assert.deepEqual(omitted, { b: 2 });
+});
+
+test("omitFields() keeps the original type when nothing is omitted", () => {
+  const value: { a: number; b?: number } = { a: 1 };
+  const kept = omitFields(value, undefined);
+  assert.equal(kept.a, 1);
+});

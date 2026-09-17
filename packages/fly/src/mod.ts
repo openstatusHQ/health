@@ -11,8 +11,13 @@
  * @module
  */
 
-import type { JsonObject } from "@openstatus/health";
-import { omitFields, readEnv } from "@openstatus/health";
+import type { JsonObject, ServerEnvOptions } from "@openstatus/health";
+import {
+  omitFields,
+  readEnvCount,
+  readEnvText,
+  serverExtend,
+} from "@openstatus/health";
 
 /** The `server` object rendered on Fly.io; fields Fly does not set are absent. */
 export type FlyServerInfo = {
@@ -37,39 +42,26 @@ export type FlyServerInfo = {
 };
 
 /** Options for `flyServer()` and `flyExtend()`. */
-export type FlyServerOptions = {
-  /** Environment to read instead of the process environment; for tests. */
-  readonly env?: Readonly<Record<string, string | undefined>>;
-  /** Fields to leave out of the rendered object. */
-  readonly omit?: readonly (keyof FlyServerInfo)[];
-};
-
-function text(value: string | undefined): string | undefined {
-  return value == null || value === "" ? undefined : value;
-}
-
-function count(value: string | undefined): number | undefined {
-  if (text(value) == null) return undefined;
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : undefined;
-}
+export type FlyServerOptions<
+  K extends keyof FlyServerInfo = keyof FlyServerInfo,
+> = ServerEnvOptions<FlyServerInfo, K>;
 
 /** Read Fly.io metadata from the environment; `undefined` off Fly. */
-export function flyServer(
-  options?: FlyServerOptions,
-): FlyServerInfo | undefined {
+export function flyServer<K extends keyof FlyServerInfo = never>(
+  options?: FlyServerOptions<K>,
+): Omit<FlyServerInfo, K> | undefined {
   const env = options?.env;
-  const instanceId = text(readEnv("FLY_MACHINE_ID", env)) ??
-    text(readEnv("FLY_ALLOC_ID", env));
-  const service = text(readEnv("FLY_APP_NAME", env));
+  const instanceId = readEnvText("FLY_MACHINE_ID", env) ??
+    readEnvText("FLY_ALLOC_ID", env);
+  const service = readEnvText("FLY_APP_NAME", env);
   if (instanceId == null && service == null) return undefined;
 
-  const region = text(readEnv("FLY_REGION", env));
-  const version = text(readEnv("FLY_IMAGE_REF", env));
-  const primaryRegion = text(readEnv("PRIMARY_REGION", env));
-  const processGroup = text(readEnv("FLY_PROCESS_GROUP", env));
-  const machineVersion = text(readEnv("FLY_MACHINE_VERSION", env));
-  const memoryMb = count(readEnv("FLY_VM_MEMORY_MB", env));
+  const region = readEnvText("FLY_REGION", env);
+  const version = readEnvText("FLY_IMAGE_REF", env);
+  const primaryRegion = readEnvText("PRIMARY_REGION", env);
+  const processGroup = readEnvText("FLY_PROCESS_GROUP", env);
+  const machineVersion = readEnvText("FLY_MACHINE_VERSION", env);
+  const memoryMb = readEnvCount("FLY_VM_MEMORY_MB", env);
 
   const info: FlyServerInfo = {
     platform: "fly",
@@ -86,13 +78,8 @@ export function flyServer(
 }
 
 /** An `extend` hook that renders `{ server }` on Fly.io and `{}` elsewhere, computed once. */
-export function flyExtend(options?: FlyServerOptions): () => JsonObject {
-  let cached: JsonObject | undefined;
-  return (): JsonObject => {
-    if (cached == null) {
-      const server = flyServer(options);
-      cached = server == null ? {} : { server };
-    }
-    return cached;
-  };
+export function flyExtend<K extends keyof FlyServerInfo = never>(
+  options?: FlyServerOptions<K>,
+): () => JsonObject {
+  return serverExtend(() => flyServer(options));
 }
