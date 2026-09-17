@@ -62,12 +62,20 @@ export function exampleProbes(): Probe[] {
       "mysql://user:pass@aws.connect.psdb.cloud/app",
   });
 
-  const ioredis = new IORedis(env("REDIS_URL") ?? "redis://localhost:6379", {
+    const ioredis = new IORedis(env("REDIS_URL") || "redis://localhost:6379", {
     lazyConnect: true,
   });
+  // node-redis only connects on connect(); open it on the first probe so
+  // this factory stays synchronous.
   const nodeRedis = createRedisClient({
-    url: env("REDIS_URL") ?? "redis://localhost:6379",
+    url: env("REDIS_URL") || "redis://localhost:6379",
   });
+  const nodeRedisOnDemand = {
+    ping: async (): Promise<string> => {
+      if (!nodeRedis.isOpen) await nodeRedis.connect();
+      return await nodeRedis.ping();
+    },
+  };
 
   const tursoServerless = connectTursoServerless({
     url: env("TURSO_DATABASE_URL") ?? "http://localhost:8080",
@@ -122,12 +130,12 @@ export function exampleProbes(): Probe[] {
     redisProbe({
       client: ioredis,
       name: "ioredis",
-      skip: () => env("REDIS_URL") == null,
+      skip: () => !env("REDIS_URL"),
     }),
     redisProbe({
-      client: nodeRedis,
+      client: nodeRedisOnDemand,
       name: "node-redis",
-      skip: () => env("REDIS_URL") == null,
+      skip: () => !env("REDIS_URL"),
     }),
     tinybirdProbe({
       baseUrl: env("TINYBIRD_URL"),
