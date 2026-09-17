@@ -75,6 +75,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-anthropic": { symbol: "anthropicProbe", allowed: [] },
   "@openstatus/health-algolia": { symbol: "algoliaProbe", allowed: [] },
   "@openstatus/health-meilisearch": { symbol: "meilisearchProbe", allowed: [] },
+  "@openstatus/health-typesense": { symbol: "typesenseProbe", allowed: [] },
 };
 
 const banned = [
