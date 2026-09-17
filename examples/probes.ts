@@ -228,8 +228,8 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("POSTHOG_PERSONAL_API_KEY"),
     }),
     openaiProbe({
-      apiKey: env("OPENAI_API_KEY") ?? "unconfigured",
-      skip: () => env("OPENAI_API_KEY") == null,
+      apiKey: env("OPENAI_API_KEY") || "unconfigured",
+      skip: () => !env("OPENAI_API_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

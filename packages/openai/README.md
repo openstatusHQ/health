@@ -23,8 +23,8 @@ Deno.serve(
       // the factory validates `apiKey` at construction, so pass a
       // placeholder and let `skip` keep the unconfigured check from running.
       openaiProbe({
-        apiKey: apiKey ?? "unconfigured",
-        skip: () => apiKey == null,
+        apiKey: apiKey || "unconfigured",
+        skip: () => !apiKey,
       }),
     ],
   }),
@@ -47,12 +47,12 @@ here.
 
 ```ts
 openaiProbe({
-  apiKey,
+  apiKey: apiKey || "unconfigured",
   // optional overrides from the Probe contract
   name: "llm",
   critical: true,
   timeoutMs: 2000,
-  skip: () => env.OPENAI_API_KEY == null,
+  skip: () => !apiKey,
 });
 ```
 
