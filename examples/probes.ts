@@ -180,9 +180,9 @@ export function exampleProbes(): Probe[] {
       skip: () => env("SUPABASE_NOOP") === "true",
     }),
     qstashProbe({
-      token: env("QSTASH_TOKEN") ?? "unconfigured",
+      token: env("QSTASH_TOKEN") || "unconfigured",
       baseUrl: env("QSTASH_URL"),
-      skip: () => env("QSTASH_TOKEN") == null,
+      skip: () => !env("QSTASH_TOKEN"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

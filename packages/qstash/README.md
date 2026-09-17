@@ -45,7 +45,7 @@ qstashProbe({
   name: "queue",
   critical: true,
   timeoutMs: 2000,
-  skip: () => env.QSTASH_TOKEN == null,
+  skip: () => token == null,
 });
 ```
 
