@@ -186,9 +186,9 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("QSTASH_TOKEN"),
     }),
     inngestProbe({
-      signingKey: env("INNGEST_SIGNING_KEY") ?? "unconfigured",
+      signingKey: env("INNGEST_SIGNING_KEY") || "unconfigured",
       baseUrl: env("INNGEST_API_URL"),
-      skip: () => env("INNGEST_SIGNING_KEY") == null,
+      skip: () => !env("INNGEST_SIGNING_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

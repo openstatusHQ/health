@@ -23,8 +23,8 @@ Deno.serve(
       // the factory validates `signingKey` at construction, so pass a
       // placeholder and let `skip` keep the unconfigured check from running.
       inngestProbe({
-        signingKey: signingKey ?? "unconfigured",
-        skip: () => signingKey == null,
+        signingKey: signingKey || "unconfigured",
+        skip: () => !signingKey,
       }),
     ],
   }),
@@ -49,7 +49,7 @@ inngestProbe({
   name: "jobs",
   critical: true,
   timeoutMs: 2000,
-  skip: () => env.INNGEST_SIGNING_KEY == null,
+  skip: () => !signingKey,
 });
 ```
 
