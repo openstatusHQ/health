@@ -27,6 +27,7 @@ import { qstashProbe } from "@openstatus/health-qstash";
 import { inngestProbe } from "@openstatus/health-inngest";
 import { stripeProbe } from "@openstatus/health-stripe";
 import { resendProbe } from "@openstatus/health-resend";
+import { sentryProbe } from "@openstatus/health-sentry";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { triggerDevProbe } from "@openstatus/health-trigger-dev";
@@ -215,6 +216,10 @@ export function exampleProbes(): Probe[] {
     workosProbe({
       apiKey: env("WORKOS_API_KEY") || "unconfigured",
       skip: () => !env("WORKOS_API_KEY"),
+    }),
+    sentryProbe({
+      token: env("SENTRY_AUTH_TOKEN") || undefined,
+      skip: () => env("SENTRY_NOOP") === "true",
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
