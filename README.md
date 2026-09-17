@@ -317,8 +317,8 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `tcpProbe({ host, port })` | `tcp` | no | a TCP connection to `host:port` is accepted |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
-overrides. Probes take a client instance or a base URL — they never read
-`process.env` themselves.
+overrides. Probes take a client instance, a base URL or, for `tcpProbe`, a
+host and port — they never read `process.env` themselves.
 
 ### Writing your own probe
 

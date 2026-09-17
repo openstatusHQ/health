@@ -1,6 +1,6 @@
 {
   "name": "@openstatus/health-tcp",
-  "version": "0.1.3",
+  "version": "0.1.4-dev.0",
   "description": "TCP connect probe for @openstatus/health",
   "keywords": [
     "openstatus",
@@ -48,9 +48,10 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@openstatus/health": "^0.1.3"
+    "@openstatus/health": "^0.1.4-dev.0"
   },
   "devDependencies": {
+    "@types/node": ">=22",
     "tsdown": "^0.12.7",
     "typescript": "^5.8.3"
   },

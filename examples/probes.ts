@@ -263,9 +263,9 @@ export function exampleProbes(): Probe[] {
     }),
     tcpProbe({
       name: "smtp",
-      host: env("SMTP_HOST") ?? "localhost",
-      port: Number(env("SMTP_PORT") ?? 587),
-      skip: () => env("SMTP_HOST") == null,
+      host: env("SMTP_HOST") || "localhost",
+      port: env("SMTP_HOST") ? Number(env("SMTP_PORT") || 587) : 587,
+      skip: () => !env("SMTP_HOST"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
