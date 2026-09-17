@@ -129,6 +129,7 @@ export function tlsProbe(options: TlsProbeOptions): Probe {
     run: (signal) =>
       new Promise<{ expiresAt: string; daysLeft: number }>(
         (resolve, reject) => {
+          signal.throwIfAborted();
           const socket = connect({ host, port, servername: host });
           const settle = (finish: () => void) => {
             signal.removeEventListener("abort", onAbort);

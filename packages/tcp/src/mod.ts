@@ -76,6 +76,7 @@ export function tcpProbe(options: TcpProbeOptions): Probe {
     skip: options.skip,
     run: (signal) =>
       new Promise<void>((resolve, reject) => {
+        signal.throwIfAborted();
         const socket = connect({ host, port });
         const settle = (finish: () => void) => {
           signal.removeEventListener("abort", onAbort);

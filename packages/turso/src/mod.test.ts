@@ -64,3 +64,18 @@ test("tursoProbe() honours name, critical and skip overrides", async () => {
   assert.equal(check.critical, false);
   assert.equal(check.status, "skipped");
 });
+
+test("tursoProbe() throws at construction without execute()", () => {
+  assert.throws(
+    () => tursoProbe({ client: {} as LibsqlLikeClient }),
+    /tursoProbe: "client" must expose execute\(\), got an object with no keys/,
+  );
+  assert.throws(
+    () => tursoProbe({ client: { query: 1 } as unknown as LibsqlLikeClient }),
+    /got an object with keys query/,
+  );
+  assert.throws(
+    () => tursoProbe({ client: undefined as unknown as LibsqlLikeClient }),
+    /got undefined/,
+  );
+});

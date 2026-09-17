@@ -115,6 +115,25 @@ test("tcpProbe() names the invalid option at construction", () => {
   }
 });
 
+test("tcpProbe() does not connect when the signal is already aborted", async () => {
+  let calls = 0;
+  const connect: TcpConnect = () => {
+    calls += 1;
+    throw new Error("connect called");
+  };
+  const probe = tcpProbe({ host: "localhost", port: 80, connect });
+  const controller = new AbortController();
+  controller.abort(new Error("already aborted"));
+  await assert.rejects(async () => {
+    await probe.run(controller.signal, {
+      name: "tcp",
+      critical: false,
+      timeoutMs: 1,
+    });
+  }, /already aborted/);
+  assert.equal(calls, 0);
+});
+
 test("tcpProbe() honours name, critical and skip overrides", async () => {
   const track = { destroyed: 0 };
   const report = await runProbes([

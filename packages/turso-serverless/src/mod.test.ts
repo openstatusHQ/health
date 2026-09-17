@@ -64,3 +64,27 @@ test("tursoServerlessProbe() honours name, critical and skip overrides", async (
   assert.equal(check.critical, false);
   assert.equal(check.status, "skipped");
 });
+
+test("tursoServerlessProbe() throws at construction without get()", () => {
+  assert.throws(
+    () =>
+      tursoServerlessProbe({
+        connection: {} as TursoServerlessConnection,
+      }),
+    /tursoServerlessProbe: "connection" must expose get\(\), got an object with no keys/,
+  );
+  assert.throws(
+    () =>
+      tursoServerlessProbe({
+        connection: { execute: 1 } as unknown as TursoServerlessConnection,
+      }),
+    /got an object with keys execute/,
+  );
+  assert.throws(
+    () =>
+      tursoServerlessProbe({
+        connection: undefined as unknown as TursoServerlessConnection,
+      }),
+    /got undefined/,
+  );
+});

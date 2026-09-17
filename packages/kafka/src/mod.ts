@@ -35,6 +35,12 @@ export interface KafkaLikeAdmin {
   describeCluster(): PromiseLike<KafkaClusterDescription>;
 }
 
+/** What a healthy check resolves with. */
+export interface KafkaBrokerCount {
+  /** Number of brokers currently in the cluster. */
+  readonly brokers: number;
+}
+
 /** Options for `kafkaProbe()`. */
 export interface KafkaProbeOptions extends ProbeOverrides {
   /** A connected `kafkajs` `Admin` client. */
@@ -56,7 +62,7 @@ export function kafkaProbe(options: KafkaProbeOptions): Probe {
     critical: options.critical ?? false,
     timeoutMs: options.timeoutMs,
     skip: options.skip,
-    run: async () => {
+    run: async (): Promise<KafkaBrokerCount> => {
       const cluster = await admin.describeCluster();
       const brokers = cluster?.brokers;
       if (!Array.isArray(brokers)) throw new Error("unexpected response shape");

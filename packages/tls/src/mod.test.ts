@@ -185,6 +185,25 @@ test("tlsProbe() names the invalid option at construction", () => {
   );
 });
 
+test("tlsProbe() does not connect when the signal is already aborted", async () => {
+  let calls = 0;
+  const connect: TlsConnect = () => {
+    calls += 1;
+    throw new Error("connect called");
+  };
+  const probe = tlsProbe({ host: "h", connect });
+  const controller = new AbortController();
+  controller.abort(new Error("already aborted"));
+  await assert.rejects(async () => {
+    await probe.run(controller.signal, {
+      name: "tls",
+      critical: false,
+      timeoutMs: 1,
+    });
+  }, /already aborted/);
+  assert.equal(calls, 0);
+});
+
 test("tlsProbe() honours name, critical and skip overrides", async () => {
   const track = { calls: [] as string[], destroyed: 0 };
   const report = await runProbes([
