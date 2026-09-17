@@ -78,6 +78,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-typesense": { symbol: "typesenseProbe", allowed: [] },
   "@openstatus/health-convex": { symbol: "convexProbe", allowed: [] },
   "@openstatus/health-tcp": { symbol: "tcpProbe", allowed: [] },
+  "@openstatus/health-dns": { symbol: "dnsProbe", allowed: [] },
 };
 
 const banned = [

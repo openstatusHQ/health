@@ -151,6 +151,10 @@
   socket with `node:net` and reports `ok` once the connection is established;
   a timeout destroys the pending socket. Non-critical by default; rejects an
   empty `host` or a port outside 1–65535 at construction.
+- New `@openstatus/health-dns` probe: `dnsProbe({ hostname, lookup? })`
+  resolves a hostname with `dns.promises.lookup` (or a custom `lookup`) and
+  fails the check when no address comes back. Non-critical by default; rejects
+  an empty `hostname` at construction.
 
 ## 0.1.3
 
