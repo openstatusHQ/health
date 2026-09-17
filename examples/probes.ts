@@ -39,6 +39,7 @@ import { tcpProbe } from "@openstatus/health-tcp";
 import { dnsProbe } from "@openstatus/health-dns";
 import { tlsProbe } from "@openstatus/health-tls";
 import { diskProbe } from "@openstatus/health-disk";
+import { memoryProbe } from "@openstatus/health-memory";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { triggerDevProbe } from "@openstatus/health-trigger-dev";
@@ -279,6 +280,7 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("TLS_HOST"),
     }),
     diskProbe({ path: env("DATA_DIR") || "." }),
+    memoryProbe(),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
       token: env("UPSTASH_REDIS_REST_TOKEN") ?? "unconfigured",

@@ -166,6 +166,11 @@
   `fs.promises.statfs` and throws `DiskSpaceError` when free space is below
   10% (or the given thresholds). Non-critical by default; rejects an empty
   `path` or a negative threshold at construction.
+- New `@openstatus/health-memory` probe: `memoryProbe({ maxHeapUsedPercent?,
+  maxRssBytes? })` compares `process.memoryUsage()` with
+  `v8.getHeapStatistics().heap_size_limit` and throws `MemoryPressureError`
+  above 90% heap use (or the given thresholds). Non-critical by default;
+  rejects a negative or non-finite threshold at construction.
 
 ## 0.1.3
 
