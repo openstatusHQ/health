@@ -67,13 +67,30 @@ test("diskProbe() honours minFreeBytes and drops the percent default", async () 
 });
 
 test("diskProbe() fails on an unexpected statfs result", async () => {
+  for (
+    const stats of [
+      { bsize: 4096, blocks: 0, bavail: 0 },
+      { bsize: 0, blocks: 1_000_000, bavail: 500_000 },
+      { bsize: 4096, blocks: Infinity, bavail: 500_000 },
+      { bsize: 4096, blocks: 1_000_000, bavail: NaN },
+    ]
+  ) {
+    const report = await runProbes(
+      [diskProbe({ statfs: fakeStatfs([], stats) })],
+      { formatError: "message" },
+    );
+    assert.equal(report.checks[0].error, "unexpected statfs result");
+  }
+});
+
+test("diskProbe() enforces minFreePercent on the exact ratio, not the rounded one", async () => {
+  const stats = { bsize: 1, blocks: 100_000, bavail: 9_996 };
   const report = await runProbes(
-    [diskProbe({
-      statfs: fakeStatfs([], { bsize: 4096, blocks: 0, bavail: 0 }),
-    })],
+    [diskProbe({ minFreePercent: 10, statfs: fakeStatfs([], stats) })],
     { formatError: "message" },
   );
-  assert.equal(report.checks[0].error, "unexpected statfs result");
+  assert.equal(report.checks[0].status, "failed");
+  assert.equal(report.checks[0].error, "10% free, less than 10%");
 });
 
 test("diskProbe() reports failed when statfs() rejects", async () => {

@@ -278,7 +278,7 @@ export function exampleProbes(): Probe[] {
       host: env("TLS_HOST") || "localhost",
       skip: () => !env("TLS_HOST"),
     }),
-    diskProbe({ path: env("DATA_DIR") ?? "." }),
+    diskProbe({ path: env("DATA_DIR") || "." }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
       token: env("UPSTASH_REDIS_REST_TOKEN") ?? "unconfigured",

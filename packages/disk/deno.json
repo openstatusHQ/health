@@ -1,6 +1,6 @@
 {
   "name": "@openstatus/health-disk",
-  "version": "0.1.3",
+  "version": "0.1.4-dev.0",
   "license": "MIT",
   "exports": "./src/mod.ts",
   "exclude": [
@@ -8,7 +8,7 @@
   ],
   "tasks": {
     "build": "tsdown",
-    "test": "deno test --allow-net --allow-env",
+    "test": "deno test --allow-net --allow-env --allow-read --allow-sys",
     "test:node": "node --experimental-transform-types --test"
   },
   "publish": {

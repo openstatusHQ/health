@@ -26,9 +26,9 @@ that holds it, so `/data` and `/data/app.db` answer the same. Free space is
 what an unprivileged process can still use (`bavail`), which is what your
 writes see once root's reserved blocks are excluded. The check fails below
 `minFreePercent` (10% by default) or below `minFreeBytes` when that is set
-instead; pass both to enforce both. A failing check throws
-`DiskSpaceError`, which carries the `usage`, and a healthy one reports
-`freeBytes`, `totalBytes` and `freePercent` in its result.
+instead; pass both to enforce both. A threshold failure throws
+`DiskSpaceError`, which carries the `usage`; a `statfs` error or an
+unreadable result fails the check with that error instead.
 
 ```ts
 diskProbe({
@@ -47,9 +47,9 @@ to act on before writes start failing. Set `critical: true` when the
 instance should stop taking traffic instead — a database volume, for
 instance.
 
-This probe uses `fs.promises.statfs` from `node:fs`, so it runs on Node.js
-(18.15 or newer), Deno and Bun but not on edge runtimes. `statfs` is typed
-structurally and can be replaced for tests.
+This probe uses `fs.promises.statfs` from `node:fs`, so it runs on Node.js,
+Deno and Bun but not on edge runtimes. `statfs` is typed structurally and
+can be replaced for tests.
 
 ## About openstatus
 

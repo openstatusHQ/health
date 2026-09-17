@@ -119,7 +119,10 @@ export function diskProbe(options: DiskProbeOptions = {}): Probe {
           `${usage.freeBytes} bytes free, fewer than ${minFreeBytes}`,
         );
       }
-      if (minFreePercent != null && usage.freePercent < minFreePercent) {
+      if (
+        minFreePercent != null &&
+        (usage.freeBytes / usage.totalBytes) * 100 < minFreePercent
+      ) {
         throw new DiskSpaceError(
           usage,
           `${usage.freePercent}% free, less than ${minFreePercent}%`,
@@ -133,8 +136,8 @@ export function diskProbe(options: DiskProbeOptions = {}): Probe {
 function toUsage(stats: DiskStats): DiskUsage {
   const { bsize, blocks, bavail } = stats;
   if (
-    ![bsize, blocks, bavail].every((n) => typeof n === "number" && n >= 0) ||
-    blocks === 0
+    ![bsize, blocks, bavail].every((n) => Number.isFinite(n) && n >= 0) ||
+    bsize === 0 || blocks === 0
   ) {
     throw new Error("unexpected statfs result");
   }
