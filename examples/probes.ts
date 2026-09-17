@@ -217,7 +217,10 @@ export function exampleProbes(): Probe[] {
       apiKey: env("WORKOS_API_KEY") || "unconfigured",
       skip: () => !env("WORKOS_API_KEY"),
     }),
-    sentryProbe({ token: env("SENTRY_AUTH_TOKEN") }),
+    sentryProbe({
+      token: env("SENTRY_AUTH_TOKEN") || undefined,
+      skip: () => env("SENTRY_NOOP") === "true",
+    }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
       token: env("UPSTASH_REDIS_REST_TOKEN") ?? "unconfigured",

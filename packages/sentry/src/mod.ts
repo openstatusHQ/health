@@ -33,7 +33,7 @@ export interface SentryProbeOptions extends ProbeOverrides {
   readonly fetch?: typeof fetch;
 }
 
-/** A probe that expects 2xx from `GET {baseUrl}/api/0/`, sending `token` as a bearer token when given; non-critical by default. Throws `ProbeConfigError` for an empty `token` or an invalid `baseUrl`. */
+/** A probe that expects 2xx from `GET {baseUrl}/api/0/`, sending `token` as a bearer token when given; non-critical by default. Throws `ProbeConfigError` for an empty or non-string `token` or an invalid `baseUrl`. */
 export function sentryProbe(options: SentryProbeOptions = {}): Probe {
   const doFetch = options.fetch ?? globalThis.fetch;
   const url = probeUrl({
@@ -42,8 +42,17 @@ export function sentryProbe(options: SentryProbeOptions = {}): Probe {
     value: options.baseUrl ?? sentryDefaultBaseUrl,
     path: "/api/0/",
   });
-  if (options.token != null && options.token.length === 0) {
-    throw new ProbeConfigError("sentryProbe", "token", "must not be empty");
+  if (
+    options.token != null &&
+    (typeof options.token !== "string" || options.token.length === 0)
+  ) {
+    throw new ProbeConfigError(
+      "sentryProbe",
+      "token",
+      typeof options.token !== "string"
+        ? `must be a string, got ${String(options.token)}`
+        : "must not be empty",
+    );
   }
   const headers = options.token == null
     ? undefined

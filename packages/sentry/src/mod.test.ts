@@ -89,6 +89,10 @@ test("sentryProbe() names the invalid option at construction", () => {
     () => sentryProbe({ token: "" }),
     /sentryProbe: "token" must not be empty/,
   );
+  assert.throws(
+    () => sentryProbe({ token: 123 as unknown as string }),
+    /sentryProbe: "token" must be a string, got 123/,
+  );
 });
 
 test("sentryProbe() honours name, critical and skip overrides", async () => {

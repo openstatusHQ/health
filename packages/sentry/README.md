@@ -42,7 +42,7 @@ sentryProbe({
   name: "errors",
   critical: true,
   timeoutMs: 2000,
-  skip: () => env.SENTRY_AUTH_TOKEN == null,
+  skip: () => env.SENTRY_NOOP === "true",
 });
 ```
 
