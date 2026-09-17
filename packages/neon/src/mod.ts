@@ -22,10 +22,20 @@ import {
 /** Probe name when `name` is unset. */
 export const neonDefaultName = "database";
 
+/** What the probe passes to the HTTP driver's `query()` after the statement. */
+export interface NeonQueryOptions {
+  /** Merged into the `fetch` call; carries the probe's `AbortSignal`. */
+  readonly fetchOptions?: { readonly signal?: AbortSignal };
+}
+
 /** The subset of `@neondatabase/serverless` the probe uses: `neon()`'s `sql.query()`, or `Pool` / `Client`. */
 export interface NeonLikeClient {
-  /** Run one statement. */
-  query(text: string): PromiseLike<ProbeResult>;
+  /** Run one statement; the HTTP driver also receives `params` and `options`. */
+  query(
+    text: string,
+    params?: never[],
+    options?: NeonQueryOptions,
+  ): PromiseLike<ProbeResult>;
 }
 
 /** Options for `neonProbe()`. */
@@ -34,7 +44,7 @@ export interface NeonProbeOptions extends ProbeOverrides {
   readonly client: NeonLikeClient;
 }
 
-/** A probe that runs `select 1`; critical by default. Throws `ProbeConfigError` without `query()`. */
+/** A probe that runs `select 1`; critical by default. The HTTP driver from `neon()` receives the probe's `AbortSignal` through `fetchOptions`; `Pool` / `Client` take no signal. Throws `ProbeConfigError` without `query()`. */
 export function neonProbe(options: NeonProbeOptions): Probe {
   const client = options.client;
   if (typeof client?.query !== "function") {
@@ -44,15 +54,24 @@ export function neonProbe(options: NeonProbeOptions): Probe {
       `must expose query(), got ${describe(client)}`,
     );
   }
+  const httpDriver = isCallable(client);
   return {
     name: options.name ?? neonDefaultName,
     critical: options.critical ?? true,
     timeoutMs: options.timeoutMs,
     skip: options.skip,
-    run: async () => {
-      await client.query("select 1");
+    run: async (signal) => {
+      if (httpDriver) {
+        await client.query("select 1", [], { fetchOptions: { signal } });
+      } else {
+        await client.query("select 1");
+      }
     },
   };
+}
+
+function isCallable(client: object): boolean {
+  return typeof client === "function";
 }
 
 function describe(client: NeonLikeClient): string {

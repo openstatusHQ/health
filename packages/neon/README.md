@@ -25,8 +25,11 @@ Deno.serve(
 
 The HTTP driver is the best fit for a health endpoint: every probe is one
 stateless `fetch`, nothing stays open between requests, and it runs on edge
-runtimes. `Pool` and `Client` work the same way — the probe calls
-`client.query("select 1")` on whichever you pass. On a scale-to-zero branch
+runtimes; the probe's `AbortSignal` is passed as `fetchOptions.signal`, so
+a `timeoutMs` cancels the request in flight. `Pool` and `Client` work the
+same way — the probe calls `client.query("select 1")` on whichever you
+pass — but their `query()` takes no signal, so a timed-out query runs to
+completion on the connection. On a scale-to-zero branch
 the first probe after idle also pays the compute wake-up, so give it a
 `timeoutMs` that allows for it or point the probe at a branch that stays
 warm.
@@ -47,7 +50,7 @@ cannot be served, so the report turns `unhealthy` and the instance is taken
 out of rotation. Set `critical: false` for a read replica or a branch that
 only serves reporting.
 
-The client is typed structurally as `{ query(text): PromiseLike<...> }`, so
+The client is typed structurally as `{ query(text, params?, options?) }`, so
 `@neondatabase/serverless` is an optional peer dependency for its types only
 and the probe adds no runtime import of it. It needs `1.0.0` or newer, where
 `neon()`'s `sql.query()` became a plain function call. The factory throws

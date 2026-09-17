@@ -49,7 +49,7 @@ export function exampleProbes(): Probe[] {
   const sql = postgres(env("DATABASE_URL") ?? "postgres://localhost:5432/app");
 
   const neonSql = neon(
-    env("NEON_DATABASE_URL") ?? "postgres://user:pass@localhost:5432/app",
+    env("NEON_DATABASE_URL") || "postgres://user:pass@localhost:5432/app",
   );
 
   const tursoServerless = connectTursoServerless({
@@ -95,7 +95,7 @@ export function exampleProbes(): Probe[] {
     neonProbe({
       client: neonSql,
       name: "neon",
-      skip: () => env("NEON_DATABASE_URL") == null,
+      skip: () => !env("NEON_DATABASE_URL"),
     }),
     tinybirdProbe({
       baseUrl: env("TINYBIRD_URL"),
