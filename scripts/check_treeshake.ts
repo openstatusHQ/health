@@ -62,6 +62,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-qstash": { symbol: "qstashProbe", allowed: [] },
   "@openstatus/health-inngest": { symbol: "inngestProbe", allowed: [] },
   "@openstatus/health-trigger-dev": { symbol: "triggerDevProbe", allowed: [] },
+  "@openstatus/health-bullmq": { symbol: "bullmqProbe", allowed: [] },
 };
 
 const banned = [
@@ -87,6 +88,7 @@ const banned = [
   "mongodb",
   "@prisma/client",
   "@aws-sdk/client-s3",
+  "bullmq",
 ];
 
 const root: string = dirname(import.meta.dirname!);

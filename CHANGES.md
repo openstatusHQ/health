@@ -76,6 +76,12 @@
   the Trigger.dev API with the secret key as a bearer header. Non-critical by
   default; rejects an empty `secretKey` or an invalid `baseUrl` at
   construction.
+- New `@openstatus/health-bullmq` probe: `bullmqProbe({ queue, maxWaiting? })`
+  counts the waiting jobs of a BullMQ `Queue` and fails the check when Redis
+  does not answer or the backlog exceeds `maxWaiting` (`BullmqBacklogError`).
+  Non-critical by default; the queue is typed structurally, so `bullmq` stays
+  an optional peer for its types. Throws `ProbeConfigError` at construction
+  when the queue has no `getWaitingCount()` or `maxWaiting` is negative.
 
 ## 0.1.3
 
