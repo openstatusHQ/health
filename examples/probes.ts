@@ -89,9 +89,11 @@ export function exampleProbes(): Probe[] {
     env("MONGODB_URI") ?? "mongodb://localhost:27017",
   );
 
+  const s3Endpoint = env("S3_ENDPOINT");
   const s3 = new S3Client({
     region: env("AWS_REGION") ?? "us-east-1",
-    endpoint: env("S3_ENDPOINT"),
+    endpoint: s3Endpoint,
+    forcePathStyle: s3Endpoint != null,
   });
 
   const tursoServerless = connectTursoServerless({
@@ -161,8 +163,8 @@ export function exampleProbes(): Probe[] {
     }),
     s3Probe({
       client: s3,
-      bucket: env("S3_BUCKET") ?? "unconfigured",
-      skip: () => env("S3_BUCKET") == null,
+      bucket: env("S3_BUCKET") || "unconfigured",
+      skip: () => !env("S3_BUCKET"),
     }),
     tinybirdProbe({
       baseUrl: env("TINYBIRD_URL"),
