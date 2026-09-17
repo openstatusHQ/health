@@ -32,6 +32,7 @@ import { posthogProbe } from "@openstatus/health-posthog";
 import { openaiProbe } from "@openstatus/health-openai";
 import { anthropicProbe } from "@openstatus/health-anthropic";
 import { algoliaProbe } from "@openstatus/health-algolia";
+import { meilisearchProbe } from "@openstatus/health-meilisearch";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { triggerDevProbe } from "@openstatus/health-trigger-dev";
@@ -241,6 +242,11 @@ export function exampleProbes(): Probe[] {
       appId: env("ALGOLIA_APP_ID") || "unconfigured",
       apiKey: env("ALGOLIA_SEARCH_KEY") || "unconfigured",
       skip: () => !env("ALGOLIA_APP_ID") || !env("ALGOLIA_SEARCH_KEY"),
+    }),
+    meilisearchProbe({
+      host: env("MEILISEARCH_HOST") || "http://localhost:7700",
+      apiKey: env("MEILISEARCH_API_KEY") || undefined,
+      skip: () => !env("MEILISEARCH_HOST"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
