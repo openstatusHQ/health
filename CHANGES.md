@@ -82,6 +82,12 @@
   Non-critical by default; the queue is typed structurally, so `bullmq` stays
   an optional peer for its types. Throws `ProbeConfigError` at construction
   when the queue has no `getWaitingCount()` or `maxWaiting` is negative.
+- New `@openstatus/health-nats` probe: `natsProbe({ connection })` flushes a
+  `NatsConnection` (a `PING` / `PONG` round trip) and fails the check when the
+  server does not answer or `isClosed()` is true. Non-critical by default; the
+  connection is typed structurally, so the NATS packages stay optional peers
+  for their types. Throws `ProbeConfigError` at construction when the
+  connection has no `flush()`.
 
 ## 0.1.3
 
