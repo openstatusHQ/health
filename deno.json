@@ -19,7 +19,8 @@
     "./packages/supabase",
     "./packages/unkey",
     "./packages/upstash",
-    "./packages/mysql"
+    "./packages/mysql",
+    "./packages/postgres"
   ],
   "imports": {
     "@std/path": "jsr:@std/path@^1.1.0",
@@ -37,7 +38,10 @@
     "@tursodatabase/serverless": "npm:@tursodatabase/serverless@^1.4.0",
     "@supabase/supabase-js": "npm:@supabase/supabase-js@^2.0.0",
     "@clickhouse/client": "npm:@clickhouse/client@^1.23.1",
-    "mysql2": "npm:mysql2@^3.14.0"
+    "mysql2": "npm:mysql2@^3.14.0",
+    "pg": "npm:pg@^8.16.0",
+    "@types/pg": "npm:@types/pg@^8.15.0",
+    "postgres": "npm:postgres@^3.4.0"
   },
   "exclude": [
     "**/dist/",

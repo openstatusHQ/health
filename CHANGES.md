@@ -8,6 +8,12 @@
   the client is typed structurally, so `mysql2` stays an optional peer for its
   types. Throws `ProbeConfigError` at construction when the client has no
   `query()`.
+- New `@openstatus/health-postgres` probe: `postgresProbe({ client })` runs
+  `select 1` through `client.query()` (`pg`, `@vercel/postgres`, Neon) or
+  `sql.unsafe()` (postgres.js). Critical by default; the client is typed
+  structurally, so `pg` and `postgres` stay optional peers for their types.
+  Throws `ProbeConfigError` at construction when the client has neither
+  method.
 
 ## 0.1.3
 

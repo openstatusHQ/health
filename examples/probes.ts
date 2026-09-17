@@ -4,10 +4,13 @@ import { createClient as createClickHouseClient } from "@clickhouse/client";
 import { connect as connectTursoServerless } from "@tursodatabase/serverless";
 import { drizzle } from "drizzle-orm/libsql/http";
 import { createPool as createMysqlPool } from "mysql2/promise";
+import { Pool } from "pg";
+import postgres from "postgres";
 import type { Probe } from "@openstatus/health";
 import { clickhouseProbe } from "@openstatus/health-clickhouse";
 import { drizzleProbe } from "@openstatus/health-drizzle";
 import { mysqlProbe } from "@openstatus/health-mysql";
+import { postgresProbe } from "@openstatus/health-postgres";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { tursoProbe } from "@openstatus/health-turso";
@@ -38,6 +41,11 @@ export function exampleProbes(): Probe[] {
     env("MYSQL_URL") ?? "mysql://root@localhost:3306/app",
   );
 
+  const pg = new Pool({
+    connectionString: env("DATABASE_URL") ?? "postgres://localhost:5432/app",
+  });
+  const sql = postgres(env("DATABASE_URL") ?? "postgres://localhost:5432/app");
+
   const tursoServerless = connectTursoServerless({
     url: env("TURSO_DATABASE_URL") ?? "http://localhost:8080",
     authToken: env("TURSO_AUTH_TOKEN"),
@@ -67,6 +75,16 @@ export function exampleProbes(): Probe[] {
       client: mysql,
       name: "mysql",
       skip: () => env("MYSQL_URL") == null,
+    }),
+    postgresProbe({
+      client: pg,
+      name: "postgres",
+      skip: () => env("DATABASE_URL") == null,
+    }),
+    postgresProbe({
+      client: sql,
+      name: "postgres-js",
+      skip: () => env("DATABASE_URL") == null,
     }),
     tinybirdProbe({
       baseUrl: env("TINYBIRD_URL"),
