@@ -91,6 +91,23 @@ test("convexProbe() fails on a non-2xx response", async () => {
   assert.equal(report.checks[0].error, "unexpected status 502");
 });
 
+test("convexProbe() prefers errorMessage from a non-2xx error body", async () => {
+  const report = await runProbes(
+    [
+      convexProbe({
+        url,
+        path,
+        fetch: fakeFetch({
+          status: 500,
+          body: { status: "error", errorMessage: "Uncaught Error: boom" },
+        }),
+      }),
+    ],
+    { formatError: "message" },
+  );
+  assert.equal(report.checks[0].error, "Uncaught Error: boom");
+});
+
 test("convexProbe() times out and aborts the signal", async () => {
   const track = { aborted: false };
   const report = await runProbes([
@@ -116,6 +133,10 @@ test("convexProbe() names the invalid option at construction", () => {
   assert.throws(
     () => convexProbe({ url, path, token: "" }),
     /convexProbe: "token" must not be empty/,
+  );
+  assert.throws(
+    () => convexProbe({ url, path, token: 42 as unknown as string }),
+    /convexProbe: "token" must be a string, got 42/,
   );
 });
 

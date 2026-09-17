@@ -256,9 +256,9 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("TYPESENSE_HOST"),
     }),
     convexProbe({
-      url: env("CONVEX_URL") ?? "https://unconfigured.convex.cloud",
+      url: env("CONVEX_URL") || "https://unconfigured.convex.cloud",
       path: "health:ping",
-      skip: () => env("CONVEX_URL") == null,
+      skip: () => !env("CONVEX_URL"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
