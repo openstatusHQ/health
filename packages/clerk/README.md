@@ -23,8 +23,8 @@ Deno.serve(
       // the factory validates `secretKey` at construction, so pass a
       // placeholder and let `skip` keep the unconfigured check from running.
       clerkProbe({
-        secretKey: secretKey ?? "unconfigured",
-        skip: () => secretKey == null,
+        secretKey: secretKey || "unconfigured",
+        skip: () => !secretKey,
       }),
     ],
   }),
@@ -49,7 +49,7 @@ clerkProbe({
   name: "auth",
   critical: true,
   timeoutMs: 2000,
-  skip: () => env.CLERK_SECRET_KEY == null,
+  skip: () => !secretKey,
 });
 ```
 

@@ -208,8 +208,8 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("RESEND_API_KEY"),
     }),
     clerkProbe({
-      secretKey: env("CLERK_SECRET_KEY") ?? "unconfigured",
-      skip: () => env("CLERK_SECRET_KEY") == null,
+      secretKey: env("CLERK_SECRET_KEY") || "unconfigured",
+      skip: () => !env("CLERK_SECRET_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
