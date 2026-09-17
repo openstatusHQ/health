@@ -221,6 +221,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | Package | JSR | npm | Description |
 | ------- | --- | --- | ----------- |
 | [`@openstatus/health-clickhouse`](packages/clickhouse) | [![JSR](https://jsr.io/badges/@openstatus/health-clickhouse)](https://jsr.io/@openstatus/health-clickhouse) | [![npm](https://img.shields.io/npm/v/@openstatus/health-clickhouse)](https://www.npmjs.com/package/@openstatus/health-clickhouse) | ClickHouse `ping` / `SELECT 1` probe (`@clickhouse/client`) |
+| [`@openstatus/health-cloudflare-d1`](packages/cloudflare-d1) | [![JSR](https://jsr.io/badges/@openstatus/health-cloudflare-d1)](https://jsr.io/@openstatus/health-cloudflare-d1) | [![npm](https://img.shields.io/npm/v/@openstatus/health-cloudflare-d1)](https://www.npmjs.com/package/@openstatus/health-cloudflare-d1) | Cloudflare D1 `select 1` probe over the Workers binding |
 | [`@openstatus/health-drizzle`](packages/drizzle) | [![JSR](https://jsr.io/badges/@openstatus/health-drizzle)](https://jsr.io/@openstatus/health-drizzle) | [![npm](https://img.shields.io/npm/v/@openstatus/health-drizzle)](https://www.npmjs.com/package/@openstatus/health-drizzle) | Drizzle ORM `select 1` probe |
 | [`@openstatus/health-mysql`](packages/mysql) | [![JSR](https://jsr.io/badges/@openstatus/health-mysql)](https://jsr.io/@openstatus/health-mysql) | [![npm](https://img.shields.io/npm/v/@openstatus/health-mysql)](https://www.npmjs.com/package/@openstatus/health-mysql) | MySQL / MariaDB `select 1` probe (`mysql2/promise`) |
 | [`@openstatus/health-postgres`](packages/postgres) | [![JSR](https://jsr.io/badges/@openstatus/health-postgres)](https://jsr.io/@openstatus/health-postgres) | [![npm](https://img.shields.io/npm/v/@openstatus/health-postgres)](https://www.npmjs.com/package/@openstatus/health-postgres) | Postgres `select 1` probe (`pg`, postgres.js, Neon, Vercel Postgres) |
@@ -269,6 +270,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `redisProbe({ client })` | `redis` | no | `client.ping()` answers `PONG` on a node-redis, ioredis or Upstash client |
 | `mongodbProbe({ client, db? })` | `database` | yes | `client.db("admin").command({ ping: 1 })` on a `MongoClient` |
 | `prismaProbe({ client })` | `database` | yes | `client.$queryRawUnsafe("select 1")`, or `client.$runCommandRaw({ ping: 1 })` on MongoDB |
+| `d1Probe({ db })` | `database` | yes | `db.prepare("select 1").first()` on a Workers `D1Database` binding |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance or a base URL — they never read

@@ -41,6 +41,11 @@
   typed structurally, so `@prisma/client` stays an optional peer for its
   types. Throws `ProbeConfigError` at construction when the client has neither
   method.
+- New `@openstatus/health-cloudflare-d1` probe: `d1Probe({ db })` runs `select
+  1` through a Workers `D1Database` binding. Critical by default; the binding
+  is typed structurally, so the package needs no `@cloudflare/workers-types`.
+  Throws `ProbeConfigError` at construction when the binding has no
+  `prepare()`.
 
 ## 0.1.3
 

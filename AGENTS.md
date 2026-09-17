@@ -4,11 +4,11 @@
 
 - `packages/<name>/` — one npm/JSR package per concern. `health` is the
   zero-dependency core; `hono`, `elysia`, `express`, `next`, `tanstack-start`
-  are server adapters; `clickhouse`, `drizzle`, `mongodb`, `mysql`, `neon`,
-  `planetscale`, `postgres`, `prisma`, `redis`, `supabase`, `tinybird`,
-  `turso`, `turso-serverless`, `unkey`, `upstash` are probes; `fly`, `koyeb`,
-  `railway`, `vercel`, `cloudflare` render hosting metadata under `server` via
-  the `extend` hook.
+  are server adapters; `clickhouse`, `cloudflare-d1`, `drizzle`, `mongodb`,
+  `mysql`, `neon`, `planetscale`, `postgres`, `prisma`, `redis`, `supabase`,
+  `tinybird`, `turso`, `turso-serverless`, `unkey`, `upstash` are probes;
+  `fly`, `koyeb`, `railway`, `vercel`, `cloudflare` render hosting metadata
+  under `server` via the `extend` hook.
 - Each package has `deno.json` (`exports: ./src/mod.ts`), `package.json`
   (`exports -> dist/`, `sideEffects: false`), `tsdown.config.ts`, `README.md`
   and `src/` with `mod.ts`, implementation files and one `*.test.ts` per file.
