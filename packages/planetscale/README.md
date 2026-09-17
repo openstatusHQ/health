@@ -28,8 +28,11 @@ Deno.serve(
 Every probe is one stateless `fetch` against PlanetScale's HTTP API, so
 nothing stays open between health requests and the probe runs on edge
 runtimes. A `Client` from the same package works too — the probe only calls
-`execute("select 1")`. For a PlanetScale database reached through `mysql2`
-instead, use `@openstatus/health-mysql`.
+`execute("select 1")`. The driver's `execute()` takes no `AbortSignal`, so a
+check that outlives `timeoutMs` is reported `timeout` while the HTTP request
+runs to completion in the background; pass a `fetch` with its own deadline to
+`connect()` if that matters. For a PlanetScale database reached through
+`mysql2` instead, use `@openstatus/health-mysql`.
 
 ```ts
 planetscaleProbe({

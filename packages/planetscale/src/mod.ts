@@ -34,7 +34,7 @@ export interface PlanetScaleProbeOptions extends ProbeOverrides {
   readonly connection: PlanetScaleLikeConnection;
 }
 
-/** A probe that runs `select 1`; critical by default. Throws `ProbeConfigError` without `execute()`. */
+/** A probe that runs `select 1`; critical by default. The driver's `execute()` takes no `AbortSignal`, so a timed-out request is not cancelled. Throws `ProbeConfigError` without `execute()`. */
 export function planetscaleProbe(options: PlanetScaleProbeOptions): Probe {
   const connection = options.connection;
   if (typeof connection?.execute !== "function") {

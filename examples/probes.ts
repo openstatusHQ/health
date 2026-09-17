@@ -55,7 +55,7 @@ export function exampleProbes(): Probe[] {
   );
 
   const planetscale = connectPlanetScale({
-    url: env("PLANETSCALE_URL") ??
+    url: env("PLANETSCALE_URL") ||
       "mysql://user:pass@aws.connect.psdb.cloud/app",
   });
 
@@ -107,7 +107,7 @@ export function exampleProbes(): Probe[] {
     planetscaleProbe({
       connection: planetscale,
       name: "planetscale",
-      skip: () => env("PLANETSCALE_URL") == null,
+      skip: () => !env("PLANETSCALE_URL"),
     }),
     tinybirdProbe({
       baseUrl: env("TINYBIRD_URL"),
