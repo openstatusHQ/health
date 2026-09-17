@@ -256,6 +256,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | [`@openstatus/health-algolia`](packages/algolia) | [![JSR](https://jsr.io/badges/@openstatus/health-algolia)](https://jsr.io/@openstatus/health-algolia) | [![npm](https://img.shields.io/npm/v/@openstatus/health-algolia)](https://www.npmjs.com/package/@openstatus/health-algolia) | Algolia `/1/isalive` reachability probe |
 | [`@openstatus/health-meilisearch`](packages/meilisearch) | [![JSR](https://jsr.io/badges/@openstatus/health-meilisearch)](https://jsr.io/@openstatus/health-meilisearch) | [![npm](https://img.shields.io/npm/v/@openstatus/health-meilisearch)](https://www.npmjs.com/package/@openstatus/health-meilisearch) | Meilisearch `/health` probe (cloud or self-hosted) |
 | [`@openstatus/health-typesense`](packages/typesense) | [![JSR](https://jsr.io/badges/@openstatus/health-typesense)](https://jsr.io/@openstatus/health-typesense) | [![npm](https://img.shields.io/npm/v/@openstatus/health-typesense)](https://www.npmjs.com/package/@openstatus/health-typesense) | Typesense `/health` probe (cloud or self-hosted) |
+| [`@openstatus/health-convex`](packages/convex) | [![JSR](https://jsr.io/badges/@openstatus/health-convex)](https://jsr.io/@openstatus/health-convex) | [![npm](https://img.shields.io/npm/v/@openstatus/health-convex)](https://www.npmjs.com/package/@openstatus/health-convex) | Convex query probe over the deployment HTTP API |
 
 ### Hosting metadata
 
@@ -311,6 +312,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `algoliaProbe({ appId, apiKey, baseUrl? })` | `search` | no | `GET {baseUrl}/1/isalive` with the app headers; `baseUrl` defaults to `https://{appId}-dsn.algolia.net` |
 | `meilisearchProbe({ host, apiKey? })` | `search` | no | `GET {host}/health` answers `status: "available"` |
 | `typesenseProbe({ host, apiKey? })` | `search` | no | `GET {host}/health` answers `ok: true` |
+| `convexProbe({ url, path, args?, token? })` | `database` | yes | `POST {url}/api/query` running `path` answers `status: "success"` |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance or a base URL — they never read
