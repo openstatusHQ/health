@@ -250,9 +250,9 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("MEILISEARCH_HOST"),
     }),
     typesenseProbe({
-      host: env("TYPESENSE_HOST") ?? "http://localhost:8108",
-      apiKey: env("TYPESENSE_API_KEY"),
-      skip: () => env("TYPESENSE_HOST") == null,
+      host: env("TYPESENSE_HOST") || "http://localhost:8108",
+      apiKey: env("TYPESENSE_API_KEY") || undefined,
+      skip: () => !env("TYPESENSE_HOST"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
