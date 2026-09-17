@@ -3,11 +3,13 @@
  * Workers `D1Database` binding.
  *
  * ```ts
+ * import { createLazyHealthHandler } from "@openstatus/health";
  * import { d1Probe } from "@openstatus/health-cloudflare-d1";
  *
  * export default {
- *   fetch: (request, env) =>
- *     createHealthHandler({ probes: [d1Probe({ db: env.DB })] })(request),
+ *   fetch: createLazyHealthHandler<Request, Env>((env) => ({
+ *     probes: [d1Probe({ db: env.DB })],
+ *   })),
  * };
  * ```
  *

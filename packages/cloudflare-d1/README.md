@@ -11,7 +11,7 @@ npm install @openstatus/health @openstatus/health-cloudflare-d1
 ```
 
 ```ts
-import { createHealthHandler } from "@openstatus/health";
+import { createLazyHealthHandler } from "@openstatus/health";
 import { d1Probe } from "@openstatus/health-cloudflare-d1";
 
 interface Env {
@@ -19,21 +19,21 @@ interface Env {
 }
 
 export default {
-  fetch(request: Request, env: Env): Promise<Response> {
-    const handler = createHealthHandler({
-      path: "/health",
-      probes: [d1Probe({ db: env.DB })],
-    });
-    return handler(request);
-  },
+  fetch: createLazyHealthHandler<Request, Env>((env) => ({
+    path: "/health",
+    probes: [d1Probe({ db: env.DB })],
+  })),
 };
 ```
 
-Bindings only exist per request in Workers, so build the probe inside
-`fetch` — or, with Hono, inside a route handler that receives `c.env`. The
-probe calls `db.prepare("select 1").first()`, which round-trips to the D1
-storage and needs no table. For the colo and version the response came
-from, add `@openstatus/health-cloudflare`'s `extend` hook.
+Bindings only exist inside `fetch(request, env)` in Workers, but the handler
+must be built once or every request gets a fresh cache and the probe runs on
+every poll. `createLazyHealthHandler` runs your callback on the first request
+and reuses the handler it builds; with Hono, build the probe once inside a
+route handler that receives `c.env` and memoise it the same way. The probe
+calls `db.prepare("select 1").first()`, which round-trips to the D1 storage
+and needs no table. For the colo and version the response came from, add
+`@openstatus/health-cloudflare`'s `extend` hook.
 
 ```ts
 d1Probe({
@@ -42,9 +42,13 @@ d1Probe({
   name: "d1",
   critical: false,
   timeoutMs: 1000,
-  skip: () => env.DB == null,
+  skip: () => env.HEALTH_SKIP_D1 === "true",
 });
 ```
+
+The factory validates `db` when it is called, before `skip` is ever
+consulted, so `skip` cannot stand in for a missing binding; leave the probe
+out of `probes` instead when the Worker may run without D1.
 
 Critical by default: a D1 that does not answer usually means requests cannot
 be served, so the report turns `unhealthy`. Set `critical: false` when the
