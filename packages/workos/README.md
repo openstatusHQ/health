@@ -40,7 +40,7 @@ for environments where WorkOS is not configured.
 
 ```ts
 workosProbe({
-  apiKey,
+  apiKey: apiKey || "unconfigured",
   // optional overrides from the Probe contract
   name: "auth",
   critical: true,

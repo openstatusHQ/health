@@ -1,6 +1,6 @@
 {
   "name": "@openstatus/health-workos",
-  "version": "0.1.3",
+  "version": "0.1.4-dev.0",
   "description": "WorkOS API probe for @openstatus/health",
   "keywords": [
     "openstatus",
@@ -48,7 +48,7 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@openstatus/health": "^0.1.3"
+    "@openstatus/health": "^0.1.4-dev.0"
   },
   "devDependencies": {
     "tsdown": "^0.12.7",
