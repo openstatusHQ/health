@@ -3,9 +3,11 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { createClient as createClickHouseClient } from "@clickhouse/client";
 import { connect as connectTursoServerless } from "@tursodatabase/serverless";
 import { drizzle } from "drizzle-orm/libsql/http";
+import { createPool as createMysqlPool } from "mysql2/promise";
 import type { Probe } from "@openstatus/health";
 import { clickhouseProbe } from "@openstatus/health-clickhouse";
 import { drizzleProbe } from "@openstatus/health-drizzle";
+import { mysqlProbe } from "@openstatus/health-mysql";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { tursoProbe } from "@openstatus/health-turso";
@@ -32,6 +34,10 @@ export function exampleProbes(): Probe[] {
     password: env("CLICKHOUSE_PASSWORD"),
   });
 
+  const mysql = createMysqlPool(
+    env("MYSQL_URL") ?? "mysql://root@localhost:3306/app",
+  );
+
   const tursoServerless = connectTursoServerless({
     url: env("TURSO_DATABASE_URL") ?? "http://localhost:8080",
     authToken: env("TURSO_AUTH_TOKEN"),
@@ -56,6 +62,11 @@ export function exampleProbes(): Probe[] {
     clickhouseProbe({
       client: clickhouse,
       skip: () => env("CLICKHOUSE_NOOP") === "true",
+    }),
+    mysqlProbe({
+      client: mysql,
+      name: "mysql",
+      skip: () => env("MYSQL_URL") == null,
     }),
     tinybirdProbe({
       baseUrl: env("TINYBIRD_URL"),

@@ -18,7 +18,8 @@
     "./packages/turso-serverless",
     "./packages/supabase",
     "./packages/unkey",
-    "./packages/upstash"
+    "./packages/upstash",
+    "./packages/mysql"
   ],
   "imports": {
     "@std/path": "jsr:@std/path@^1.1.0",
@@ -35,7 +36,8 @@
     "@libsql/client": "npm:@libsql/client@^0.15.0",
     "@tursodatabase/serverless": "npm:@tursodatabase/serverless@^1.4.0",
     "@supabase/supabase-js": "npm:@supabase/supabase-js@^2.0.0",
-    "@clickhouse/client": "npm:@clickhouse/client@^1.23.1"
+    "@clickhouse/client": "npm:@clickhouse/client@^1.23.1",
+    "mysql2": "npm:mysql2@^3.14.0"
   },
   "exclude": [
     "**/dist/",

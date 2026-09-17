@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+- New `@openstatus/health-mysql` probe: `mysqlProbe({ client })` runs `select
+  1` through a `mysql2/promise` pool or connection and fails the check when
+  `query()` does not return a promise (the callback API). Critical by default;
+  the client is typed structurally, so `mysql2` stays an optional peer for its
+  types. Throws `ProbeConfigError` at construction when the client has no
+  `query()`.
+
 ## 0.1.3
 
 - New `@openstatus/health-clickhouse` probe: `clickhouseProbe({ client })`

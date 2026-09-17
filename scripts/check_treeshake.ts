@@ -45,6 +45,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-supabase": { symbol: "supabaseProbe", allowed: [] },
   "@openstatus/health-unkey": { symbol: "unkeyProbe", allowed: [] },
   "@openstatus/health-upstash": { symbol: "upstashProbe", allowed: [] },
+  "@openstatus/health-mysql": { symbol: "mysqlProbe", allowed: [] },
 };
 
 const banned = [
@@ -60,6 +61,7 @@ const banned = [
   "@tursodatabase/serverless",
   "@supabase/supabase-js",
   "@clickhouse/client",
+  "mysql2",
 ];
 
 const root: string = dirname(import.meta.dirname!);
