@@ -65,7 +65,9 @@ export function grpcProbe(options: GrpcProbeOptions): Probe {
       `must expose check(), got ${describe(client)}`,
     );
   }
-  const service = options.service ?? grpcDefaultService;
+  const service = options.service === undefined
+    ? grpcDefaultService
+    : options.service;
   if (typeof service !== "string") {
     throw new ProbeConfigError(
       "grpcProbe",
@@ -80,6 +82,12 @@ export function grpcProbe(options: GrpcProbeOptions): Probe {
     skip: options.skip,
     run: (signal) =>
       new Promise<void>((resolve, reject) => {
+        signal.throwIfAborted();
+        const onAbort = () => {
+          call.cancel();
+          reject(signal.reason);
+        };
+        signal.addEventListener("abort", onAbort, { once: true });
         const call = client.check({ service }, (error, response) => {
           signal.removeEventListener("abort", onAbort);
           if (error != null) {
@@ -93,11 +101,6 @@ export function grpcProbe(options: GrpcProbeOptions): Probe {
           }
           reject(new Error(`serving status ${describeStatus(status)}`));
         });
-        const onAbort = () => {
-          call.cancel();
-          reject(signal.reason);
-        };
-        signal.addEventListener("abort", onAbort, { once: true });
       }),
   };
 }

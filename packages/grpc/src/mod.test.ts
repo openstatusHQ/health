@@ -59,7 +59,10 @@ test("grpcProbe() fails on a non-serving status", async () => {
     [{ status: 2 }, "serving status NOT_SERVING"],
     [{ status: "NOT_SERVING" }, "serving status NOT_SERVING"],
     [{ status: 3 }, "serving status SERVICE_UNKNOWN"],
+    [{ status: "SERVICE_UNKNOWN" }, "serving status SERVICE_UNKNOWN"],
     [{ status: 0 }, "serving status UNKNOWN"],
+    [{ status: "UNKNOWN" }, "serving status UNKNOWN"],
+    [{ status: 7 }, "serving status 7"],
     [{}, "serving status undefined"],
     [undefined, "serving status undefined"],
   ];
@@ -74,6 +77,17 @@ test("grpcProbe() fails on a non-serving status", async () => {
     assert.equal(report.checks[0].status, "failed");
     assert.equal(report.checks[0].error, message);
   }
+});
+
+test("grpcProbe() accepts a client that answers synchronously", async () => {
+  const client: GrpcLikeHealthClient = {
+    check: (_request, callback) => {
+      callback(null, { status: 1 });
+      return { cancel: () => {} };
+    },
+  };
+  const report = await runProbes([grpcProbe({ client })]);
+  assert.equal(report.checks[0].status, "ok");
 });
 
 test("grpcProbe() reports the call error", async () => {
@@ -114,6 +128,11 @@ test("grpcProbe() throws at construction on an invalid client or service", () =>
   assert.throws(
     () => grpcProbe({ client: fakeClient(), service: 1 as unknown as string }),
     /grpcProbe: "service" must be a string, got 1/,
+  );
+  assert.throws(
+    () =>
+      grpcProbe({ client: fakeClient(), service: null as unknown as string }),
+    /grpcProbe: "service" must be a string, got null/,
   );
 });
 
