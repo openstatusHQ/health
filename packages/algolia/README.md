@@ -24,9 +24,9 @@ Deno.serve(
       // the factory validates `appId` and `apiKey` at construction, so pass
       // placeholders and let `skip` keep the unconfigured check from running.
       algoliaProbe({
-        appId: appId ?? "unconfigured",
-        apiKey: apiKey ?? "unconfigured",
-        skip: () => appId == null,
+        appId: appId || "unconfigured",
+        apiKey: apiKey || "unconfigured",
+        skip: () => !appId || !apiKey,
       }),
     ],
   }),
@@ -45,13 +45,13 @@ in, and use `skip` for environments where Algolia is not configured.
 
 ```ts
 algoliaProbe({
-  appId,
-  apiKey,
+  appId: appId || "unconfigured",
+  apiKey: apiKey || "unconfigured",
   // optional overrides from the Probe contract
   name: "algolia",
   critical: true,
   timeoutMs: 1000,
-  skip: () => env.ALGOLIA_APP_ID == null,
+  skip: () => !appId || !apiKey,
 });
 ```
 

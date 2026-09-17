@@ -39,7 +39,7 @@ export interface AlgoliaProbeOptions extends ProbeOverrides {
   readonly fetch?: typeof fetch;
 }
 
-/** A probe that expects 2xx from `GET {baseUrl}/1/isalive` with the application headers; non-critical by default. Throws `ProbeConfigError` for an empty `appId` or `apiKey`, or an invalid `baseUrl`. */
+/** A probe that expects 2xx from `GET {baseUrl}/1/isalive` with the application headers; non-critical by default. Throws `ProbeConfigError` for an empty `apiKey`, an `appId` that is not alphanumeric, or an invalid `baseUrl`. */
 export function algoliaProbe(options: AlgoliaProbeOptions): Probe {
   const doFetch = options.fetch ?? globalThis.fetch;
   for (const field of ["appId", "apiKey"] as const) {
@@ -53,6 +53,13 @@ export function algoliaProbe(options: AlgoliaProbeOptions): Probe {
           : "must not be empty",
       );
     }
+  }
+  if (!/^[A-Za-z0-9]+$/.test(options.appId)) {
+    throw new ProbeConfigError(
+      "algoliaProbe",
+      "appId",
+      `must be alphanumeric, got ${JSON.stringify(options.appId)}`,
+    );
   }
   const url = probeUrl({
     probe: "algoliaProbe",

@@ -306,7 +306,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `posthogProbe({ personalApiKey, baseUrl? })` | `posthog` | no | `GET {baseUrl}/api/projects/@current/` with the personal API key |
 | `openaiProbe({ apiKey, baseUrl? })` | `openai` | no | `GET {baseUrl}/v1/models` with the API key |
 | `anthropicProbe({ apiKey, baseUrl? })` | `anthropic` | no | `GET {baseUrl}/v1/models` with the `x-api-key` header |
-| `algoliaProbe({ appId, apiKey, baseUrl? })` | `search` | no | `GET https://{appId}-dsn.algolia.net/1/isalive` with the app headers |
+| `algoliaProbe({ appId, apiKey, baseUrl? })` | `search` | no | `GET {baseUrl}/1/isalive` with the app headers; `baseUrl` defaults to `https://{appId}-dsn.algolia.net` |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance or a base URL — they never read

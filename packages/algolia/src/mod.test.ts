@@ -93,6 +93,10 @@ test("algoliaProbe() names the invalid option at construction", () => {
     /algoliaProbe: "apiKey" must be a string, got undefined/,
   );
   assert.throws(
+    () => algoliaProbe({ appId: "not an id", apiKey }),
+    /algoliaProbe: "appId" must be alphanumeric, got "not an id"/,
+  );
+  assert.throws(
     () => algoliaProbe({ appId, apiKey, baseUrl: "not a url" }),
     /algoliaProbe: "baseUrl" must be an absolute URL, got "not a url"/,
   );

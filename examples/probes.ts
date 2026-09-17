@@ -238,9 +238,9 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("ANTHROPIC_API_KEY"),
     }),
     algoliaProbe({
-      appId: env("ALGOLIA_APP_ID") ?? "unconfigured",
-      apiKey: env("ALGOLIA_SEARCH_KEY") ?? "unconfigured",
-      skip: () => env("ALGOLIA_APP_ID") == null,
+      appId: env("ALGOLIA_APP_ID") || "unconfigured",
+      apiKey: env("ALGOLIA_SEARCH_KEY") || "unconfigured",
+      skip: () => !env("ALGOLIA_APP_ID") || !env("ALGOLIA_SEARCH_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
