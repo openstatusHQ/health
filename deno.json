@@ -22,7 +22,8 @@
     "./packages/mysql",
     "./packages/postgres",
     "./packages/neon",
-    "./packages/planetscale"
+    "./packages/planetscale",
+    "./packages/redis"
   ],
   "imports": {
     "@std/path": "jsr:@std/path@^1.1.0",
@@ -45,7 +46,9 @@
     "@types/pg": "npm:@types/pg@^8.15.0",
     "postgres": "npm:postgres@^3.4.0",
     "@neondatabase/serverless": "npm:@neondatabase/serverless@^1.0.0",
-    "@planetscale/database": "npm:@planetscale/database@^1.19.0"
+    "@planetscale/database": "npm:@planetscale/database@^1.19.0",
+    "redis": "npm:redis@^5.5.0",
+    "ioredis": "npm:ioredis@^5.6.0"
   },
   "exclude": [
     "**/dist/",

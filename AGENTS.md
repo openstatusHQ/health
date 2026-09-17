@@ -5,7 +5,7 @@
 - `packages/<name>/` — one npm/JSR package per concern. `health` is the
   zero-dependency core; `hono`, `elysia`, `express`, `next`, `tanstack-start`
   are server adapters; `clickhouse`, `drizzle`, `mysql`, `neon`,
-  `planetscale`, `postgres`, `supabase`, `tinybird`, `turso`,
+  `planetscale`, `postgres`, `redis`, `supabase`, `tinybird`, `turso`,
   `turso-serverless`, `unkey`, `upstash` are probes; `fly`, `koyeb`,
   `railway`, `vercel`, `cloudflare` render hosting metadata under `server` via
   the `extend` hook.
