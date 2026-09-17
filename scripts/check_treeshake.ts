@@ -94,7 +94,6 @@ const banned = [
   "@nats-io/nats-core",
   "nats",
   "kafkajs",
-  "@confluentinc/kafka-javascript",
 ];
 
 const root: string = dirname(import.meta.dirname!);

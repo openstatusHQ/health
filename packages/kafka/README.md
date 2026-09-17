@@ -30,8 +30,8 @@ sends the metadata request over an established connection, and creating
 one per health request would add a broker handshake to every poll.
 `describeCluster()` needs no topic and no ACL beyond `Describe` on the
 cluster, so it works with the most restricted credentials. The
-`@confluentinc/kafka-javascript` KafkaJS-compatible `Admin` exposes the same
-method and works unchanged.
+`@confluentinc/kafka-javascript` KafkaJS-compatible `Admin` does not
+implement `describeCluster()`, so it is not supported.
 
 ```ts
 kafkaProbe({
@@ -50,9 +50,9 @@ of rotation. Set `critical: true` when requests cannot complete without
 producing.
 
 The admin client is typed structurally as
-`{ describeCluster(): PromiseLike<{ brokers: [...] }> }`, so `kafkajs` and
-`@confluentinc/kafka-javascript` are optional peer dependencies for their
-types only and the probe adds no runtime import of them. The factory throws
+`{ describeCluster(): PromiseLike<{ brokers: [...] }> }`, so `kafkajs` is an
+optional peer dependency for its types only and the probe adds no runtime
+import of it. The factory throws
 `ProbeConfigError` at construction when the client has no
 `describeCluster()`.
 

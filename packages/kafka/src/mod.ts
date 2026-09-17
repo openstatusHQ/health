@@ -37,7 +37,7 @@ export interface KafkaLikeAdmin {
 
 /** Options for `kafkaProbe()`. */
 export interface KafkaProbeOptions extends ProbeOverrides {
-  /** A connected `Admin` client from `kafkajs` or `@confluentinc/kafka-javascript`. */
+  /** A connected `kafkajs` `Admin` client. */
   readonly admin: KafkaLikeAdmin;
 }
 
