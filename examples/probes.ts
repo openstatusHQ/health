@@ -213,8 +213,8 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("CLERK_SECRET_KEY"),
     }),
     workosProbe({
-      apiKey: env("WORKOS_API_KEY") ?? "unconfigured",
-      skip: () => env("WORKOS_API_KEY") == null,
+      apiKey: env("WORKOS_API_KEY") || "unconfigured",
+      skip: () => !env("WORKOS_API_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

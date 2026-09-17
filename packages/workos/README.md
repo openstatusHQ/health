@@ -23,8 +23,8 @@ Deno.serve(
       // the factory validates `apiKey` at construction, so pass a
       // placeholder and let `skip` keep the unconfigured check from running.
       workosProbe({
-        apiKey: apiKey ?? "unconfigured",
-        skip: () => apiKey == null,
+        apiKey: apiKey || "unconfigured",
+        skip: () => !apiKey,
       }),
     ],
   }),
@@ -45,7 +45,7 @@ workosProbe({
   name: "auth",
   critical: true,
   timeoutMs: 2000,
-  skip: () => env.WORKOS_API_KEY == null,
+  skip: () => !apiKey,
 });
 ```
 
