@@ -51,6 +51,11 @@
   a miss is healthy, an error is not. Non-critical by default; the binding is
   typed structurally. Throws `ProbeConfigError` at construction when the
   binding has no `get()` or `key` is empty.
+- New `@openstatus/health-cloudflare-r2` probe: `r2Probe({ bucket, key? })`
+  heads one object (`health` by default) through a Workers `R2Bucket` binding;
+  a missing object is healthy, an error is not. Non-critical by default; the
+  binding is typed structurally. Throws `ProbeConfigError` at construction
+  when the binding has no `head()` or `key` is empty.
 
 ## 0.1.3
 
