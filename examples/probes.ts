@@ -37,6 +37,7 @@ import { typesenseProbe } from "@openstatus/health-typesense";
 import { convexProbe } from "@openstatus/health-convex";
 import { tcpProbe } from "@openstatus/health-tcp";
 import { dnsProbe } from "@openstatus/health-dns";
+import { tlsProbe } from "@openstatus/health-tls";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { triggerDevProbe } from "@openstatus/health-trigger-dev";
@@ -271,6 +272,10 @@ export function exampleProbes(): Probe[] {
     dnsProbe({
       hostname: env("DNS_HOSTNAME") || "localhost",
       skip: () => !env("DNS_HOSTNAME"),
+    }),
+    tlsProbe({
+      host: env("TLS_HOST") || "localhost",
+      skip: () => !env("TLS_HOST"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
