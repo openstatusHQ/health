@@ -35,6 +35,7 @@ import { algoliaProbe } from "@openstatus/health-algolia";
 import { meilisearchProbe } from "@openstatus/health-meilisearch";
 import { typesenseProbe } from "@openstatus/health-typesense";
 import { convexProbe } from "@openstatus/health-convex";
+import { tcpProbe } from "@openstatus/health-tcp";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { triggerDevProbe } from "@openstatus/health-trigger-dev";
@@ -259,6 +260,12 @@ export function exampleProbes(): Probe[] {
       url: env("CONVEX_URL") || "https://unconfigured.convex.cloud",
       path: "health:ping",
       skip: () => !env("CONVEX_URL"),
+    }),
+    tcpProbe({
+      name: "smtp",
+      host: env("SMTP_HOST") || "localhost",
+      port: env("SMTP_HOST") ? Number(env("SMTP_PORT") || 587) : 587,
+      skip: () => !env("SMTP_HOST"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

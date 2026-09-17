@@ -147,6 +147,10 @@
   {url}/api/query`) and fails the check unless it answers `status: "success"`,
   surfacing the `errorMessage` otherwise. Critical by default; rejects an
   invalid `url`, an empty `path` or an empty `token` at construction.
+- New `@openstatus/health-tcp` probe: `tcpProbe({ host, port })` opens a
+  socket with `node:net` and reports `ok` once the connection is established;
+  a timeout destroys the pending socket. Non-critical by default; rejects an
+  empty `host` or a port outside 1–65535 at construction.
 
 ## 0.1.3
 

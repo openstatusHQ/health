@@ -47,7 +47,8 @@
     "./packages/anthropic",
     "./packages/algolia",
     "./packages/typesense",
-    "./packages/convex"
+    "./packages/convex",
+    "./packages/tcp"
   ],
   "imports": {
     "@std/path": "jsr:@std/path@^1.1.0",
