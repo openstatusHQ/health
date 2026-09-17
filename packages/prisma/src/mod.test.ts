@@ -33,21 +33,24 @@ test("prismaProbe() runs select 1 through $queryRawUnsafe()", async () => {
   assert.equal(report.checks[0].critical, true);
 });
 
-test("prismaProbe() falls back to $runCommandRaw() for MongoDB", async () => {
+test("prismaProbe() runs $runCommandRaw() when connector is mongodb", async () => {
   const calls: string[] = [];
-  const report = await runProbes([prismaProbe({ client: mongoClient(calls) })]);
+  const report = await runProbes([
+    prismaProbe({ client: mongoClient(calls), connector: "mongodb" }),
+  ]);
   assert.deepEqual(calls, ['command {"ping":1}']);
   assert.equal(report.status, "ok");
 });
 
-test("prismaProbe() prefers $queryRawUnsafe() when both exist", async () => {
+test("prismaProbe() picks the method from connector, not from what the client exposes", async () => {
   const calls: string[] = [];
   const client: PrismaLikeClient = {
     ...sqlClient(calls),
     ...mongoClient(calls),
   };
   await runProbes([prismaProbe({ client })]);
-  assert.deepEqual(calls, ["sql select 1"]);
+  await runProbes([prismaProbe({ client, connector: "mongodb" })]);
+  assert.deepEqual(calls, ["sql select 1", 'command {"ping":1}']);
 });
 
 test("prismaProbe() reports unhealthy when the query rejects", async () => {
@@ -71,10 +74,22 @@ test("prismaProbe() times out on a hanging query", async () => {
   assert.equal(report.checks[0].status, "timeout");
 });
 
-test("prismaProbe() throws at construction without a raw query method", () => {
+test("prismaProbe() throws at construction without the connector's method", () => {
   assert.throws(
     () => prismaProbe({ client: {} }),
-    /prismaProbe: "client" must expose \$queryRawUnsafe\(\) or \$runCommandRaw\(\), got an object with no keys/,
+    /prismaProbe: "client" must expose \$queryRawUnsafe\(\) for the sql connector, got an object with no keys/,
+  );
+  assert.throws(
+    () => prismaProbe({ client: sqlClient([]), connector: "mongodb" }),
+    /must expose \$runCommandRaw\(\) for the mongodb connector, got an object with keys \$queryRawUnsafe/,
+  );
+  assert.throws(
+    () =>
+      prismaProbe({
+        client: sqlClient([]),
+        connector: "postgres" as unknown as "sql",
+      }),
+    /prismaProbe: "connector" must be "sql" or "mongodb", got "postgres"/,
   );
   assert.throws(
     () =>
