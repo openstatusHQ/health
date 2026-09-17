@@ -1,0 +1,21 @@
+{
+  "name": "@openstatus/health-mongodb",
+  "version": "0.1.4-dev.0",
+  "license": "MIT",
+  "exports": "./src/mod.ts",
+  "exclude": [
+    "dist/"
+  ],
+  "tasks": {
+    "build": "tsdown",
+    "test": "deno test --allow-net --allow-env",
+    "test:node": "node --experimental-transform-types --test"
+  },
+  "publish": {
+    "exclude": [
+      "**/*.test.ts",
+      "tsdown.config.ts",
+      "dist/"
+    ]
+  }
+}

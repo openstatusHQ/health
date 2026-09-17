@@ -1,0 +1,68 @@
+{
+  "name": "@openstatus/health-mongodb",
+  "version": "0.1.4-dev.0",
+  "description": "MongoDB ping probe for @openstatus/health",
+  "keywords": [
+    "openstatus",
+    "health",
+    "healthcheck",
+    "mongodb",
+    "mongo",
+    "database"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "openstatus",
+    "url": "https://www.openstatus.dev/"
+  },
+  "homepage": "https://github.com/openstatusHQ/health",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openstatusHQ/health.git",
+    "directory": "packages/mongodb/"
+  },
+  "bugs": {
+    "url": "https://github.com/openstatusHQ/health/issues"
+  },
+  "type": "module",
+  "module": "./dist/mod.js",
+  "main": "./dist/mod.cjs",
+  "types": "./dist/mod.d.ts",
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/mod.d.ts",
+        "require": "./dist/mod.d.cts"
+      },
+      "import": "./dist/mod.js",
+      "require": "./dist/mod.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist/"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "peerDependencies": {
+    "@openstatus/health": "^0.1.4-dev.0",
+    "mongodb": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "mongodb": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "mongodb": "^6.17.0",
+    "tsdown": "^0.12.7",
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "prepack": "tsdown",
+    "test": "node --experimental-transform-types --test"
+  }
+}

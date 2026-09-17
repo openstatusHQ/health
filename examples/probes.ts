@@ -10,6 +10,7 @@ import { Pool } from "pg";
 import postgres from "postgres";
 import { Redis as IORedis } from "ioredis";
 import { createClient as createRedisClient } from "redis";
+import { MongoClient } from "mongodb";
 import type { Probe } from "@openstatus/health";
 import { clickhouseProbe } from "@openstatus/health-clickhouse";
 import { drizzleProbe } from "@openstatus/health-drizzle";
@@ -18,6 +19,7 @@ import { postgresProbe } from "@openstatus/health-postgres";
 import { neonProbe } from "@openstatus/health-neon";
 import { planetscaleProbe } from "@openstatus/health-planetscale";
 import { redisProbe } from "@openstatus/health-redis";
+import { mongodbProbe } from "@openstatus/health-mongodb";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { tursoProbe } from "@openstatus/health-turso";
@@ -81,6 +83,10 @@ export function exampleProbes(): Probe[] {
     },
   };
 
+  const mongo = new MongoClient(
+    env("MONGODB_URI") ?? "mongodb://localhost:27017",
+  );
+
   const tursoServerless = connectTursoServerless({
     url: env("TURSO_DATABASE_URL") ?? "http://localhost:8080",
     authToken: env("TURSO_AUTH_TOKEN"),
@@ -140,6 +146,11 @@ export function exampleProbes(): Probe[] {
       client: nodeRedisOnDemand,
       name: "node-redis",
       skip: () => !env("REDIS_URL"),
+    }),
+    mongodbProbe({
+      client: mongo,
+      name: "mongodb",
+      skip: () => env("MONGODB_URI") == null,
     }),
     tinybirdProbe({
       baseUrl: env("TINYBIRD_URL"),

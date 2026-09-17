@@ -30,6 +30,11 @@
   client is typed structurally, so `redis` and `ioredis` stay optional peers
   for their types. Throws `ProbeConfigError` at construction when the client
   has no `ping()`.
+- New `@openstatus/health-mongodb` probe: `mongodbProbe({ client, db? })` runs
+  the `ping` command through the official driver, against `admin` by default.
+  Critical by default; the client is typed structurally, so `mongodb` stays an
+  optional peer for its types. Throws `ProbeConfigError` at construction when
+  the client has no `db()`.
 
 ## 0.1.3
 
