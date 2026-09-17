@@ -19,6 +19,7 @@
     "./packages/supabase",
     "./packages/unkey",
     "./packages/upstash",
+    "./packages/prisma",
     "./packages/mongodb",
     "./packages/mysql",
     "./packages/postgres",
