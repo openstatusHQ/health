@@ -62,14 +62,18 @@ export function exampleProbes(): Probe[] {
       "mysql://user:pass@aws.connect.psdb.cloud/app",
   });
 
-    const ioredis = new IORedis(env("REDIS_URL") || "redis://localhost:6379", {
+  const ioredis = new IORedis(env("REDIS_URL") || "redis://localhost:6379", {
     lazyConnect: true,
   });
   // node-redis only connects on connect(); open it on the first probe so
-  // this factory stays synchronous.
+  // this factory stays synchronous. Reconnects are off so a down server
+  // rejects connect() instead of retrying forever, and the error listener
+  // keeps the client's `error` events from crashing the process.
   const nodeRedis = createRedisClient({
     url: env("REDIS_URL") || "redis://localhost:6379",
+    socket: { connectTimeout: 2000, reconnectStrategy: false },
   });
+  nodeRedis.on("error", () => {});
   const nodeRedisOnDemand = {
     ping: async (): Promise<string> => {
       if (!nodeRedis.isOpen) await nodeRedis.connect();
