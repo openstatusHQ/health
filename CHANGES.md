@@ -170,7 +170,7 @@
   maxRssBytes? })` compares `process.memoryUsage()` with
   `v8.getHeapStatistics().heap_size_limit` and throws `MemoryPressureError`
   above 90% heap use (or the given thresholds). Non-critical by default;
-  rejects a negative threshold at construction.
+  rejects a negative or non-finite threshold at construction.
 
 ## 0.1.3
 

@@ -322,7 +322,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `dnsProbe({ hostname, lookup? })` | `dns` | no | `dns.promises.lookup(hostname)` returns an address |
 | `tlsProbe({ host, port?, minDaysValid? })` | `tls` | no | a TLS handshake with a trusted certificate valid ≥ `minDaysValid` days |
 | `diskProbe({ path?, minFreePercent?, minFreeBytes? })` | `disk` | no | free space of the filesystem holding `path` ≥ threshold |
-| `memoryProbe({ maxHeapUsedPercent?, maxRssBytes? })` | `memory` | no | heap in use ≤ % of the V8 heap limit, RSS ≤ budget |
+| `memoryProbe({ maxHeapUsedPercent?, maxRssBytes? })` | `memory` | no | heap in use ≤ 90% of the V8 heap limit by default; RSS ≤ budget only when `maxRssBytes` is set |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance, a base URL or, for `tcpProbe`, a

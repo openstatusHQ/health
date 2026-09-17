@@ -2521,6 +2521,7 @@
       "packages/memory": {
         "packageJson": {
           "dependencies": [
+            "npm:@types/node@>=22.0.0",
             "npm:tsdown@~0.12.7",
             "npm:typescript@^5.8.3"
           ]

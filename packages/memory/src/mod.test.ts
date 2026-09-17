@@ -52,11 +52,28 @@ test("memoryProbe() honours maxRssBytes and drops the heap default", async () =>
 });
 
 test("memoryProbe() fails on unexpected statistics", async () => {
+  for (
+    const options of [
+      samples(100 * mb, 200 * mb, 0),
+      samples(Infinity, 200 * mb),
+      samples(100 * mb, NaN),
+      samples(100 * mb, 200 * mb, Infinity),
+    ]
+  ) {
+    const report = await runProbes([memoryProbe(options)], {
+      formatError: "message",
+    });
+    assert.equal(report.checks[0].error, "unexpected memory statistics");
+  }
+});
+
+test("memoryProbe() enforces maxHeapUsedPercent on the exact ratio, not the rounded one", async () => {
   const report = await runProbes(
-    [memoryProbe(samples(100 * mb, 200 * mb, 0))],
+    [memoryProbe({ maxHeapUsedPercent: 90, ...samples(900.4 * mb, 0) })],
     { formatError: "message" },
   );
-  assert.equal(report.checks[0].error, "unexpected memory statistics");
+  assert.equal(report.checks[0].status, "failed");
+  assert.equal(report.checks[0].error, "heap 90% used exceeds 90%");
 });
 
 test("memoryProbe() makes the report unhealthy when critical", async () => {
