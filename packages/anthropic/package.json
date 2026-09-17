@@ -1,6 +1,6 @@
 {
   "name": "@openstatus/health-anthropic",
-  "version": "0.1.4-dev.0",
+  "version": "0.1.4",
   "description": "Anthropic API probe for @openstatus/health",
   "keywords": [
     "openstatus",
@@ -48,7 +48,7 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@openstatus/health": "^0.1.4-dev.0"
+    "@openstatus/health": "^0.1.4"
   },
   "devDependencies": {
     "tsdown": "^0.12.7",

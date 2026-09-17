@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.4
 
 - New `@openstatus/health-mysql` probe: `mysqlProbe({ client })` runs `select
   1` through a `mysql2/promise` pool or connection and fails the check when
@@ -178,6 +178,20 @@
   client is typed structurally, so `@grpc/grpc-js` stays an optional peer for
   its types. Throws `ProbeConfigError` at construction when the client has no
   `check()`.
+- `@openstatus/health-turso` and `@openstatus/health-turso-serverless`:
+  `tursoProbe()` and `tursoServerlessProbe()` throw `ProbeConfigError` at
+  construction when the client has no `execute()` / `get()`, and accept any
+  `PromiseLike` result.
+- `@openstatus/health-tcp` and `@openstatus/health-tls`: the probe checks
+  `signal.throwIfAborted()` before connecting, so an already-aborted signal
+  never opens a socket.
+- `@openstatus/health-clickhouse`: a `ping()` result with `success: false`
+  and no `error` fails with an explicit "unexpected ping result" error
+  instead of throwing `undefined`.
+- `@openstatus/health-kafka`: `kafkaProbe()` types its `run()` result as the
+  new exported `KafkaBrokerCount` (`{ brokers: number }`).
+- `@openstatus/health`: `expectOk()` ignores a rejecting `body.cancel()`, so
+  a body that cannot be cancelled cannot mask the real response status.
 
 ## 0.1.3
 

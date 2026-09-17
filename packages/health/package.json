@@ -1,6 +1,6 @@
 {
   "name": "@openstatus/health",
-  "version": "0.1.4-dev.0",
+  "version": "0.1.4",
   "description": "Framework-agnostic health endpoint core: probes, caching, response rendering",
   "keywords": [
     "openstatus",

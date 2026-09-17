@@ -1,6 +1,6 @@
 {
   "name": "@openstatus/health-express",
-  "version": "0.1.4-dev.0",
+  "version": "0.1.4",
   "description": "Express adapter for @openstatus/health",
   "keywords": [
     "openstatus",
@@ -45,7 +45,7 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@openstatus/health": "^0.1.4-dev.0",
+    "@openstatus/health": "^0.1.4",
     "express": "^4.0.0 || ^5.0.0"
   },
   "devDependencies": {

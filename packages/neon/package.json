@@ -1,6 +1,6 @@
 {
   "name": "@openstatus/health-neon",
-  "version": "0.1.4-dev.0",
+  "version": "0.1.4",
   "description": "Neon serverless Postgres probe for @openstatus/health",
   "keywords": [
     "openstatus",
@@ -48,7 +48,7 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@openstatus/health": "^0.1.4-dev.0",
+    "@openstatus/health": "^0.1.4",
     "@neondatabase/serverless": ">=1.0.0"
   },
   "peerDependenciesMeta": {

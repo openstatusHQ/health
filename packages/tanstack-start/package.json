@@ -1,6 +1,6 @@
 {
   "name": "@openstatus/health-tanstack-start",
-  "version": "0.1.4-dev.0",
+  "version": "0.1.4",
   "description": "TanStack Start adapter for @openstatus/health",
   "keywords": [
     "openstatus",
@@ -47,7 +47,7 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@openstatus/health": "^0.1.4-dev.0"
+    "@openstatus/health": "^0.1.4"
   },
   "devDependencies": {
     "@tanstack/react-router": "^1.170.35",
