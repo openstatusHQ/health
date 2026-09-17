@@ -89,7 +89,7 @@ test("prismaProbe() throws at construction without the connector's method", () =
         client: sqlClient([]),
         connector: "postgres" as unknown as "sql",
       }),
-    /prismaProbe: "connector" must be "sql" or "mongodb", got "postgres"/,
+    /prismaProbe: "connector" must be "sql" or "mongodb", got postgres/,
   );
   assert.throws(
     () =>

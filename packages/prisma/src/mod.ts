@@ -53,7 +53,7 @@ export function prismaProbe(options: PrismaProbeOptions): Probe {
     throw new ProbeConfigError(
       "prismaProbe",
       "connector",
-      `must be "sql" or "mongodb", got ${JSON.stringify(connector)}`,
+      `must be "sql" or "mongodb", got ${String(connector)}`,
     );
   }
   const method = connector === "mongodb" ? "$runCommandRaw" : "$queryRawUnsafe";
