@@ -73,7 +73,7 @@ test("tlsProbe() honours port and minDaysValid", async () => {
 
 test("tlsProbe() fails when the certificate expires too soon", async () => {
   const report = await runProbes(
-    [tlsProbe({ host: "h", connect: fakeConnect({ validTo: inDays(3) }) })],
+    [tlsProbe({ host: "h", connect: fakeConnect({ validTo: inDays(2.5) }) })],
     { formatError: "message" },
   );
   assert.equal(report.status, "degraded");
@@ -82,6 +82,18 @@ test("tlsProbe() fails when the certificate expires too soon", async () => {
     report.checks[0].error,
     "certificate expires in 2 days, fewer than 14",
   );
+});
+
+test("tlsProbe() compares a fractional minDaysValid against the exact remaining time", async () => {
+  const connect = fakeConnect({ validTo: inDays(1.6) });
+  const ok = await runProbes([
+    tlsProbe({ host: "h", minDaysValid: 1.5, connect }),
+  ]);
+  assert.equal(ok.checks[0].status, "ok");
+  const failed = await runProbes([
+    tlsProbe({ host: "h", minDaysValid: 1.7, connect }),
+  ]);
+  assert.equal(failed.checks[0].status, "failed");
 });
 
 test("tlsProbe() fails when the certificate has expired", async () => {

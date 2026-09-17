@@ -170,8 +170,9 @@ function inspect(
   if (Number.isNaN(expiresAt.getTime())) {
     throw new Error("certificate has no readable expiry");
   }
-  const daysLeft = Math.floor((expiresAt.getTime() - Date.now()) / 86_400_000);
-  if (daysLeft < minDaysValid) {
+  const msLeft = expiresAt.getTime() - Date.now();
+  const daysLeft = Math.floor(msLeft / 86_400_000);
+  if (msLeft < minDaysValid * 86_400_000) {
     throw new TlsCertificateExpiryError(expiresAt, daysLeft, minDaysValid);
   }
   return { expiresAt: expiresAt.toISOString(), daysLeft };

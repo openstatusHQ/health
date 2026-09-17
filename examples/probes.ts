@@ -274,8 +274,8 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("DNS_HOSTNAME"),
     }),
     tlsProbe({
-      host: env("TLS_HOST") ?? "localhost",
-      skip: () => env("TLS_HOST") == null,
+      host: env("TLS_HOST") || "localhost",
+      skip: () => !env("TLS_HOST"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

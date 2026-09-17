@@ -31,7 +31,7 @@ completes; no application data is sent. A self-signed or mis-chained
 certificate fails with the runtime's verification error
 (`SELF_SIGNED_CERT_IN_CHAIN`, `CERT_HAS_EXPIRED`, …), and one that is
 about to expire fails with `TlsCertificateExpiryError`, which carries
-`expiresAt` and `daysLeft`. A healthy check reports both in its result.
+`expiresAt` and `daysLeft`.
 
 Point it at your own public hostname to catch a renewal that did not run,
 or at a dependency to be warned before its certificate takes you down.
