@@ -70,6 +70,7 @@ const targets: Record<string, Target> = {
   "@openstatus/health-clerk": { symbol: "clerkProbe", allowed: [] },
   "@openstatus/health-workos": { symbol: "workosProbe", allowed: [] },
   "@openstatus/health-sentry": { symbol: "sentryProbe", allowed: [] },
+  "@openstatus/health-posthog": { symbol: "posthogProbe", allowed: [] },
 };
 
 const banned = [

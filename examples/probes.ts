@@ -28,6 +28,7 @@ import { inngestProbe } from "@openstatus/health-inngest";
 import { stripeProbe } from "@openstatus/health-stripe";
 import { resendProbe } from "@openstatus/health-resend";
 import { sentryProbe } from "@openstatus/health-sentry";
+import { posthogProbe } from "@openstatus/health-posthog";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { triggerDevProbe } from "@openstatus/health-trigger-dev";
@@ -220,6 +221,10 @@ export function exampleProbes(): Probe[] {
     sentryProbe({
       token: env("SENTRY_AUTH_TOKEN") || undefined,
       skip: () => env("SENTRY_NOOP") === "true",
+    }),
+    posthogProbe({
+      personalApiKey: env("POSTHOG_PERSONAL_API_KEY") || "unconfigured",
+      skip: () => !env("POSTHOG_PERSONAL_API_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
