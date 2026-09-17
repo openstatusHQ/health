@@ -19,6 +19,7 @@
     "./packages/supabase",
     "./packages/unkey",
     "./packages/upstash",
+    "./packages/qstash",
     "./packages/s3",
     "./packages/cloudflare-r2",
     "./packages/cloudflare-kv",

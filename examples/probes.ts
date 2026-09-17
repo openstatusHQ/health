@@ -22,6 +22,7 @@ import { planetscaleProbe } from "@openstatus/health-planetscale";
 import { redisProbe } from "@openstatus/health-redis";
 import { mongodbProbe } from "@openstatus/health-mongodb";
 import { s3Probe } from "@openstatus/health-s3";
+import { qstashProbe } from "@openstatus/health-qstash";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { tursoProbe } from "@openstatus/health-turso";
@@ -177,6 +178,11 @@ export function exampleProbes(): Probe[] {
     supabaseProbe({
       client: supabase,
       skip: () => env("SUPABASE_NOOP") === "true",
+    }),
+    qstashProbe({
+      token: env("QSTASH_TOKEN") || "unconfigured",
+      baseUrl: env("QSTASH_URL"),
+      skip: () => !env("QSTASH_TOKEN"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

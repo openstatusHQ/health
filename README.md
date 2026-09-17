@@ -233,6 +233,7 @@ Runnable projects for each adapter live in [`examples/`](examples).
 | [`@openstatus/health-mongodb`](packages/mongodb) | [![JSR](https://jsr.io/badges/@openstatus/health-mongodb)](https://jsr.io/@openstatus/health-mongodb) | [![npm](https://img.shields.io/npm/v/@openstatus/health-mongodb)](https://www.npmjs.com/package/@openstatus/health-mongodb) | MongoDB `ping` command probe (`mongodb`) |
 | [`@openstatus/health-prisma`](packages/prisma) | [![JSR](https://jsr.io/badges/@openstatus/health-prisma)](https://jsr.io/@openstatus/health-prisma) | [![npm](https://img.shields.io/npm/v/@openstatus/health-prisma)](https://www.npmjs.com/package/@openstatus/health-prisma) | Prisma `select 1` / `ping` probe (`@prisma/client`) |
 | [`@openstatus/health-s3`](packages/s3) | [![JSR](https://jsr.io/badges/@openstatus/health-s3)](https://jsr.io/@openstatus/health-s3) | [![npm](https://img.shields.io/npm/v/@openstatus/health-s3)](https://www.npmjs.com/package/@openstatus/health-s3) | S3 `HeadBucket` probe (`@aws-sdk/client-s3`; AWS, R2, Tigris, MinIO) |
+| [`@openstatus/health-qstash`](packages/qstash) | [![JSR](https://jsr.io/badges/@openstatus/health-qstash)](https://jsr.io/@openstatus/health-qstash) | [![npm](https://img.shields.io/npm/v/@openstatus/health-qstash)](https://www.npmjs.com/package/@openstatus/health-qstash) | Upstash QStash reachability probe over REST |
 | [`@openstatus/health-supabase`](packages/supabase) | [![JSR](https://jsr.io/badges/@openstatus/health-supabase)](https://jsr.io/@openstatus/health-supabase) | [![npm](https://img.shields.io/npm/v/@openstatus/health-supabase)](https://www.npmjs.com/package/@openstatus/health-supabase) | Supabase connection-pressure probe |
 | [`@openstatus/health-tinybird`](packages/tinybird) | [![JSR](https://jsr.io/badges/@openstatus/health-tinybird)](https://jsr.io/@openstatus/health-tinybird) | [![npm](https://img.shields.io/npm/v/@openstatus/health-tinybird)](https://www.npmjs.com/package/@openstatus/health-tinybird) | Tinybird reachability probe |
 | [`@openstatus/health-turso`](packages/turso) | [![JSR](https://jsr.io/badges/@openstatus/health-turso)](https://jsr.io/@openstatus/health-turso) | [![npm](https://img.shields.io/npm/v/@openstatus/health-turso)](https://www.npmjs.com/package/@openstatus/health-turso) | Turso libSQL `select 1` probe (`@libsql/client`) |
@@ -277,6 +278,7 @@ PR; [`AGENTS.md`](AGENTS.md) walks through adding a package.
 | `kvProbe({ namespace, key? })` | `kv` | no | `namespace.get("health")` on a Workers `KVNamespace` binding |
 | `r2Probe({ bucket, key? })` | `storage` | no | `bucket.head(key ?? "health")` on a Workers `R2Bucket` binding |
 | `s3Probe({ client, bucket })` | `storage` | no | `client.send(new HeadBucketCommand({ Bucket }))` on an `S3Client` |
+| `qstashProbe({ token, baseUrl? })` | `qstash` | no | `GET {baseUrl}/v2/queues` with the token |
 
 Every probe factory accepts `name`, `critical`, `timeoutMs` and `skip`
 overrides. Probes take a client instance or a base URL — they never read
