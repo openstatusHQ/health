@@ -23,8 +23,8 @@ Deno.serve(
       // the factory validates `personalApiKey` at construction, so pass a
       // placeholder and let `skip` keep the unconfigured check from running.
       posthogProbe({
-        personalApiKey: personalApiKey ?? "unconfigured",
-        skip: () => personalApiKey == null,
+        personalApiKey: personalApiKey || "unconfigured",
+        skip: () => !personalApiKey,
       }),
     ],
   }),
@@ -51,7 +51,7 @@ posthogProbe({
   name: "analytics",
   critical: true,
   timeoutMs: 2000,
-  skip: () => env.POSTHOG_PERSONAL_API_KEY == null,
+  skip: () => !personalApiKey,
 });
 ```
 

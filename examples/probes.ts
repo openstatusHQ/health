@@ -223,8 +223,8 @@ export function exampleProbes(): Probe[] {
       skip: () => env("SENTRY_NOOP") === "true",
     }),
     posthogProbe({
-      personalApiKey: env("POSTHOG_PERSONAL_API_KEY") ?? "unconfigured",
-      skip: () => env("POSTHOG_PERSONAL_API_KEY") == null,
+      personalApiKey: env("POSTHOG_PERSONAL_API_KEY") || "unconfigured",
+      skip: () => !env("POSTHOG_PERSONAL_API_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
