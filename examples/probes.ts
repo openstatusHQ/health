@@ -24,6 +24,7 @@ import { mongodbProbe } from "@openstatus/health-mongodb";
 import { s3Probe } from "@openstatus/health-s3";
 import { qstashProbe } from "@openstatus/health-qstash";
 import { inngestProbe } from "@openstatus/health-inngest";
+import { stripeProbe } from "@openstatus/health-stripe";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { triggerDevProbe } from "@openstatus/health-trigger-dev";
@@ -195,6 +196,10 @@ export function exampleProbes(): Probe[] {
       secretKey: env("TRIGGER_SECRET_KEY") || "unconfigured",
       baseUrl: env("TRIGGER_API_URL"),
       skip: () => !env("TRIGGER_SECRET_KEY"),
+    }),
+    stripeProbe({
+      secretKey: env("STRIPE_SECRET_KEY") || "unconfigured",
+      skip: () => !env("STRIPE_SECRET_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
