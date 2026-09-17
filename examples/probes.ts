@@ -244,9 +244,9 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("ALGOLIA_APP_ID") || !env("ALGOLIA_SEARCH_KEY"),
     }),
     meilisearchProbe({
-      host: env("MEILISEARCH_HOST") ?? "http://localhost:7700",
-      apiKey: env("MEILISEARCH_API_KEY"),
-      skip: () => env("MEILISEARCH_HOST") == null,
+      host: env("MEILISEARCH_HOST") || "http://localhost:7700",
+      apiKey: env("MEILISEARCH_API_KEY") || undefined,
+      skip: () => !env("MEILISEARCH_HOST"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",
