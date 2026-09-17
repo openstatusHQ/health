@@ -2,6 +2,7 @@ import { createClient as createLibsqlClient } from "@libsql/client";
 import { neon } from "@neondatabase/serverless";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { createClient as createClickHouseClient } from "@clickhouse/client";
+import { connect as connectPlanetScale } from "@planetscale/database";
 import { connect as connectTursoServerless } from "@tursodatabase/serverless";
 import { drizzle } from "drizzle-orm/libsql/http";
 import { createPool as createMysqlPool } from "mysql2/promise";
@@ -13,6 +14,7 @@ import { drizzleProbe } from "@openstatus/health-drizzle";
 import { mysqlProbe } from "@openstatus/health-mysql";
 import { postgresProbe } from "@openstatus/health-postgres";
 import { neonProbe } from "@openstatus/health-neon";
+import { planetscaleProbe } from "@openstatus/health-planetscale";
 import { supabaseProbe } from "@openstatus/health-supabase";
 import { tinybirdProbe } from "@openstatus/health-tinybird";
 import { tursoProbe } from "@openstatus/health-turso";
@@ -51,6 +53,11 @@ export function exampleProbes(): Probe[] {
   const neonSql = neon(
     env("NEON_DATABASE_URL") || "postgres://user:pass@localhost:5432/app",
   );
+
+  const planetscale = connectPlanetScale({
+    url: env("PLANETSCALE_URL") ||
+      "mysql://user:pass@aws.connect.psdb.cloud/app",
+  });
 
   const tursoServerless = connectTursoServerless({
     url: env("TURSO_DATABASE_URL") ?? "http://localhost:8080",
@@ -96,6 +103,11 @@ export function exampleProbes(): Probe[] {
       client: neonSql,
       name: "neon",
       skip: () => !env("NEON_DATABASE_URL"),
+    }),
+    planetscaleProbe({
+      connection: planetscale,
+      name: "planetscale",
+      skip: () => !env("PLANETSCALE_URL"),
     }),
     tinybirdProbe({
       baseUrl: env("TINYBIRD_URL"),

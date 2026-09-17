@@ -21,7 +21,8 @@
     "./packages/upstash",
     "./packages/mysql",
     "./packages/postgres",
-    "./packages/neon"
+    "./packages/neon",
+    "./packages/planetscale"
   ],
   "imports": {
     "@std/path": "jsr:@std/path@^1.1.0",
@@ -43,7 +44,8 @@
     "pg": "npm:pg@^8.16.0",
     "@types/pg": "npm:@types/pg@^8.15.0",
     "postgres": "npm:postgres@^3.4.0",
-    "@neondatabase/serverless": "npm:@neondatabase/serverless@^1.0.0"
+    "@neondatabase/serverless": "npm:@neondatabase/serverless@^1.0.0",
+    "@planetscale/database": "npm:@planetscale/database@^1.19.0"
   },
   "exclude": [
     "**/dist/",
