@@ -65,7 +65,9 @@ export function clickhouseProbe(options: ClickHouseProbeOptions): Probe {
     skip: options.skip,
     run: async (signal) => {
       const result = await client.ping({ select, abort_signal: signal });
-      if (!result.success) throw result.error;
+      if (!result.success) {
+        throw result.error ?? new Error("unexpected ping result");
+      }
     },
   };
 }

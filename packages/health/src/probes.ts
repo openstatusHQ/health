@@ -17,7 +17,11 @@ export async function expectOk(
 ): Promise<Response> {
   const res = await response;
   const ok = expectStatus == null ? res.ok : res.status === expectStatus;
-  await res.body?.cancel();
+  try {
+    await res.body?.cancel();
+  } catch {
+    // A body that cannot be cancelled must not turn a good status into a failure.
+  }
   if (!ok) throw new Error(`unexpected status ${res.status}`);
   return res;
 }

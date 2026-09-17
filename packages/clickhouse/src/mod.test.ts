@@ -87,6 +87,17 @@ test("clickhouseProbe() reports degraded when ping returns success: false", asyn
   assert.equal(report.checks[0].error, "failed");
 });
 
+test("clickhouseProbe() fails on a malformed ping result", async () => {
+  const client = fakeClient(() =>
+    Promise.resolve({ success: false } as ClickHousePingResult)
+  );
+  const report = await runProbes([clickhouseProbe({ client })], {
+    formatError: "message",
+  });
+  assert.equal(report.checks[0].status, "failed");
+  assert.equal(report.checks[0].error, "unexpected ping result");
+});
+
 test("clickhouseProbe() surfaces the ping error with formatError", async () => {
   const client = fakeClient(() =>
     Promise.resolve({

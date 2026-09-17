@@ -35,6 +35,28 @@ test("expectOk() honours expectStatus", async () => {
   await assert.rejects(expectOk(new Response(null, { status: 200 }), 404));
 });
 
+function uncancellableBody(): ReadableStream<Uint8Array> {
+  return new ReadableStream({
+    cancel() {
+      throw new Error("cannot cancel");
+    },
+  });
+}
+
+test("expectOk() ignores a body that cannot be cancelled", async () => {
+  const res = await expectOk(
+    new Response(uncancellableBody(), { status: 200 }),
+  );
+  assert.equal(res.status, 200);
+});
+
+test("expectOk() reports the status when the body cannot be cancelled", async () => {
+  await assert.rejects(
+    expectOk(new Response(uncancellableBody(), { status: 500 })),
+    /unexpected status 500/,
+  );
+});
+
 test("httpProbe() fetches the url with method, headers and signal", async () => {
   const { fetch, calls } = fakeFetch(200);
   const report = await runProbes([
