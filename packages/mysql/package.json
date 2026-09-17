@@ -1,6 +1,6 @@
 {
   "name": "@openstatus/health-mysql",
-  "version": "0.1.3",
+  "version": "0.1.4-dev.0",
   "description": "MySQL probe for @openstatus/health",
   "keywords": [
     "openstatus",
@@ -48,7 +48,7 @@
     "node": ">=22"
   },
   "peerDependencies": {
-    "@openstatus/health": "^0.1.3",
+    "@openstatus/health": "^0.1.4-dev.0",
     "mysql2": ">=3.0.0"
   },
   "peerDependenciesMeta": {

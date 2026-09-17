@@ -1,6 +1,6 @@
 {
   "name": "@openstatus/health-turso",
-  "version": "0.1.3",
+  "version": "0.1.4-dev.0",
   "license": "MIT",
   "exports": "./src/mod.ts",
   "exclude": [
