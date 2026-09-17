@@ -198,8 +198,8 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("TRIGGER_SECRET_KEY"),
     }),
     stripeProbe({
-      secretKey: env("STRIPE_SECRET_KEY") ?? "unconfigured",
-      skip: () => env("STRIPE_SECRET_KEY") == null,
+      secretKey: env("STRIPE_SECRET_KEY") || "unconfigured",
+      skip: () => !env("STRIPE_SECRET_KEY"),
     }),
     upstashProbe({
       url: env("UPSTASH_REDIS_REST_URL") ?? "http://localhost:8079",

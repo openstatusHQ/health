@@ -23,8 +23,8 @@ Deno.serve(
       // the factory validates `secretKey` at construction, so pass a
       // placeholder and let `skip` keep the unconfigured check from running.
       stripeProbe({
-        secretKey: secretKey ?? "unconfigured",
-        skip: () => secretKey == null,
+        secretKey: secretKey || "unconfigured",
+        skip: () => !secretKey,
       }),
     ],
   }),
@@ -47,7 +47,7 @@ stripeProbe({
   name: "billing",
   critical: true,
   timeoutMs: 2000,
-  skip: () => env.STRIPE_SECRET_KEY == null,
+  skip: () => !secretKey,
 });
 ```
 
