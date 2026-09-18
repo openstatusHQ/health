@@ -1,6 +1,6 @@
 /**
- * Shared option shapes and the memoised `extend` factory behind every hosting
- * package's `*Extend()`.
+ * Shared option shapes and the memoised `extend` factory behind the
+ * environment-based hosting packages' `*Extend()`.
  *
  * @module
  */

@@ -56,11 +56,7 @@ export type CloudflareServerOptions<
 };
 
 /** Options for `cloudflareExtend()`. */
-export type CloudflareExtendOptions<Ctx> = {
-  /** The `version_metadata` binding. */
-  readonly version?: CloudflareVersionMetadata;
-  /** Fields to leave out of the rendered object. */
-  readonly omit?: readonly (keyof CloudflareServerInfo)[];
+export type CloudflareExtendOptions<Ctx> = CloudflareServerOptions & {
   /** Pick the `Request` out of the framework context when it is not the context itself. */
   readonly request?: (ctx: Ctx) => CloudflareRequestLike;
 };
