@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { readEnv } from "./env.ts";
+import { readEnv, readEnvCount, readEnvText } from "./env.ts";
 
 type ProcessLike = { env?: Readonly<Record<string, string | undefined>> };
 
@@ -62,4 +62,18 @@ test("readEnv() falls back to Deno.env when process is absent", {
   } finally {
     Deno.env.delete(missing);
   }
+});
+
+test("readEnvText() returns the value and drops empty strings", () => {
+  assert.equal(readEnvText("TOKEN", { TOKEN: "secret" }), "secret");
+  assert.equal(readEnvText("TOKEN", { TOKEN: "" }), undefined);
+  assert.equal(readEnvText(missing, {}), undefined);
+});
+
+test("readEnvCount() parses finite numbers and rejects the rest", () => {
+  assert.equal(readEnvCount("MEMORY", { MEMORY: "256" }), 256);
+  assert.equal(readEnvCount("MEMORY", { MEMORY: "0" }), 0);
+  assert.equal(readEnvCount("MEMORY", { MEMORY: "lots" }), undefined);
+  assert.equal(readEnvCount("MEMORY", { MEMORY: "" }), undefined);
+  assert.equal(readEnvCount(missing, {}), undefined);
 });

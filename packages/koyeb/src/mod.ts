@@ -11,8 +11,13 @@
  * @module
  */
 
-import type { JsonObject } from "@openstatus/health";
-import { omitFields, readEnv } from "@openstatus/health";
+import type { JsonObject, ServerEnvOptions } from "@openstatus/health";
+import {
+  omitFields,
+  readEnvCount,
+  readEnvText,
+  serverExtend,
+} from "@openstatus/health";
 
 /** The `server` object rendered on Koyeb; fields Koyeb does not set are absent. */
 export type KoyebServerInfo = {
@@ -37,38 +42,25 @@ export type KoyebServerInfo = {
 };
 
 /** Options for `koyebServer()` and `koyebExtend()`. */
-export type KoyebServerOptions = {
-  /** Environment to read instead of the process environment; for tests. */
-  readonly env?: Readonly<Record<string, string | undefined>>;
-  /** Fields to leave out of the rendered object. */
-  readonly omit?: readonly (keyof KoyebServerInfo)[];
-};
-
-function text(value: string | undefined): string | undefined {
-  return value == null || value === "" ? undefined : value;
-}
-
-function count(value: string | undefined): number | undefined {
-  if (text(value) == null) return undefined;
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : undefined;
-}
+export type KoyebServerOptions<
+  K extends keyof KoyebServerInfo = keyof KoyebServerInfo,
+> = ServerEnvOptions<KoyebServerInfo, K>;
 
 /** Read Koyeb metadata from the environment; `undefined` off Koyeb. */
-export function koyebServer(
-  options?: KoyebServerOptions,
-): KoyebServerInfo | undefined {
+export function koyebServer<K extends keyof KoyebServerInfo = never>(
+  options?: KoyebServerOptions<K>,
+): Omit<KoyebServerInfo, K> | undefined {
   const env = options?.env;
-  const instanceId = text(readEnv("KOYEB_INSTANCE_ID", env));
+  const instanceId = readEnvText("KOYEB_INSTANCE_ID", env);
   if (instanceId == null) return undefined;
 
-  const region = text(readEnv("KOYEB_REGION", env));
-  const service = text(readEnv("KOYEB_SERVICE_NAME", env));
-  const version = text(readEnv("KOYEB_REGIONAL_DEPLOYMENT_ID", env));
-  const app = text(readEnv("KOYEB_APP_NAME", env));
-  const datacenter = text(readEnv("KOYEB_DC", env));
-  const replicaIndex = count(readEnv("KOYEB_REPLICA_INDEX", env));
-  const instanceType = text(readEnv("KOYEB_INSTANCE_TYPE", env));
+  const region = readEnvText("KOYEB_REGION", env);
+  const service = readEnvText("KOYEB_SERVICE_NAME", env);
+  const version = readEnvText("KOYEB_REGIONAL_DEPLOYMENT_ID", env);
+  const app = readEnvText("KOYEB_APP_NAME", env);
+  const datacenter = readEnvText("KOYEB_DC", env);
+  const replicaIndex = readEnvCount("KOYEB_REPLICA_INDEX", env);
+  const instanceType = readEnvText("KOYEB_INSTANCE_TYPE", env);
 
   const info: KoyebServerInfo = {
     platform: "koyeb",
@@ -85,13 +77,8 @@ export function koyebServer(
 }
 
 /** An `extend` hook that renders `{ server }` on Koyeb and `{}` elsewhere, computed once. */
-export function koyebExtend(options?: KoyebServerOptions): () => JsonObject {
-  let cached: JsonObject | undefined;
-  return (): JsonObject => {
-    if (cached == null) {
-      const server = koyebServer(options);
-      cached = server == null ? {} : { server };
-    }
-    return cached;
-  };
+export function koyebExtend<K extends keyof KoyebServerInfo = never>(
+  options?: KoyebServerOptions<K>,
+): () => JsonObject {
+  return serverExtend(() => koyebServer(options));
 }
