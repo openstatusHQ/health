@@ -43,7 +43,8 @@ export function inngestProbe(options: InngestProbeOptions): Probe {
     path: "/v1/events?limit=1",
   });
   if (
-    typeof options.signingKey !== "string" || options.signingKey.length === 0
+    typeof options.signingKey !== "string" ||
+    options.signingKey.length === 0
   ) {
     throw new ProbeConfigError(
       "inngestProbe",

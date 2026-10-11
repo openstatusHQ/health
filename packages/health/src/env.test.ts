@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { readEnv, readEnvCount, readEnvText } from "./env.ts";
 
 type ProcessLike = { env?: Readonly<Record<string, string | undefined>> };
+type DenoLike = { env?: { get(name: string): string | undefined } };
 
 const missing = "OPENSTATUS_HEALTH_TEST_MISSING";
 
@@ -51,16 +52,19 @@ test("readEnv() returns undefined when reading process.env throws", () => {
   });
 });
 
-test("readEnv() falls back to Deno.env when process is absent", {
-  skip: typeof Deno === "undefined",
-}, () => {
-  Deno.env.set(missing, "from-deno");
+test("readEnv() falls back to Deno.env when process is absent", () => {
+  const runtime = globalThis as { Deno?: DenoLike };
+  const original = runtime.Deno;
+  runtime.Deno = {
+    env: { get: (name) => (name === missing ? "from-deno" : undefined) },
+  };
   try {
     withProcess(undefined, () => {
       assert.equal(readEnv(missing), "from-deno");
     });
   } finally {
-    Deno.env.delete(missing);
+    if (original == null) delete runtime.Deno;
+    else runtime.Deno = original;
   }
 });
 

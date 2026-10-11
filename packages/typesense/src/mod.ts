@@ -43,9 +43,10 @@ export function typesenseProbe(options: TypesenseProbeOptions): Probe {
   if (options.apiKey != null && options.apiKey.length === 0) {
     throw new ProbeConfigError("typesenseProbe", "apiKey", "must not be empty");
   }
-  const headers = options.apiKey == null
-    ? undefined
-    : { "x-typesense-api-key": options.apiKey };
+  const headers =
+    options.apiKey == null
+      ? undefined
+      : { "x-typesense-api-key": options.apiKey };
   return {
     name: options.name ?? typesenseDefaultName,
     critical: options.critical ?? false,
@@ -57,7 +58,8 @@ export function typesenseProbe(options: TypesenseProbeOptions): Probe {
         await res.body?.cancel();
         throw new Error(`unexpected status ${res.status}`);
       }
-      const body: { readonly ok?: boolean } | null = await res.json()
+      const body: { readonly ok?: boolean } | null = await res
+        .json()
         .catch(() => null);
       if (body?.ok !== true) {
         throw new Error(`unexpected health body ${JSON.stringify(body)}`);

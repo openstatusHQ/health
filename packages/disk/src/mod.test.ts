@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { diskProbe, type DiskStatfs, type DiskStats } from "./mod.ts";
 
@@ -32,7 +32,9 @@ test("diskProbe() fails below the default 10% free", async () => {
   const stats = { bsize: 4096, blocks: 1_000_000, bavail: 50_000 };
   const report = await runProbes(
     [diskProbe({ statfs: fakeStatfs([], stats) })],
-    { formatError: "message" },
+    {
+      formatError: "message",
+    },
   );
   assert.equal(report.status, "degraded");
   assert.equal(report.checks[0].status, "failed");
@@ -67,17 +69,17 @@ test("diskProbe() honours minFreeBytes and drops the percent default", async () 
 });
 
 test("diskProbe() fails on an unexpected statfs result", async () => {
-  for (
-    const stats of [
-      { bsize: 4096, blocks: 0, bavail: 0 },
-      { bsize: 0, blocks: 1_000_000, bavail: 500_000 },
-      { bsize: 4096, blocks: Infinity, bavail: 500_000 },
-      { bsize: 4096, blocks: 1_000_000, bavail: NaN },
-    ]
-  ) {
+  for (const stats of [
+    { bsize: 4096, blocks: 0, bavail: 0 },
+    { bsize: 0, blocks: 1_000_000, bavail: 500_000 },
+    { bsize: 4096, blocks: Infinity, bavail: 500_000 },
+    { bsize: 4096, blocks: 1_000_000, bavail: NaN },
+  ]) {
     const report = await runProbes(
       [diskProbe({ statfs: fakeStatfs([], stats) })],
-      { formatError: "message" },
+      {
+        formatError: "message",
+      },
     );
     assert.equal(report.checks[0].error, "unexpected statfs result");
   }

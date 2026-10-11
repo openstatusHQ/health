@@ -1,13 +1,12 @@
 # @openstatus/health-sentry
 
 [Sentry](https://sentry.io/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET {baseUrl}/api/0/`, the root of the Sentry web API, and fails the check
 unless it answers 2xx — with `fetch` alone, on every runtime, against
 sentry.io or your own instance.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-sentry
 npm install @openstatus/health @openstatus/health-sentry
 ```
 

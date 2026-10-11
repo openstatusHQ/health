@@ -35,9 +35,10 @@ export interface TcpLikeSocket {
 }
 
 /** What the probe connects with; `net.connect` by default. */
-export type TcpConnect = (
-  options: { readonly host: string; readonly port: number },
-) => TcpLikeSocket;
+export type TcpConnect = (options: {
+  readonly host: string;
+  readonly port: number;
+}) => TcpLikeSocket;
 
 /** Options for `tcpProbe()`. */
 export interface TcpProbeOptions extends ProbeOverrides {
@@ -68,7 +69,7 @@ export function tcpProbe(options: TcpProbeOptions): Probe {
       `must be an integer between 1 and 65535, got ${String(port)}`,
     );
   }
-  const connect = options.connect ?? netConnect;
+  const connect: TcpConnect = options.connect ?? netConnect;
   return {
     name: options.name ?? tcpDefaultName,
     critical: options.critical ?? false,
@@ -85,9 +86,8 @@ export function tcpProbe(options: TcpProbeOptions): Probe {
         };
         const onAbort = () => settle(() => reject(signal.reason));
         socket.once("connect", () => settle(resolve));
-        socket.once(
-          "error",
-          (error) => settle(() => reject(error ?? new Error("socket error"))),
+        socket.once("error", (error) =>
+          settle(() => reject(error ?? new Error("socket error"))),
         );
         signal.addEventListener("abort", onAbort, { once: true });
       }),

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { type BullmqLikeQueue, bullmqProbe } from "./mod.ts";
 
@@ -38,10 +38,12 @@ test("bullmqProbe() passes a backlog at or below maxWaiting", async () => {
 
 test("bullmqProbe() fails a backlog above maxWaiting", async () => {
   const report = await runProbes(
-    [bullmqProbe({
-      queue: fakeQueue(() => Promise.resolve(11)),
-      maxWaiting: 10,
-    })],
+    [
+      bullmqProbe({
+        queue: fakeQueue(() => Promise.resolve(11)),
+        maxWaiting: 10,
+      }),
+    ],
     { formatError: "message" },
   );
   assert.equal(report.status, "degraded");

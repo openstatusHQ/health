@@ -1,13 +1,12 @@
 # @openstatus/health-kafka
 
 [Apache Kafka](https://kafka.apache.org/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Describes the
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Describes the
 cluster through a connected [KafkaJS](https://kafka.js.org/)-style `Admin`
 client — one metadata request to the broker — and fails the check when no
 broker answers or the cluster reports none.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-kafka
 npm install @openstatus/health @openstatus/health-kafka
 ```
 

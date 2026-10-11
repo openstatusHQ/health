@@ -54,9 +54,8 @@ export interface StartHealthRoute<TContext = LooseContext> {
 export function healthHandler<TContext = LooseContext>(
   options: StartHealthOptions<TContext>,
 ): StartHealthHandler<TContext> {
-  const responder = createHealthResponder<StartHandlerContext<TContext>>(
-    options,
-  );
+  const responder =
+    createHealthResponder<StartHandlerContext<TContext>>(options);
   return (ctx: StartHandlerContext<TContext>): Promise<Response> =>
     responder.toResponse(ctx, ctx.request.method);
 }

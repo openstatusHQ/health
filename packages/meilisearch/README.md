@@ -1,13 +1,12 @@
 # @openstatus/health-meilisearch
 
 [Meilisearch](https://www.meilisearch.com/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET {host}/health` and fails the check unless the instance answers 2xx
 with `{ "status": "available" }` — with `fetch` alone, on every runtime,
 against Meilisearch Cloud or your own instance.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-meilisearch
 npm install @openstatus/health @openstatus/health-meilisearch
 ```
 

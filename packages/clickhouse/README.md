@@ -1,13 +1,12 @@
 # @openstatus/health-clickhouse
 
 [ClickHouse](https://clickhouse.com/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Runs the official
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Runs the official
 client's health-check request — a `SELECT 1` by default, so the server also
 verifies your credentials — and fails the check when it comes back
 unsuccessful.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-clickhouse
 npm install @openstatus/health @openstatus/health-clickhouse
 ```
 

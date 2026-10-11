@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { fakeFetch, hangFetch } from "@openstatus/health/testing";
 import {
@@ -18,9 +18,9 @@ test("anthropicProbe() sends GET /v1/models with the api key and version headers
       fetch: fakeFetch({
         onFetch: (call) =>
           calls.push(
-            `${call.method} ${call.url} ${call.headers.get("x-api-key")} ${
-              call.headers.get("anthropic-version")
-            }`,
+            `${call.method} ${call.url} ${call.headers.get("x-api-key")} ${call.headers.get(
+              "anthropic-version",
+            )}`,
           ),
       }),
     }),

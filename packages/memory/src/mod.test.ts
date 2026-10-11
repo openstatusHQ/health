@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { memoryProbe } from "./mod.ts";
 
@@ -20,10 +20,9 @@ test("memoryProbe() reports ok under the default 90% heap threshold", async () =
 });
 
 test("memoryProbe() fails above the default heap threshold", async () => {
-  const report = await runProbes(
-    [memoryProbe(samples(950 * mb, 1200 * mb))],
-    { formatError: "message" },
-  );
+  const report = await runProbes([memoryProbe(samples(950 * mb, 1200 * mb))], {
+    formatError: "message",
+  });
   assert.equal(report.status, "degraded");
   assert.equal(report.checks[0].status, "failed");
   assert.equal(report.checks[0].error, "heap 95% used exceeds 90%");
@@ -52,14 +51,12 @@ test("memoryProbe() honours maxRssBytes and drops the heap default", async () =>
 });
 
 test("memoryProbe() fails on unexpected statistics", async () => {
-  for (
-    const options of [
-      samples(100 * mb, 200 * mb, 0),
-      samples(Infinity, 200 * mb),
-      samples(100 * mb, NaN),
-      samples(100 * mb, 200 * mb, Infinity),
-    ]
-  ) {
+  for (const options of [
+    samples(100 * mb, 200 * mb, 0),
+    samples(Infinity, 200 * mb),
+    samples(100 * mb, NaN),
+    samples(100 * mb, 200 * mb, Infinity),
+  ]) {
     const report = await runProbes([memoryProbe(options)], {
       formatError: "message",
     });

@@ -1,13 +1,12 @@
 # @openstatus/health-openai
 
 [OpenAI](https://openai.com/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET {baseUrl}/v1/models` with your API key as a bearer header, so it proves
 both that the API answers and that the key is valid — with `fetch` alone, on
 every runtime, and without spending a single token.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-openai
 npm install @openstatus/health @openstatus/health-openai
 ```
 

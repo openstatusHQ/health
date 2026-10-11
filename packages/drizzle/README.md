@@ -1,11 +1,10 @@
 # @openstatus/health-drizzle
 
 Database probe for [Drizzle ORM](https://orm.drizzle.team/) for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Runs a `select 1`
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Runs a `select 1`
 against your Drizzle instance. Critical by default.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-drizzle
 npm install @openstatus/health @openstatus/health-drizzle
 ```
 

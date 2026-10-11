@@ -1,13 +1,12 @@
 # @openstatus/health-tls
 
-TLS probe for [`@openstatus/health`](https://jsr.io/@openstatus/health).
+TLS probe for [`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health).
 Completes a TLS handshake with `host:port`, requires the certificate to
 chain to a trusted CA and fails the check when it expires within
 `minDaysValid` days — so a certificate that is about to lapse turns the
 report `degraded` two weeks before browsers start refusing it.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-tls
 npm install @openstatus/health @openstatus/health-tls
 ```
 

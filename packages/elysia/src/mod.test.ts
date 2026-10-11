@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { Elysia } from "elysia";
 import {
   createHealthCheck,
@@ -121,12 +121,14 @@ test("healthHandler() types the context from the app's decorators", async () => 
 test("healthRoute() shares a prebuilt check between two routes", async () => {
   let calls = 0;
   const check = createHealthCheck({
-    probes: [{
-      name: "a",
-      run: () => {
-        calls++;
+    probes: [
+      {
+        name: "a",
+        run: () => {
+          calls++;
+        },
       },
-    }],
+    ],
     cacheMs: 1000,
   });
   const app = new Elysia()
@@ -141,16 +143,18 @@ test("healthRoute() shares a prebuilt check between two routes", async () => {
 
 test("healthRoute() gates checks per request and survives a throwing extend", async () => {
   const errors: string[] = [];
-  const app = new Elysia().use(healthRoute({
-    probes: [ok],
-    exposeChecks: (ctx) => ctx.headers["x-health-token"] === "s3cret",
-    extend: () => {
-      throw new Error("boom");
-    },
-    onError: (error) => {
-      errors.push(error.message);
-    },
-  }));
+  const app = new Elysia().use(
+    healthRoute({
+      probes: [ok],
+      exposeChecks: (ctx) => ctx.headers["x-health-token"] === "s3cret",
+      extend: () => {
+        throw new Error("boom");
+      },
+      onError: (error) => {
+        errors.push(error.message);
+      },
+    }),
+  );
   const anonymous = await (await request(app, "/health")).json();
   assert.equal(anonymous.checks, undefined);
   assert.deepEqual(errors, []);

@@ -1,9 +1,8 @@
 # @openstatus/health-hono
 
-Hono adapter for [`@openstatus/health`](https://jsr.io/@openstatus/health).
+Hono adapter for [`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health).
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-hono
 npm install @openstatus/health @openstatus/health-hono
 ```
 

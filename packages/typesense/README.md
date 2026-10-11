@@ -1,13 +1,12 @@
 # @openstatus/health-typesense
 
 [Typesense](https://typesense.org/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET {host}/health` and fails the check unless the node answers 2xx with
 `{ "ok": true }` — with `fetch` alone, on every runtime, against Typesense
 Cloud or your own cluster.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-typesense
 npm install @openstatus/health @openstatus/health-typesense
 ```
 

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { type AddressInfo, createServer, type Server } from "node:net";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { type TcpConnect, type TcpLikeSocket, tcpProbe } from "./mod.ts";
 
@@ -46,10 +46,9 @@ test("tcpProbe() reports ok when the port accepts connections", async () => {
 test("tcpProbe() reports degraded when the connection is refused", async () => {
   const { server, port } = await listen();
   await close(server);
-  const report = await runProbes(
-    [tcpProbe({ host: "127.0.0.1", port })],
-    { formatError: "message" },
-  );
+  const report = await runProbes([tcpProbe({ host: "127.0.0.1", port })], {
+    formatError: "message",
+  });
   assert.equal(report.status, "degraded");
   assert.equal(report.checks[0].status, "failed");
   assert.match(report.checks[0].error ?? "", /ECONNREFUSED/);

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { type RedisLikeClient, redisProbe } from "./mod.ts";
 
@@ -27,12 +27,10 @@ test("redisProbe() reports ok on PONG", async () => {
 });
 
 test("redisProbe() accepts a lowercase pong and non-string replies", async () => {
-  for (
-    const reply of [
-      () => Promise.resolve("pong"),
-      () => Promise.resolve(undefined as unknown as string),
-    ]
-  ) {
+  for (const reply of [
+    () => Promise.resolve("pong"),
+    () => Promise.resolve(undefined as unknown as string),
+  ]) {
     const report = await runProbes([redisProbe({ client: fakeClient(reply) })]);
     assert.equal(report.status, "ok");
   }
@@ -50,7 +48,7 @@ test("redisProbe() reports degraded on an unexpected reply", async () => {
 
 test("redisProbe() reports failed when ping() rejects", async () => {
   const client = fakeClient(() =>
-    Promise.reject(new Error("connect ECONNREFUSED"))
+    Promise.reject(new Error("connect ECONNREFUSED")),
   );
   const report = await runProbes([redisProbe({ client })], {
     formatError: "message",

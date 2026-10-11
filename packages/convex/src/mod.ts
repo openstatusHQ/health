@@ -87,7 +87,8 @@ export function convexProbe(options: ConvexProbeOptions): Probe {
     skip: options.skip,
     run: async (signal) => {
       const res = await doFetch(url, { method: "POST", headers, body, signal });
-      const result: ConvexQueryResponse | null = await res.json()
+      const result: ConvexQueryResponse | null = await res
+        .json()
         .catch(() => null);
       if (result?.status === "error") {
         throw new Error(

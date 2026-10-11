@@ -1,14 +1,13 @@
 # @openstatus/health-postgres
 
 [PostgreSQL](https://www.postgresql.org/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Runs `select 1`
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Runs `select 1`
 through the client you already have — a [`pg`](https://node-postgres.com/)
 pool or client, a [postgres.js](https://github.com/porsager/postgres) `sql`
 instance, `@neondatabase/serverless` or `@vercel/postgres` — and fails the
 check when the round trip does.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-postgres
 npm install @openstatus/health @openstatus/health-postgres
 ```
 

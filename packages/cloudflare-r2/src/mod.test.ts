@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { type R2LikeBucket, r2Probe } from "./mod.ts";
 
@@ -31,9 +31,8 @@ test("r2Probe() honours the key option", async () => {
 });
 
 test("r2Probe() reports degraded when head() rejects", async () => {
-  const bucket = fakeBucket(
-    [],
-    () => Promise.reject(new Error("R2 head failed: 10001 internal error")),
+  const bucket = fakeBucket([], () =>
+    Promise.reject(new Error("R2 head failed: 10001 internal error")),
   );
   const report = await runProbes([r2Probe({ bucket })], {
     formatError: "message",

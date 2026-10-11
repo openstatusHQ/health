@@ -28,9 +28,9 @@ export class DuplicateProbeError extends Error {
   /** Build the error for the repeated `probeName`. */
   constructor(probeName: string) {
     super(
-      `duplicate probe name ${
-        JSON.stringify(probeName)
-      }: pass a different \`name\` to one of the probes`,
+      `duplicate probe name ${JSON.stringify(
+        probeName,
+      )}: pass a different \`name\` to one of the probes`,
     );
     this.name = "DuplicateProbeError";
     this.probeName = probeName;

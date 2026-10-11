@@ -61,14 +61,13 @@ export function prismaProbe(options: PrismaProbeOptions): Probe {
     throw new ProbeConfigError(
       "prismaProbe",
       "client",
-      `must expose ${method}() for the ${connector} connector, got ${
-        describe(client)
-      }`,
+      `must expose ${method}() for the ${connector} connector, got ${describe(client)}`,
     );
   }
-  const run: () => PromiseLike<ProbeResult> = connector === "mongodb"
-    ? () => client.$runCommandRaw!({ ping: 1 })
-    : () => client.$queryRawUnsafe!("select 1");
+  const run: () => PromiseLike<ProbeResult> =
+    connector === "mongodb"
+      ? () => client.$runCommandRaw!({ ping: 1 })
+      : () => client.$queryRawUnsafe!("select 1");
   return {
     name: options.name ?? prismaDefaultName,
     critical: options.critical ?? true,

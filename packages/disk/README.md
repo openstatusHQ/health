@@ -1,12 +1,11 @@
 # @openstatus/health-disk
 
-Disk space probe for [`@openstatus/health`](https://jsr.io/@openstatus/health).
+Disk space probe for [`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health).
 Reads the free space of the filesystem holding `path` and fails the check
 when it drops below a threshold — the input a readiness probe needs on
 anything that writes to local disk: SQLite, uploads, logs, a build cache.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-disk
 npm install @openstatus/health @openstatus/health-disk
 ```
 

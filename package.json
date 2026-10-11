@@ -2,11 +2,21 @@
   "name": "@openstatus/health-workspace",
   "private": true,
   "type": "module",
-  "workspaces": ["packages/*"],
+  "scripts": {
+    "build": "vp run -r build",
+    "check:treeshake": "vp run -r build && node scripts/check_treeshake.ts",
+    "check:versions": "node scripts/check_versions.ts",
+    "update-versions": "node scripts/update_versions.ts",
+    "test-all": "vp check && vp run check:versions && vp test && vp run check:treeshake"
+  },
   "devDependencies": {
-    "esbuild": "^0.25.0",
-    "tsdown": "^0.12.7",
+    "@types/node": "^24.0.0",
+    "esbuild": "^0.27.0",
     "typescript": "^5.8.3",
-    "rolldown": "1.0.0-beta.19"
-  }
+    "vite-plus": "1.1.0"
+  },
+  "engines": {
+    "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
+  },
+  "packageManager": "pnpm@12.10.1"
 }

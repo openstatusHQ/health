@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { type PostgresLikeClient, postgresProbe } from "./mod.ts";
 
@@ -55,9 +55,8 @@ test("postgresProbe() prefers query() when both exist", async () => {
 });
 
 test("postgresProbe() reports unhealthy when the query rejects", async () => {
-  const client = queryClient(
-    [],
-    () => Promise.reject(new Error("connect ECONNREFUSED")),
+  const client = queryClient([], () =>
+    Promise.reject(new Error("connect ECONNREFUSED")),
   );
   const report = await runProbes([postgresProbe({ client })], {
     formatError: "message",

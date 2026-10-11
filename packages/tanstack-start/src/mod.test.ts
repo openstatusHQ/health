@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { createRootRoute, createRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/start-client-core";
 import type { Probe } from "@openstatus/health";
@@ -56,11 +56,13 @@ test("extend receives the request, params and context", async () => {
       requestId: context.requestId,
     }),
   });
-  const body = await (await GET({
-    request: new Request("http://localhost/api/health"),
-    params: { id: "1" },
-    context: { requestId: "r1" },
-  })).json();
+  const body = await (
+    await GET({
+      request: new Request("http://localhost/api/health"),
+      params: { id: "1" },
+      context: { requestId: "r1" },
+    })
+  ).json();
   assert.equal(body.path, "/api/health");
   assert.deepEqual(body.params, { id: "1" });
   assert.equal(body.requestId, "r1");

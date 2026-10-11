@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { createHealthHandler } from "@openstatus/health";
 import { koyebExtend, koyebServer } from "./mod.ts";
 
@@ -38,17 +38,15 @@ test("koyebServer() maps every curated field", () => {
 
 test("koyebServer() drops internal ids, the hypervisor and both domains", () => {
   const server = koyebServer({ env: fullEnv }) ?? {};
-  for (
-    const key of [
-      "appId",
-      "serviceId",
-      "organizationId",
-      "organizationName",
-      "hypervisorId",
-      "publicDomain",
-      "privateDomain",
-    ]
-  ) {
+  for (const key of [
+    "appId",
+    "serviceId",
+    "organizationId",
+    "organizationName",
+    "hypervisorId",
+    "publicDomain",
+    "privateDomain",
+  ]) {
     assert.equal(key in server, false, `${key} should not be rendered`);
   }
 });
@@ -64,7 +62,10 @@ test("koyebServer() reports replicaIndex as a number, including zero", () => {
 test("koyebServer() omits absent and empty fields", () => {
   assert.deepEqual(
     koyebServer({ env: { KOYEB_INSTANCE_ID: "e5f2", KOYEB_REGION: "" } }),
-    { platform: "koyeb", instanceId: "e5f2" },
+    {
+      platform: "koyeb",
+      instanceId: "e5f2",
+    },
   );
 });
 

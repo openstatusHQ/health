@@ -47,9 +47,10 @@ export function meilisearchProbe(options: MeilisearchProbeOptions): Probe {
       "must not be empty",
     );
   }
-  const headers = options.apiKey == null
-    ? undefined
-    : { authorization: `Bearer ${options.apiKey}` };
+  const headers =
+    options.apiKey == null
+      ? undefined
+      : { authorization: `Bearer ${options.apiKey}` };
   return {
     name: options.name ?? meilisearchDefaultName,
     critical: options.critical ?? false,
@@ -61,7 +62,8 @@ export function meilisearchProbe(options: MeilisearchProbeOptions): Probe {
         await res.body?.cancel();
         throw new Error(`unexpected status ${res.status}`);
       }
-      const body: { readonly status?: string } | null = await res.json()
+      const body: { readonly status?: string } | null = await res
+        .json()
         .catch(() => null);
       const status = body?.status;
       if (status !== "available") {

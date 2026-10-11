@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { fakeFetch, hangFetch } from "@openstatus/health/testing";
 import { typesenseProbe } from "./mod.ts";
@@ -16,9 +16,7 @@ test("typesenseProbe() sends GET /health without credentials by default", async 
         body: healthy,
         onFetch: (call) =>
           calls.push(
-            `${call.method} ${call.url} ${
-              call.headers.get("x-typesense-api-key")
-            }`,
+            `${call.method} ${call.url} ${call.headers.get("x-typesense-api-key")}`,
           ),
       }),
     }),
@@ -54,7 +52,9 @@ test("typesenseProbe() fails when ok is false or the body is missing", async () 
   for (const body of [{ ok: false }, {}, null]) {
     const report = await runProbes(
       [typesenseProbe({ host, fetch: fakeFetch({ body }) })],
-      { formatError: "message" },
+      {
+        formatError: "message",
+      },
     );
     assert.equal(report.checks[0].status, "failed");
     assert.match(report.checks[0].error ?? "", /unexpected health body/);
@@ -64,7 +64,9 @@ test("typesenseProbe() fails when ok is false or the body is missing", async () 
 test("typesenseProbe() reports degraded on a non-2xx response", async () => {
   const report = await runProbes(
     [typesenseProbe({ host, fetch: fakeFetch({ status: 503 }) })],
-    { formatError: "message" },
+    {
+      formatError: "message",
+    },
   );
   assert.equal(report.status, "degraded");
   assert.equal(report.checks[0].error, "unexpected status 503");

@@ -54,9 +54,10 @@ export function sentryProbe(options: SentryProbeOptions = {}): Probe {
         : "must not be empty",
     );
   }
-  const headers = options.token == null
-    ? undefined
-    : { authorization: `Bearer ${options.token}` };
+  const headers =
+    options.token == null
+      ? undefined
+      : { authorization: `Bearer ${options.token}` };
   return {
     name: options.name ?? sentryDefaultName,
     critical: options.critical ?? false,

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { createHealthHandler, createLazyHealthHandler } from "./handler.ts";
 import type { Probe } from "./types.ts";
 
@@ -37,14 +37,12 @@ test("createHealthHandler() rejects requests without caching or running probes",
     path: "/health",
     probes: [{ name: "a", run: () => runs++ }],
   });
-  for (
-    const { path, method, status, allow } of [
-      { path: "/other", method: "GET", status: 404, allow: null },
-      { path: "/other", method: "HEAD", status: 404, allow: null },
-      { path: "/other", method: "POST", status: 404, allow: null },
-      { path: "/health", method: "POST", status: 405, allow: "GET, HEAD" },
-    ]
-  ) {
+  for (const { path, method, status, allow } of [
+    { path: "/other", method: "GET", status: 404, allow: null },
+    { path: "/other", method: "HEAD", status: 404, allow: null },
+    { path: "/other", method: "POST", status: 404, allow: null },
+    { path: "/health", method: "POST", status: 405, allow: "GET, HEAD" },
+  ]) {
     const res = await handler(
       new Request(`http://localhost${path}`, { method }),
     );
@@ -83,8 +81,9 @@ test("createHealthHandler() awaits an async extend", async () => {
     probes: [ok],
     extend: () => Promise.resolve({ region: "fra" }),
   });
-  const body = await (await handler(new Request("http://localhost/health")))
-    .json();
+  const body = await (
+    await handler(new Request("http://localhost/health"))
+  ).json();
   assert.equal(body.region, "fra");
 });
 
@@ -105,12 +104,10 @@ test("createHealthHandler() answers every path unless path is set", async () => 
 
 test("createLazyHealthHandler() builds once from the first request's env", async () => {
   let builds = 0;
-  const handler = createLazyHealthHandler<Request, { name: string }>(
-    (env) => {
-      builds++;
-      return { probes: [{ name: env.name, run: () => {} }] };
-    },
-  );
+  const handler = createLazyHealthHandler<Request, { name: string }>((env) => {
+    builds++;
+    return { probes: [{ name: env.name, run: () => {} }] };
+  });
   const first = await handler(new Request("http://localhost/"), { name: "a" });
   const second = await handler(new Request("http://localhost/"), {
     name: "b",

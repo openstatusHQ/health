@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { type PrismaLikeClient, prismaProbe } from "./mod.ts";
 
@@ -54,9 +54,8 @@ test("prismaProbe() picks the method from connector, not from what the client ex
 });
 
 test("prismaProbe() reports unhealthy when the query rejects", async () => {
-  const client = sqlClient(
-    [],
-    () => Promise.reject(new Error("Can't reach database server")),
+  const client = sqlClient([], () =>
+    Promise.reject(new Error("Can't reach database server")),
   );
   const report = await runProbes([prismaProbe({ client })], {
     formatError: "message",

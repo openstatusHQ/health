@@ -1,11 +1,10 @@
 # @openstatus/health-unkey
 
 Reachability probe for [Unkey](https://www.unkey.com/) for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Checks
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Checks
 `GET {baseUrl}/v2/liveness`, unauthenticated — liveness is public.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-unkey
 npm install @openstatus/health @openstatus/health-unkey
 ```
 

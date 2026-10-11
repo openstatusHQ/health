@@ -49,7 +49,7 @@ import { unkeyProbe } from "@openstatus/health-unkey";
 import { upstashProbe } from "@openstatus/health-upstash";
 import { workosProbe } from "@openstatus/health-workos";
 
-const env = (name: string): string | undefined => Deno.env.get(name);
+const env = (name: string): string | undefined => process.env[name];
 
 export function exampleProbes(): Probe[] {
   const libsql = createLibsqlClient({
@@ -82,8 +82,8 @@ export function exampleProbes(): Probe[] {
   );
 
   const planetscale = connectPlanetScale({
-    url: env("PLANETSCALE_URL") ||
-      "mysql://user:pass@aws.connect.psdb.cloud/app",
+    url:
+      env("PLANETSCALE_URL") || "mysql://user:pass@aws.connect.psdb.cloud/app",
   });
 
   const ioredis = new IORedis(env("REDIS_URL") || "redis://localhost:6379", {

@@ -1,13 +1,12 @@
 # @openstatus/health-tcp
 
-TCP probe for [`@openstatus/health`](https://jsr.io/@openstatus/health).
+TCP probe for [`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health).
 Opens a socket to `host:port`, reports `ok` as soon as the connection is
 established and closes it again — the check for every dependency that has
 no client library or HTTP endpoint: an SMTP relay, a Memcached node, a
 database behind a bastion, a legacy service on a bare port.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-tcp
 npm install @openstatus/health @openstatus/health-tcp
 ```
 

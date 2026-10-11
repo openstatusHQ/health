@@ -1,13 +1,12 @@
 # @openstatus/health-nats
 
 [NATS](https://nats.io/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Flushes a
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Flushes a
 `NatsConnection` — one `PING` / `PONG` round trip with the server — and
 fails the check when the server does not answer or the connection has been
 closed.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-nats
 npm install @openstatus/health @openstatus/health-nats
 ```
 

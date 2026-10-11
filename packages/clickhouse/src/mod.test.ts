@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import {
   type ClickHouseLikeClient,
@@ -31,9 +31,13 @@ function okClient(track?: Tracked): ClickHouseLikeClient {
 function hangingClient(track: { aborted: boolean }): ClickHouseLikeClient {
   return {
     ping: (params = {}) => {
-      params.abort_signal?.addEventListener("abort", () => {
-        track.aborted = true;
-      }, { once: true });
+      params.abort_signal?.addEventListener(
+        "abort",
+        () => {
+          track.aborted = true;
+        },
+        { once: true },
+      );
       return new Promise(() => {});
     },
   };
@@ -43,9 +47,13 @@ function abortingClient(): ClickHouseLikeClient {
   return {
     ping: (params = {}) =>
       new Promise((resolve) => {
-        params.abort_signal?.addEventListener("abort", () => {
-          resolve({ success: false, error: new Error("request aborted") });
-        }, { once: true });
+        params.abort_signal?.addEventListener(
+          "abort",
+          () => {
+            resolve({ success: false, error: new Error("request aborted") });
+          },
+          { once: true },
+        );
       }),
   };
 }
@@ -79,7 +87,7 @@ test("clickhouseProbe() reports degraded when ping returns success: false", asyn
     Promise.resolve({
       success: false,
       error: new Error("connect ECONNREFUSED"),
-    })
+    }),
   );
   const report = await runProbes([clickhouseProbe({ client })]);
   assert.equal(report.status, "degraded");
@@ -89,7 +97,7 @@ test("clickhouseProbe() reports degraded when ping returns success: false", asyn
 
 test("clickhouseProbe() fails on a malformed ping result", async () => {
   const client = fakeClient(() =>
-    Promise.resolve({ success: false } as ClickHousePingResult)
+    Promise.resolve({ success: false } as ClickHousePingResult),
   );
   const report = await runProbes([clickhouseProbe({ client })], {
     formatError: "message",
@@ -103,7 +111,7 @@ test("clickhouseProbe() surfaces the ping error with formatError", async () => {
     Promise.resolve({
       success: false,
       error: new Error("authentication failed"),
-    })
+    }),
   );
   const report = await runProbes([clickhouseProbe({ client })], {
     formatError: "message",
@@ -119,7 +127,7 @@ test("clickhouseProbe() reports failed when ping itself rejects", async () => {
 
 test("clickhouseProbe() makes the report unhealthy when critical", async () => {
   const client = fakeClient(() =>
-    Promise.resolve({ success: false, error: new Error("down") })
+    Promise.resolve({ success: false, error: new Error("down") }),
   );
   const report = await runProbes([clickhouseProbe({ client, critical: true })]);
   assert.equal(report.status, "unhealthy");

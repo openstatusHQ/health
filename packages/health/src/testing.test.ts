@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "./run.ts";
 import {
   failingProbe,
@@ -17,7 +17,11 @@ test("probe fixtures produce the expected check statuses", async () => {
   ]);
   assert.deepEqual(
     report.checks.map((c) => [c.name, c.status, c.critical]),
-    [["a", "ok", false], ["b", "failed", false], ["c", "timeout", true]],
+    [
+      ["a", "ok", false],
+      ["b", "failed", false],
+      ["c", "timeout", true],
+    ],
   );
   assert.equal(report.status, "unhealthy");
 });

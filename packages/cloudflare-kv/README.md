@@ -1,12 +1,11 @@
 # @openstatus/health-cloudflare-kv
 
 [Cloudflare Workers KV](https://developers.cloudflare.com/kv/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Reads one key
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Reads one key
 through a `KVNamespace` binding and fails the check when the read does — a
 missing key is a healthy answer, only an error is not.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-cloudflare-kv
 npm install @openstatus/health @openstatus/health-cloudflare-kv
 ```
 

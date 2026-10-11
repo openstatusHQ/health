@@ -52,13 +52,11 @@ export interface TlsLikeSocket {
 }
 
 /** What the probe connects with; `tls.connect` by default. */
-export type TlsConnect = (
-  options: {
-    readonly host: string;
-    readonly port: number;
-    readonly servername: string;
-  },
-) => TlsLikeSocket;
+export type TlsConnect = (options: {
+  readonly host: string;
+  readonly port: number;
+  readonly servername: string;
+}) => TlsLikeSocket;
 
 /** Options for `tlsProbe()`. */
 export interface TlsProbeOptions extends ProbeOverrides {
@@ -120,7 +118,7 @@ export function tlsProbe(options: TlsProbeOptions): Probe {
       `must be a non-negative number, got ${String(minDaysValid)}`,
     );
   }
-  const connect = options.connect ?? tlsConnect;
+  const connect: TlsConnect = options.connect ?? tlsConnect;
   return {
     name: options.name ?? tlsDefaultName,
     critical: options.critical ?? false,
@@ -147,9 +145,8 @@ export function tlsProbe(options: TlsProbeOptions): Probe {
             }
             settle(() => resolve(result));
           });
-          socket.once(
-            "error",
-            (error) => settle(() => reject(error ?? new Error("socket error"))),
+          socket.once("error", (error) =>
+            settle(() => reject(error ?? new Error("socket error"))),
           );
           signal.addEventListener("abort", onAbort, { once: true });
         },

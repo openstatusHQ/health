@@ -1,13 +1,12 @@
 # @openstatus/health-inngest
 
 [Inngest](https://www.inngest.com/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET {baseUrl}/v1/events?limit=1` to the Inngest REST API with your signing
 key as a bearer header, so it proves both that Inngest answers and that the
 key is valid — with `fetch` alone, on every runtime.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-inngest
 npm install @openstatus/health @openstatus/health-inngest
 ```
 

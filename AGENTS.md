@@ -2,7 +2,7 @@
 
 ## Layout
 
-- `packages/<name>/` — one npm/JSR package per concern. `health` is the
+- `packages/<name>/` — one npm package per concern. `health` is the
   zero-dependency core; `hono`, `elysia`, `express`, `next`, `tanstack-start`
   are server adapters; `algolia`, `anthropic`, `bullmq`, `clerk`, `clickhouse`,
   `cloudflare-d1`, `cloudflare-kv`, `cloudflare-r2`, `convex`, `disk`, `dns`,
@@ -13,34 +13,40 @@
   `typesense`, `unkey`, `upstash`, `workos` are probes; `fly`, `koyeb`,
   `railway`, `vercel`, `cloudflare` render hosting metadata under `server` via
   the `extend` hook.
-- Each package has `deno.json` (`exports: ./src/mod.ts`), `package.json`
-  (`exports -> dist/`, `sideEffects: false`), `tsdown.config.ts`, `README.md`
-  and `src/` with `mod.ts`, implementation files and one `*.test.ts` per file.
+- Each package has `package.json` (`exports -> dist/`, `sideEffects: false`,
+  `"@openstatus/health": "workspace:*"` in `devDependencies` when it peers on
+  the core), `vite.config.ts` (a `pack` block for `vp pack`), `README.md` and
+  `src/` with `mod.ts`, implementation files and one `*.test.ts` per file.
   `health` also exports `src/testing.ts` as `@openstatus/health/testing`;
   probe and adapter tests use its doubles instead of local copies.
-- `examples/` are type-checked in CI and never published.
+- `examples/` is a private workspace package; it is type-checked in CI and
+  never published.
+- The root `vite.config.ts` holds the shared `lint`, `fmt` and `test`
+  config and aliases every `@openstatus/health*` import to its `src/`;
+  `tsconfig.json` does the same through `paths`. Tests and type checks never
+  need a build.
 - `scripts/` hold workspace maintenance scripts.
 
 ## Adding a package
 
 1. Create `packages/<name>` with the files above.
-2. Add it to `workspace` in the root `deno.json`.
+2. Add it to `devDependencies` in `examples/package.json` and run
+   `vp install`.
 3. Add its allowed dependencies to `scripts/check_treeshake.ts`.
 4. Add a row to the root `README.md` package table.
 
 ## Conventions
 
-- Deno only: `deno task check`, `deno task test`, `deno task build`,
-  `deno task test:node`, `deno task check:treeshake`.
+- Vite+ only (`vp`, pnpm underneath): `vp check`, `vp test`,
+  `vp run build`, `vp run check:versions`, `vp run check:treeshake`,
+  `vp run test-all`. Never call `deno`, `npm` or `tsdown` directly.
 - Strict TypeScript. Never use `any` or `unknown`; spell out the union you
   mean or use a structural interface. The one exception is the loose adapter
   context defaults (`LooseEnv`, `ExpressLocals`) and the Express
   `Request`/`Response` generics, where `unknown` satisfies the framework's
-  constraint; keep it there and nowhere else. The one exception is the loose adapter
-  context defaults (`LooseEnv`, `ExpressLocals`) and the Express
-  `Request`/`Response` generics, where `unknown` satisfies the framework's
   constraint; keep it there and nowhere else.
-- Explicit return types on every exported function (JSR rejects slow types).
+- Explicit return types on every exported function, so declarations stay
+  stable and fast to emit.
 - Every server adapter exports `healthRoute(options)` (mounts `path`) and
   `healthHandler(options)` (a bare handler for that framework; Next.js has
   only `healthRoute`, the file is the route; TanStack Start's `healthRoute`
@@ -58,26 +64,20 @@
   `ProbeConfigError` naming the probe and field; use `probeUrl()` for URLs.
 - Every entrypoint (`mod.ts`, `testing.ts`) starts with a `/** ... @module */`
   block, and every exported symbol — including interface members, class
-  members and constructors — carries a one-line JSDoc summary. JSR scores
-  both; `deno doc --lint packages/<name>/src/mod.ts` must report no
-  `missing-jsdoc` (its `private-type-ref` errors on cross-package imports are
-  a single-file false positive). No other comments unless they explain
-  something the code cannot.
+  members and constructors — carries a one-line JSDoc summary. No other
+  comments unless they explain something the code cannot.
 - Client libraries are imported with `import type` only. Runtime imports are
   limited to what is actually called.
 - No top-level side effects in any `src/*.ts`.
-- Tests use `node:test` and `node:assert/strict` so they run unchanged under
-  `deno test` and `node --test`.
-- All packages share one version; `deno task check:versions` enforces it and
-  `deno task update-versions x.y.z` bumps it.
-- `tsdown` stays on `0.12.x`; the root `package.json` pins
-  `rolldown@1.0.0-beta.19` to match it, because newer rolldown rejects the
-  `define` option tsdown passes and prints a warning on every build. Do not
-  bump either without re-checking `deno task build` output.
-- `tsdown` stays on `0.12.x`; the root `package.json` pins
-  `rolldown@1.0.0-beta.19` to match it, because newer rolldown rejects the
-  `define` option tsdown passes and prints a warning on every build. Do not
-  bump either without re-checking `deno task build` output.
+- Tests import `test` from `vite-plus/test` and assert with
+  `node:assert/strict`; `vp test` runs them from the root.
+- All packages share one version; `vp run check:versions` enforces it and
+  `vp run update-versions x.y.z` bumps it.
+- `vp pack` is tsdown bundled with Vite+. Every pack config sets
+  `fixedExtension: false`: tsdown otherwise writes `.mjs` for
+  `platform: "node"`, which breaks the `dist/*.js` paths in `exports`.
+- `vite-plus` is pinned to an exact version; `pnpm-workspace.yaml` overrides
+  `vite` and `vitest` to the copies it bundles. Bump all three together.
 
 ## Releasing
 

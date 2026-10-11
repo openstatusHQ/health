@@ -6,4 +6,4 @@ import { exampleProbes } from "../probes.ts";
 const app = new Hono();
 app.route("/", healthRoute({ probes: exampleProbes(), extend: flyExtend() }));
 
-Deno.serve(app.fetch);
+export default app;

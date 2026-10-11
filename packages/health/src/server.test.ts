@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { serverExtend } from "./server.ts";
 
 test("serverExtend() wraps the info under server", () => {

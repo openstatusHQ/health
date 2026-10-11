@@ -1,13 +1,12 @@
 # @openstatus/health-qstash
 
 [Upstash QStash](https://upstash.com/docs/qstash) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET {baseUrl}/v2/queues` with your token as a bearer header, so it proves
 both that QStash answers and that the token is valid — with `fetch` alone,
 on every runtime.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-qstash
 npm install @openstatus/health @openstatus/health-qstash
 ```
 

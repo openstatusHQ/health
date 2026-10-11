@@ -3,31 +3,35 @@
   "version": "0.1.4",
   "description": "Postgres probe for @openstatus/health",
   "keywords": [
-    "openstatus",
+    "database",
     "health",
     "healthcheck",
-    "postgres",
-    "postgresql",
+    "openstatus",
     "pg",
-    "database"
+    "postgres",
+    "postgresql"
   ],
+  "homepage": "https://github.com/openstatusHQ/health",
+  "bugs": {
+    "url": "https://github.com/openstatusHQ/health/issues"
+  },
   "license": "MIT",
   "author": {
     "name": "openstatus",
     "url": "https://www.openstatus.dev/"
   },
-  "homepage": "https://github.com/openstatusHQ/health",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/openstatusHQ/health.git",
     "directory": "packages/postgres/"
   },
-  "bugs": {
-    "url": "https://github.com/openstatusHQ/health/issues"
-  },
+  "files": [
+    "dist/"
+  ],
   "type": "module",
-  "module": "./dist/mod.js",
+  "sideEffects": false,
   "main": "./dist/mod.cjs",
+  "module": "./dist/mod.js",
   "types": "./dist/mod.d.ts",
   "exports": {
     ".": {
@@ -40,12 +44,15 @@
     },
     "./package.json": "./package.json"
   },
-  "sideEffects": false,
-  "files": [
-    "dist/"
-  ],
-  "engines": {
-    "node": ">=22"
+  "scripts": {
+    "build": "vp pack",
+    "prepack": "vp pack"
+  },
+  "devDependencies": {
+    "@openstatus/health": "workspace:*",
+    "@types/pg": "^8.15.0",
+    "pg": "^8.16.0",
+    "postgres": "^3.4.0"
   },
   "peerDependencies": {
     "@openstatus/health": "^0.1.4",
@@ -60,16 +67,7 @@
       "optional": true
     }
   },
-  "devDependencies": {
-    "pg": "^8.16.0",
-    "@types/pg": "^8.15.0",
-    "postgres": "^3.4.0",
-    "tsdown": "^0.12.7",
-    "typescript": "^5.8.3"
-  },
-  "scripts": {
-    "build": "tsdown",
-    "prepack": "tsdown",
-    "test": "node --experimental-transform-types --test"
+  "engines": {
+    "node": ">=22"
   }
 }

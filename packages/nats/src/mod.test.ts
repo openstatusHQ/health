@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { type NatsLikeConnection, natsProbe } from "./mod.ts";
 
@@ -50,7 +50,7 @@ test("natsProbe() fails without flushing when the connection is closed", async (
 
 test("natsProbe() reports degraded when flush() rejects", async () => {
   const connection = fakeConnection(() =>
-    Promise.reject(new Error("CONNECTION_CLOSED"))
+    Promise.reject(new Error("CONNECTION_CLOSED")),
   );
   const report = await runProbes([natsProbe({ connection })], {
     formatError: "message",

@@ -1,13 +1,12 @@
 # @openstatus/health-stripe
 
 [Stripe](https://stripe.com/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET {baseUrl}/v1/balance` with your secret key as a bearer header, so it
 proves both that the Stripe API answers and that the key is valid — with
 `fetch` alone, on every runtime.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-stripe
 npm install @openstatus/health @openstatus/health-stripe
 ```
 

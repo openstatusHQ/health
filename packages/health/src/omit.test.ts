@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { omitFields } from "./omit.ts";
 
 test("omitFields() returns the same object when nothing is omitted", () => {
@@ -44,7 +44,7 @@ test("omitFields() drops numeric keys", () => {
 
 test("omitFields() keeps `T` in the result type for a possibly-empty array", () => {
   const value: { a: number; b?: number } = { a: 1, b: 2 };
-  const keys: ("a")[] = [];
+  const keys: "a"[] = [];
   const result = omitFields(value, keys);
   assert.equal(result, value);
   if ("a" in result) assert.equal(result.a, 1);

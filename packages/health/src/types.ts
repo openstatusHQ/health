@@ -186,9 +186,8 @@ export interface HealthResponderOptions<Ctx = Request> {
 }
 
 /** Options for `createHealthResponder()` and adapter `healthHandler()`s. */
-export type HealthHandlerOptions<Ctx = Request> =
-  & HealthSource
-  & HealthResponderOptions<Ctx>;
+export type HealthHandlerOptions<Ctx = Request> = HealthSource &
+  HealthResponderOptions<Ctx>;
 
 /** Options for `createHealthHandler()` and adapter `healthRoute()`s. */
 export type HealthRouteOptions<Ctx = Request> = HealthHandlerOptions<Ctx> & {

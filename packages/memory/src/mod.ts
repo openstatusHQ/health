@@ -81,14 +81,13 @@ export class MemoryPressureError extends Error {
 /** A probe that fails above `maxHeapUsedPercent` or `maxRssBytes`; non-critical by default. Throws `ProbeConfigError` for a negative or non-finite threshold. */
 export function memoryProbe(options: MemoryProbeOptions = {}): Probe {
   const maxRssBytes = options.maxRssBytes;
-  const maxHeapUsedPercent = options.maxHeapUsedPercent ??
+  const maxHeapUsedPercent =
+    options.maxHeapUsedPercent ??
     (maxRssBytes == null ? memoryDefaultMaxHeapUsedPercent : undefined);
-  for (
-    const [field, value] of [
-      ["maxHeapUsedPercent", maxHeapUsedPercent],
-      ["maxRssBytes", maxRssBytes],
-    ] as const
-  ) {
+  for (const [field, value] of [
+    ["maxHeapUsedPercent", maxHeapUsedPercent],
+    ["maxRssBytes", maxRssBytes],
+  ] as const) {
     if (value != null && (!Number.isFinite(value) || value < 0)) {
       throw new ProbeConfigError(
         "memoryProbe",
@@ -135,9 +134,10 @@ function read(
   const heapLimitBytes = heap.heap_size_limit;
   const rssBytes = usage.rss;
   if (
-    ![heapUsedBytes, heapLimitBytes, rssBytes].every((n) =>
-      Number.isFinite(n) && n >= 0
-    ) || heapLimitBytes === 0
+    ![heapUsedBytes, heapLimitBytes, rssBytes].every(
+      (n) => Number.isFinite(n) && n >= 0,
+    ) ||
+    heapLimitBytes === 0
   ) {
     throw new Error("unexpected memory statistics");
   }

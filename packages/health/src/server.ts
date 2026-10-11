@@ -21,12 +21,13 @@ export type OmitOptions<TInfo, K extends keyof TInfo = never> = {
  * Options for hosting packages that read the environment: an optional `env`
  * source and the keys to omit.
  */
-export type ServerEnvOptions<TInfo, K extends keyof TInfo = never> =
-  & OmitOptions<TInfo, K>
-  & {
-    /** Environment to read instead of the process environment; for tests. */
-    readonly env?: ServerEnv;
-  };
+export type ServerEnvOptions<
+  TInfo,
+  K extends keyof TInfo = never,
+> = OmitOptions<TInfo, K> & {
+  /** Environment to read instead of the process environment; for tests. */
+  readonly env?: ServerEnv;
+};
 
 /**
  * Wrap a memoised server-info reader into an `extend` hook that renders
