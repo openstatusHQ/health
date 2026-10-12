@@ -6,8 +6,9 @@
     "build": "vp run -r build",
     "check:treeshake": "vp run -r build && node scripts/check_treeshake.ts",
     "check:versions": "node scripts/check_versions.ts",
+    "test:dist": "vp run -r build && vp test --mode dist",
     "update-versions": "node scripts/update_versions.ts",
-    "test-all": "vp check && vp run check:versions && vp test && vp run check:treeshake"
+    "test-all": "vp check && vp run check:versions && vp test && vp run test:dist && vp run check:treeshake"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

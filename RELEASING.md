@@ -7,7 +7,7 @@ push CI only proves that a release would succeed (`vp pm pack -r`).
 
 ## Checklist
 
-1. Make sure `main` is green: `check`, `test`, `treeshake` and
+1. Make sure `main` is green: `check`, `test`, `test-dist`, `treeshake` and
    `publish-dry-run`.
 2. Bump every `package.json` at once (this also rewrites the
    `@openstatus/health` peer range in the adapters and probes):

@@ -24,7 +24,8 @@
 - The root `vite.config.ts` holds the shared `lint`, `fmt` and `test`
   config and aliases every `@openstatus/health*` import to its `src/`;
   `tsconfig.json` does the same through `paths`. Tests and type checks never
-  need a build.
+  need a build; `vp run test:dist` builds and reruns the suites with
+  `--mode dist`, which drops the aliases so imports resolve to `dist/`.
 - `scripts/` hold workspace maintenance scripts.
 
 ## Adding a package
@@ -38,8 +39,8 @@
 ## Conventions
 
 - Vite+ only (`vp`, pnpm underneath): `vp check`, `vp test`,
-  `vp run build`, `vp run check:versions`, `vp run check:treeshake`,
-  `vp run test-all`. Never call `deno`, `npm` or `tsdown` directly.
+  `vp run build`, `vp run test:dist`, `vp run check:versions`,
+  `vp run check:treeshake`, `vp run test-all`. Never call `deno`, `npm` or `tsdown` directly.
 - Strict TypeScript. Never use `any` or `unknown`; spell out the union you
   mean or use a structural interface. The one exception is the loose adapter
   context defaults (`LooseEnv`, `ExpressLocals`) and the Express

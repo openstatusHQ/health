@@ -564,6 +564,7 @@ Requires [Vite+](https://viteplus.dev/) (`curl -fsSL https://vite.plus | bash`).
 vp install                   # install dependencies (pnpm workspace)
 vp check                     # format, lint and type-check
 vp test                      # Vitest suites against src/
+vp run test:dist             # the same suites against the built dist/
 vp run build                 # vp pack -> dist/ for every package
 vp run check:versions        # every manifest at the same version
 vp run check:treeshake       # no package bundles another framework/client

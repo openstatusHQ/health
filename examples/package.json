@@ -5,6 +5,8 @@
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.850.0",
     "@clickhouse/client": "^1.23.1",
+    "@elysiajs/node": "^1.4.5",
+    "@hono/node-server": "^2.1.4",
     "@libsql/client": "^0.15.0",
     "@neondatabase/serverless": "^1.0.0",
     "@openstatus/health": "workspace:*",

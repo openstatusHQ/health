@@ -246,16 +246,19 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("ANTHROPIC_API_KEY"),
     }),
     algoliaProbe({
+      name: "algolia",
       appId: env("ALGOLIA_APP_ID") || "unconfigured",
       apiKey: env("ALGOLIA_SEARCH_KEY") || "unconfigured",
       skip: () => !env("ALGOLIA_APP_ID") || !env("ALGOLIA_SEARCH_KEY"),
     }),
     meilisearchProbe({
+      name: "meilisearch",
       host: env("MEILISEARCH_HOST") || "http://localhost:7700",
       apiKey: env("MEILISEARCH_API_KEY") || undefined,
       skip: () => !env("MEILISEARCH_HOST"),
     }),
     typesenseProbe({
+      name: "typesense",
       host: env("TYPESENSE_HOST") || "http://localhost:8108",
       apiKey: env("TYPESENSE_API_KEY") || undefined,
       skip: () => !env("TYPESENSE_HOST"),

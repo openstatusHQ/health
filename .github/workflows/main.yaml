@@ -43,6 +43,17 @@ jobs:
           cache: true
       - run: vp test
 
+  test-dist:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: voidzero-dev/setup-vp@v1.21.2
+        with:
+          node-version: 24
+          cache: true
+      - run: vp run test:dist
+
   treeshake:
     runs-on: ubuntu-latest
     timeout-minutes: 15
