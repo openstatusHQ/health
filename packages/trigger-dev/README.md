@@ -1,13 +1,12 @@
 # @openstatus/health-trigger-dev
 
 [Trigger.dev](https://trigger.dev/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET {baseUrl}/api/v1/runs?page[size]=1` to the Trigger.dev API with your
 secret key as a bearer header, so it proves both that the API answers and
 that the key is valid — with `fetch` alone, on every runtime.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-trigger-dev
 npm install @openstatus/health @openstatus/health-trigger-dev
 ```
 

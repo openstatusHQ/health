@@ -1,12 +1,11 @@
 # @openstatus/health-cloudflare
 
 Cloudflare Workers server metadata for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Renders the colo that
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Renders the colo that
 served the request, and the Worker version when you supply the binding, under a
 `server` key.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-cloudflare
 npm install @openstatus/health @openstatus/health-cloudflare
 ```
 

@@ -1,6 +1,6 @@
 # @openstatus/health-express
 
-Express adapter for [`@openstatus/health`](https://jsr.io/@openstatus/health).
+Express adapter for [`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health).
 Works with Express 4 and 5.
 
 ```sh

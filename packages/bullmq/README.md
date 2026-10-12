@@ -1,13 +1,12 @@
 # @openstatus/health-bullmq
 
 [BullMQ](https://bullmq.io/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Counts the
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Counts the
 waiting jobs of a `Queue` — one `LLEN` against Redis — and fails the check
 when Redis does not answer or, with `maxWaiting`, when the backlog grows
 past a threshold.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-bullmq
 npm install @openstatus/health @openstatus/health-bullmq
 ```
 

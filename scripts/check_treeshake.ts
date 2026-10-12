@@ -1,6 +1,6 @@
-import { dirname, join } from "@std/path";
+import { join } from "node:path";
 import { build } from "esbuild";
-import { workspaceMembers } from "./versions.ts";
+import { root, workspaceMembers } from "./versions.ts";
 
 interface Target {
   readonly symbol: string;
@@ -117,29 +117,17 @@ const banned = [
   "grpc-health-check",
 ];
 
-const root: string = dirname(import.meta.dirname!);
-
-interface Member {
-  readonly name: string;
-}
-
-async function members(): Promise<Member[]> {
-  const result: Member[] = [];
-  for (const member of await workspaceMembers()) {
-    const text = await Deno.readTextFile(join(root, member, "deno.json"));
-    const data: { name: string } = JSON.parse(text);
-    result.push({ name: data.name });
-  }
-  return result;
-}
-
 function isBanned(input: string, dependency: string): boolean {
-  return input.includes(`node_modules/${dependency}/`) ||
-    input.startsWith(`${dependency}/`);
+  return (
+    input.includes(`node_modules/${dependency}/`) ||
+    input.startsWith(`${dependency}/`)
+  );
 }
 
 const failures: string[] = [];
-const all = await members();
+const all = await workspaceMembers();
+// examples/ depends on every member, so its node_modules links each one.
+const resolveDir = join(root, "examples");
 
 for (const member of all) {
   const target = targets[member.name];
@@ -149,14 +137,16 @@ for (const member of all) {
   }
   const result = await build({
     stdin: {
-      contents: `import { ${target.symbol} } from ${
-        JSON.stringify(member.name)
-      };\nconsole.log(${target.symbol});\n`,
-      resolveDir: root,
+      contents: `import { ${target.symbol} } from ${JSON.stringify(
+        member.name,
+      )};\nconsole.log(${target.symbol});\n`,
+      resolveDir,
       sourcefile: "treeshake-entry.js",
       loader: "js",
     },
     absWorkingDir: root,
+    // The root tsconfig maps workspace names to src/; resolve the built dist/.
+    tsconfigRaw: {},
     bundle: true,
     metafile: true,
     write: false,
@@ -180,15 +170,13 @@ for (const member of all) {
     }
   }
   console.log(
-    `${member.name}: ${inputs.length} modules, allowed: ${
-      target.allowed.join(", ") || "none"
-    }`,
+    `${member.name}: ${inputs.length} modules, allowed: ${target.allowed.join(", ") || "none"}`,
   );
 }
 
 if (failures.length > 0) {
   console.error("Tree-shaking check failed:");
   for (const failure of failures) console.error(`  ${failure}`);
-  Deno.exit(1);
+  process.exit(1);
 }
 console.log("Tree-shaking check passed");

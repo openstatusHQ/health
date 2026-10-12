@@ -1,11 +1,10 @@
 # @openstatus/health-vercel
 
 Vercel server metadata for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Renders the region,
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Renders the region,
 environment and deployment that produced the response under a `server` key.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-vercel
 npm install @openstatus/health @openstatus/health-vercel
 ```
 

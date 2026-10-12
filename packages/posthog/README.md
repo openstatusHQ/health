@@ -1,13 +1,12 @@
 # @openstatus/health-posthog
 
 [PostHog](https://posthog.com/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET {baseUrl}/api/projects/@current/` with a personal API key as a bearer
 header, so it proves both that the PostHog API answers and that the key is
 valid — with `fetch` alone, on every runtime.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-posthog
 npm install @openstatus/health @openstatus/health-posthog
 ```
 

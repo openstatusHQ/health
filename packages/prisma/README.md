@@ -1,13 +1,12 @@
 # @openstatus/health-prisma
 
 [Prisma](https://www.prisma.io/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Runs `select 1`
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Runs `select 1`
 through `$queryRawUnsafe()` on every SQL connector — or the `ping` command
 through `$runCommandRaw()` when `connector` is `"mongodb"` — and fails the
 check when the round trip does.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-prisma
 npm install @openstatus/health @openstatus/health-prisma
 ```
 

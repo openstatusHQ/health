@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { mongodbProbe, type MongoLikeClient } from "./mod.ts";
 
@@ -42,9 +42,8 @@ test("mongodbProbe() honours the db option", async () => {
 });
 
 test("mongodbProbe() reports unhealthy when the command rejects", async () => {
-  const client = fakeClient(
-    [],
-    () => Promise.reject(new Error("MongoServerSelectionError")),
+  const client = fakeClient([], () =>
+    Promise.reject(new Error("MongoServerSelectionError")),
   );
   const report = await runProbes([mongodbProbe({ client })], {
     formatError: "message",

@@ -1,7 +1,7 @@
 # @openstatus/health-tanstack-start
 
 TanStack Start server-route adapter for
-[`@openstatus/health`](https://jsr.io/@openstatus/health).
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health).
 
 ```sh
 npm install @openstatus/health @openstatus/health-tanstack-start

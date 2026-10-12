@@ -1,14 +1,13 @@
 # @openstatus/health-redis
 
 [Redis](https://redis.io/) / [Valkey](https://valkey.io/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends `PING`
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends `PING`
 through the client you already have — [`redis`](https://github.com/redis/node-redis)
 (node-redis), [`ioredis`](https://github.com/redis/ioredis),
 [`@upstash/redis`](https://github.com/upstash/redis-js) or `@vercel/kv` — and
 fails the check unless the server answers `PONG`.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-redis
 npm install @openstatus/health @openstatus/health-redis
 ```
 

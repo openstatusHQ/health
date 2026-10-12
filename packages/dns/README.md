@@ -1,13 +1,12 @@
 # @openstatus/health-dns
 
-DNS probe for [`@openstatus/health`](https://jsr.io/@openstatus/health).
+DNS probe for [`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health).
 Resolves a hostname through the runtime's resolver and fails the check
 when the name does not resolve — the early warning for an expired domain,
 a broken record change or a resolver outage on the host, before the first
 request to that dependency fails.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-dns
 npm install @openstatus/health @openstatus/health-dns
 ```
 

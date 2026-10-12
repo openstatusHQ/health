@@ -5,7 +5,7 @@ import { railwayServer } from "@openstatus/health-railway";
 import { vercelServer } from "@openstatus/health-vercel";
 
 export function exampleServer(): JsonObject {
-  const server = flyServer() ?? koyebServer() ?? railwayServer() ??
-    vercelServer();
+  const server =
+    flyServer() ?? koyebServer() ?? railwayServer() ?? vercelServer();
   return server == null ? {} : { server };
 }

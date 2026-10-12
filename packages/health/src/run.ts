@@ -28,8 +28,8 @@ function effectiveTimeoutMs(
   runMs: number | undefined,
   deadlineMs: number | undefined,
 ): number {
-  const chosen = normalizeTimeout(probeMs) ?? normalizeTimeout(runMs) ??
-    defaultTimeoutMs;
+  const chosen =
+    normalizeTimeout(probeMs) ?? normalizeTimeout(runMs) ?? defaultTimeoutMs;
   const deadline = normalizeTimeout(deadlineMs);
   return deadline == null ? chosen : Math.min(chosen, deadline);
 }

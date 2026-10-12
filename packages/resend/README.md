@@ -1,13 +1,12 @@
 # @openstatus/health-resend
 
 [Resend](https://resend.com/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET {baseUrl}/domains` with your API key as a bearer header, so it proves
 both that the Resend API answers and that the key is valid — with `fetch`
 alone, on every runtime.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-resend
 npm install @openstatus/health @openstatus/health-resend
 ```
 

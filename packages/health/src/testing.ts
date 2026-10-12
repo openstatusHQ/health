@@ -32,11 +32,12 @@ export interface FakeFetchOptions {
 /** A `fetch` that answers immediately with the given status and body. */
 export function fakeFetch(options: FakeFetchOptions = {}): typeof fetch {
   return (input, init) => {
-    const url = typeof input === "string"
-      ? input
-      : input instanceof URL
-      ? input.toString()
-      : input.url;
+    const url =
+      typeof input === "string"
+        ? input
+        : input instanceof URL
+          ? input.toString()
+          : input.url;
     const call: FetchCall = {
       url,
       method: init?.method ?? "GET",
@@ -45,10 +46,9 @@ export function fakeFetch(options: FakeFetchOptions = {}): typeof fetch {
     };
     options.onFetch?.(call);
     return Promise.resolve(
-      new Response(
-        options.body == null ? null : JSON.stringify(options.body),
-        { status: options.status ?? 200 },
-      ),
+      new Response(options.body == null ? null : JSON.stringify(options.body), {
+        status: options.status ?? 200,
+      }),
     );
   };
 }
@@ -57,9 +57,13 @@ export function fakeFetch(options: FakeFetchOptions = {}): typeof fetch {
 export function hangFetch(track?: { aborted: boolean }): typeof fetch {
   return (_input, init) => {
     if (track != null && init?.signal != null) {
-      init.signal.addEventListener("abort", () => {
-        track.aborted = true;
-      }, { once: true });
+      init.signal.addEventListener(
+        "abort",
+        () => {
+          track.aborted = true;
+        },
+        { once: true },
+      );
     }
     return new Promise<Response>(() => {});
   };

@@ -1,6 +1,6 @@
 # @openstatus/health-grpc
 
-gRPC probe for [`@openstatus/health`](https://jsr.io/@openstatus/health).
+gRPC probe for [`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health).
 Calls the standard
 [`grpc.health.v1.Health/Check`](https://github.com/grpc/grpc/blob/master/doc/health-checking.md)
 method through a generated `@grpc/grpc-js` client and fails the check
@@ -8,7 +8,6 @@ unless the server answers `SERVING` — for every upstream that speaks gRPC
 and implements the health protocol, which most do.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-grpc
 npm install @openstatus/health @openstatus/health-grpc grpc-health-check @grpc/grpc-js
 ```
 

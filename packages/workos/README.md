@@ -1,13 +1,12 @@
 # @openstatus/health-workos
 
 [WorkOS](https://workos.com/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET {baseUrl}/organizations?limit=1` with your API key as a bearer header, so
 it proves both that the WorkOS API answers and that the key is valid — with
 `fetch` alone, on every runtime.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-workos
 npm install @openstatus/health @openstatus/health-workos
 ```
 

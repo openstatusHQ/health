@@ -1,11 +1,10 @@
 # @openstatus/health-koyeb
 
 Koyeb server metadata for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Renders the region,
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Renders the region,
 instance and deployment that produced the response under a `server` key.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-koyeb
 npm install @openstatus/health @openstatus/health-koyeb
 ```
 

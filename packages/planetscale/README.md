@@ -1,13 +1,12 @@
 # @openstatus/health-planetscale
 
 [PlanetScale](https://planetscale.com/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Runs `select 1`
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Runs `select 1`
 over the serverless HTTP driver,
 [`@planetscale/database`](https://github.com/planetscale/database-js), and
 fails the check when the round trip does.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-planetscale
 npm install @openstatus/health @openstatus/health-planetscale
 ```
 

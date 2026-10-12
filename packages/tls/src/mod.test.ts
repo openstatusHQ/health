@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { type TlsConnect, type TlsLikeSocket, tlsProbe } from "./mod.ts";
 
@@ -119,7 +119,9 @@ test("tlsProbe() fails when the certificate is not trusted", async () => {
   for (const [fake, message] of cases) {
     const report = await runProbes(
       [tlsProbe({ host: "h", connect: fakeConnect(fake) })],
-      { formatError: "message" },
+      {
+        formatError: "message",
+      },
     );
     assert.equal(report.checks[0].error, message);
   }

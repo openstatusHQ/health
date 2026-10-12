@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { fakeFetch, hangFetch } from "@openstatus/health/testing";
 import { meilisearchProbe } from "./mod.ts";
@@ -52,7 +52,9 @@ test("meilisearchProbe() fails on another status or a missing body", async () =>
   for (const body of [{ status: "unavailable" }, {}, null]) {
     const report = await runProbes(
       [meilisearchProbe({ host, fetch: fakeFetch({ body }) })],
-      { formatError: "message" },
+      {
+        formatError: "message",
+      },
     );
     assert.equal(report.checks[0].status, "failed");
     assert.match(report.checks[0].error ?? "", /unexpected health status/);
@@ -62,7 +64,9 @@ test("meilisearchProbe() fails on another status or a missing body", async () =>
 test("meilisearchProbe() reports degraded on a non-2xx response", async () => {
   const report = await runProbes(
     [meilisearchProbe({ host, fetch: fakeFetch({ status: 503 }) })],
-    { formatError: "message" },
+    {
+      formatError: "message",
+    },
   );
   assert.equal(report.status, "degraded");
   assert.equal(report.checks[0].error, "unexpected status 503");

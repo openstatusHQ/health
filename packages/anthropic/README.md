@@ -1,13 +1,12 @@
 # @openstatus/health-anthropic
 
 [Anthropic](https://www.anthropic.com/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET {baseUrl}/v1/models` with your API key in the `x-api-key` header, so it
 proves both that the API answers and that the key is valid — with `fetch`
 alone, on every runtime, and without spending a single token.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-anthropic
 npm install @openstatus/health @openstatus/health-anthropic
 ```
 

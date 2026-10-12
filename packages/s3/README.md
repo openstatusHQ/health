@@ -1,13 +1,12 @@
 # @openstatus/health-s3
 
-S3 probe for [`@openstatus/health`](https://jsr.io/@openstatus/health).
+S3 probe for [`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health).
 Sends [`HeadBucket`](https://docs.aws.amazon.com/AmazonS3/latest/API/API_HeadBucket.html)
 through an [`@aws-sdk/client-s3`](https://github.com/aws/aws-sdk-js-v3)
 client and fails the check when the bucket does not answer — on AWS S3,
 Cloudflare R2, Tigris, Backblaze B2, MinIO or any other S3-compatible store.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-s3
 npm install @openstatus/health @openstatus/health-s3 @aws-sdk/client-s3
 ```
 

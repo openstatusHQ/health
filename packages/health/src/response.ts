@@ -48,12 +48,12 @@ export function renderHealthResponse(
   const exposeChecks = options.exposeChecks ?? true;
   const body = exposeChecks
     ? {
-      ...extended,
-      status: report.status,
-      checkedAt: report.checkedAt,
-      latencyMs: report.latencyMs,
-      checks: report.checks,
-    }
+        ...extended,
+        status: report.status,
+        checkedAt: report.checkedAt,
+        latencyMs: report.latencyMs,
+        checks: report.checks,
+      }
     : { ...extended, status: report.status, checkedAt: report.checkedAt };
   if (!exposeChecks) {
     delete body.checks;

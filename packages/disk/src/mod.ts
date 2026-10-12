@@ -88,14 +88,13 @@ export function diskProbe(options: DiskProbeOptions = {}): Probe {
     );
   }
   const minFreeBytes = options.minFreeBytes;
-  const minFreePercent = options.minFreePercent ??
+  const minFreePercent =
+    options.minFreePercent ??
     (minFreeBytes == null ? diskDefaultMinFreePercent : undefined);
-  for (
-    const [field, value] of [
-      ["minFreePercent", minFreePercent],
-      ["minFreeBytes", minFreeBytes],
-    ] as const
-  ) {
+  for (const [field, value] of [
+    ["minFreePercent", minFreePercent],
+    ["minFreeBytes", minFreeBytes],
+  ] as const) {
     if (value != null && (!Number.isFinite(value) || value < 0)) {
       throw new ProbeConfigError(
         "diskProbe",
@@ -137,7 +136,8 @@ function toUsage(stats: DiskStats): DiskUsage {
   const { bsize, blocks, bavail } = stats;
   if (
     ![bsize, blocks, bavail].every((n) => Number.isFinite(n) && n >= 0) ||
-    bsize === 0 || blocks === 0
+    bsize === 0 ||
+    blocks === 0
   ) {
     throw new Error("unexpected statfs result");
   }

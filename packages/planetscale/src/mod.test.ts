@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { type PlanetScaleLikeConnection, planetscaleProbe } from "./mod.ts";
 
@@ -27,9 +27,8 @@ test("planetscaleProbe() runs select 1 through execute()", async () => {
 });
 
 test("planetscaleProbe() reports unhealthy when execute() rejects", async () => {
-  const connection = fakeConnection(
-    [],
-    () => Promise.reject(new Error("unauthorized")),
+  const connection = fakeConnection([], () =>
+    Promise.reject(new Error("unauthorized")),
   );
   const report = await runProbes([planetscaleProbe({ connection })], {
     formatError: "message",

@@ -1,12 +1,11 @@
 # @openstatus/health-mysql
 
 [MySQL](https://www.mysql.com/) / [MariaDB](https://mariadb.org/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Runs `select 1`
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Runs `select 1`
 through a [`mysql2/promise`](https://sidorares.github.io/node-mysql2/docs)
 pool or connection and fails the check when the round trip does.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-mysql
 npm install @openstatus/health @openstatus/health-mysql
 ```
 

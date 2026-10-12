@@ -1,12 +1,11 @@
 # @openstatus/health-upstash
 
 Redis probe for [Upstash](https://upstash.com/) for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET {url}/ping` over the REST API with the token as a bearer header, so it
 needs no Redis client and runs on every runtime `fetch` does.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-upstash
 npm install @openstatus/health @openstatus/health-upstash
 ```
 

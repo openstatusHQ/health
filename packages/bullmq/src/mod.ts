@@ -62,7 +62,8 @@ export function bullmqProbe(options: BullmqProbeOptions): Probe {
   const maxWaiting = options.maxWaiting;
   if (
     maxWaiting != null &&
-    (typeof maxWaiting !== "number" || !Number.isFinite(maxWaiting) ||
+    (typeof maxWaiting !== "number" ||
+      !Number.isFinite(maxWaiting) ||
       maxWaiting < 0)
   ) {
     throw new ProbeConfigError(

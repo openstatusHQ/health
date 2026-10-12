@@ -16,10 +16,7 @@ type DenoLike = { env?: { get(name: string): string | undefined } };
  * `source` when given. Returns `undefined` instead of throwing where access is
  * denied.
  */
-export function readEnv(
-  name: string,
-  source?: ServerEnv,
-): string | undefined {
+export function readEnv(name: string, source?: ServerEnv): string | undefined {
   if (source != null) return source[name];
   const runtime = globalThis as { process?: ProcessLike; Deno?: DenoLike };
   return readProcessEnv(runtime, name) ?? readDenoEnv(runtime, name);

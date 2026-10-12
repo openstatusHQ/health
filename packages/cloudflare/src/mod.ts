@@ -66,9 +66,7 @@ function text(value: string | undefined): string | undefined {
 }
 
 /** Read Cloudflare metadata from a request; `undefined` when `request.cf` is missing. */
-export function cloudflareServer<
-  K extends keyof CloudflareServerInfo = never,
->(
+export function cloudflareServer<K extends keyof CloudflareServerInfo = never>(
   request: CloudflareRequestLike,
   options?: CloudflareServerOptions<K>,
 ): Omit<CloudflareServerInfo, K> | undefined {

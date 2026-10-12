@@ -1,13 +1,12 @@
 # @openstatus/health-neon
 
 [Neon](https://neon.com/) serverless Postgres probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Runs `select 1`
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Runs `select 1`
 through [`@neondatabase/serverless`](https://github.com/neondatabase/serverless)
 — the HTTP `neon()` driver or the WebSocket `Pool` / `Client` — and fails the
 check when the round trip does.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-neon
 npm install @openstatus/health @openstatus/health-neon
 ```
 

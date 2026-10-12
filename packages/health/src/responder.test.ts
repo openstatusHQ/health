@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { createHealthCheck } from "./check.ts";
 import { createHealthResponder, resolveHealthCheck } from "./responder.ts";
 import { failingProbe, okProbe } from "./testing.ts";
@@ -17,12 +17,14 @@ test("createHealthResponder() renders a report for a context", async () => {
 test("createHealthResponder() exposes the check it built", async () => {
   let calls = 0;
   const responder = createHealthResponder<Ctx>({
-    probes: [{
-      name: "a",
-      run: () => {
-        calls++;
+    probes: [
+      {
+        name: "a",
+        run: () => {
+          calls++;
+        },
       },
-    }],
+    ],
     cacheMs: 1000,
   });
   await responder.respond({});
@@ -34,12 +36,14 @@ test("createHealthResponder() exposes the check it built", async () => {
 test("createHealthResponder() accepts a prebuilt check", async () => {
   let calls = 0;
   const check = createHealthCheck({
-    probes: [{
-      name: "a",
-      run: () => {
-        calls++;
+    probes: [
+      {
+        name: "a",
+        run: () => {
+          calls++;
+        },
       },
-    }],
+    ],
     cacheMs: 1000,
   });
   const internal = createHealthResponder<Ctx>({ check });

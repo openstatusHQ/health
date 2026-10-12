@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import type { SQL } from "drizzle-orm";
 import { drizzle as drizzlePg } from "drizzle-orm/pg-proxy";
 import { drizzle as drizzleSqlite } from "drizzle-orm/sqlite-proxy";

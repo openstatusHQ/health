@@ -1,12 +1,11 @@
 # @openstatus/health-cloudflare-d1
 
 [Cloudflare D1](https://developers.cloudflare.com/d1/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Runs `select 1`
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Runs `select 1`
 through the `D1Database` binding of a Worker and fails the check when the
 statement does.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-cloudflare-d1
 npm install @openstatus/health @openstatus/health-cloudflare-d1
 ```
 

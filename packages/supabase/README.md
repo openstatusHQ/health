@@ -2,7 +2,7 @@
 
 Postgres connection-pressure probe for
 [Supabase](https://supabase.com/) for
-[`@openstatus/health`](https://jsr.io/@openstatus/health), implementing the
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health), implementing the
 "Check Postgres connection pressure" health check from Supabase's
 [Detecting issues](https://supabase.com/docs/guides/observability/detecting#health)
 guide.
@@ -37,7 +37,6 @@ granted to the role whose key the probe uses — `service_role` above, never
 `anon` or `authenticated`.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-supabase
 npm install @openstatus/health @openstatus/health-supabase
 ```
 

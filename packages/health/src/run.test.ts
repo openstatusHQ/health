@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { setTimeout as delay } from "node:timers/promises";
 import { aggregate, defaultTimeoutMs, runProbes } from "./run.ts";
 import type { CheckResult, Probe } from "./types.ts";
@@ -32,7 +32,12 @@ const check = (
   name: string,
   status: CheckResult["status"],
   critical = false,
-): CheckResult => ({ name, status, critical, latencyMs: 0 });
+): CheckResult => ({
+  name,
+  status,
+  critical,
+  latencyMs: 0,
+});
 
 test("aggregate() is ok when every check is ok or skipped", () => {
   assert.equal(aggregate([]), "ok");
@@ -58,7 +63,10 @@ test("runProbes() reports ok checks with latency", async () => {
   assert.equal(report.checks.length, 2);
   assert.deepEqual(
     report.checks.map((c) => [c.name, c.status, c.critical]),
-    [["a", "ok", false], ["b", "ok", true]],
+    [
+      ["a", "ok", false],
+      ["b", "ok", true],
+    ],
   );
   assert.ok(report.checks.every((c) => c.latencyMs >= 0));
   assert.ok(report.latencyMs >= 0);
@@ -67,13 +75,15 @@ test("runProbes() reports ok checks with latency", async () => {
 
 test("runProbes() marks skipped probes without running them", async () => {
   let ran = false;
-  const report = await runProbes([{
-    name: "a",
-    skip: () => true,
-    run: () => {
-      ran = true;
+  const report = await runProbes([
+    {
+      name: "a",
+      skip: () => true,
+      run: () => {
+        ran = true;
+      },
     },
-  }]);
+  ]);
   assert.equal(ran, false);
   assert.equal(report.status, "ok");
   assert.deepEqual(report.checks[0], {
@@ -85,13 +95,15 @@ test("runProbes() marks skipped probes without running them", async () => {
 });
 
 test("runProbes() treats a throwing skip() as a failure", async () => {
-  const report = await runProbes([{
-    name: "a",
-    skip: () => {
-      throw new Error("nope");
+  const report = await runProbes([
+    {
+      name: "a",
+      skip: () => {
+        throw new Error("nope");
+      },
+      run: () => {},
     },
-    run: () => {},
-  }]);
+  ]);
   assert.equal(report.checks[0].status, "failed");
   assert.equal(report.checks[0].error, "failed");
 });
@@ -104,22 +116,33 @@ test("runProbes() uses generic error text by default", async () => {
 });
 
 test("runProbes() passes real errors to formatError", async () => {
-  const report = await runProbes([failing("a"), {
-    name: "b",
-    run: () => Promise.reject("raw"),
-  }], {
-    formatError: (e) => `E: ${e.message}`,
-  });
+  const report = await runProbes(
+    [
+      failing("a"),
+      {
+        name: "b",
+        run: () => Promise.reject("raw"),
+      },
+    ],
+    {
+      formatError: (e) => `E: ${e.message}`,
+    },
+  );
   assert.equal(report.checks[0].error, "E: boom");
   assert.equal(report.checks[1].error, "E: raw");
 });
 
 test("runProbes() reports critical rejections that cannot become strings", async () => {
-  const report = await runProbes([{
-    name: "a",
-    critical: true,
-    run: () => Promise.reject({ toString: 0, code: "PRIVATE_FAILURE" }),
-  }], { formatError: "message" });
+  const report = await runProbes(
+    [
+      {
+        name: "a",
+        critical: true,
+        run: () => Promise.reject({ toString: 0, code: "PRIVATE_FAILURE" }),
+      },
+    ],
+    { formatError: "message" },
+  );
   assert.equal(report.status, "unhealthy");
   assert.equal(report.checks[0].status, "failed");
   assert.equal(report.checks[0].critical, true);
@@ -135,13 +158,18 @@ test("runProbes() times out and aborts the signal", async () => {
 });
 
 test("runProbes() falls back to the option-level timeout", async () => {
-  const report = await runProbes([{
-    name: "a",
-    run: (signal) =>
-      new Promise<void>((_, reject) => {
-        signal.addEventListener("abort", () => reject(signal.reason));
-      }),
-  }], { timeoutMs: 10 });
+  const report = await runProbes(
+    [
+      {
+        name: "a",
+        run: (signal) =>
+          new Promise<void>((_, reject) => {
+            signal.addEventListener("abort", () => reject(signal.reason));
+          }),
+      },
+    ],
+    { timeoutMs: 10 },
+  );
   assert.equal(report.checks[0].status, "timeout");
   assert.equal(report.checks[0].error, "timed out after 10ms");
 });
@@ -167,38 +195,44 @@ test("runProbes() accepts probes resolving to values", async () => {
 
 test("runProbes() awaits an async skip()", async () => {
   let ran = false;
-  const report = await runProbes([{
-    name: "a",
-    skip: () => Promise.resolve(true),
-    run: () => {
-      ran = true;
+  const report = await runProbes([
+    {
+      name: "a",
+      skip: () => Promise.resolve(true),
+      run: () => {
+        ran = true;
+      },
     },
-  }]);
+  ]);
   assert.equal(ran, false);
   assert.equal(report.checks[0].status, "skipped");
 });
 
 test("runProbes() times out a hanging skip()", async () => {
-  const report = await runProbes([{
-    name: "a",
-    timeoutMs: 10,
-    skip: () => new Promise<boolean>(() => {}),
-    run: () => {},
-  }]);
+  const report = await runProbes([
+    {
+      name: "a",
+      timeoutMs: 10,
+      skip: () => new Promise<boolean>(() => {}),
+      run: () => {},
+    },
+  ]);
   assert.equal(report.checks[0].status, "timeout");
 });
 
 test("runProbes() does not start work when skip() resolves false after timeout", async () => {
   const skip = Promise.withResolvers<boolean>();
   let ran = false;
-  const report = await runProbes([{
-    name: "a",
-    timeoutMs: 10,
-    skip: () => skip.promise,
-    run: () => {
-      ran = true;
+  const report = await runProbes([
+    {
+      name: "a",
+      timeoutMs: 10,
+      skip: () => skip.promise,
+      run: () => {
+        ran = true;
+      },
     },
-  }]);
+  ]);
   assert.equal(report.checks[0].status, "timeout");
   const completed = structuredClone(report);
 
@@ -211,13 +245,18 @@ test("runProbes() does not start work when skip() resolves false after timeout",
 
 test("runProbes() passes name, critical and timeoutMs to run()", async () => {
   let seen: { name: string; critical: boolean; timeoutMs: number } | undefined;
-  await runProbes([{
-    name: "a",
-    critical: true,
-    run: (_signal, ctx) => {
-      seen = { ...ctx };
-    },
-  }], { timeoutMs: 123 });
+  await runProbes(
+    [
+      {
+        name: "a",
+        critical: true,
+        run: (_signal, ctx) => {
+          seen = { ...ctx };
+        },
+      },
+    ],
+    { timeoutMs: 123 },
+  );
   assert.deepEqual(seen, { name: "a", critical: true, timeoutMs: 123 });
 });
 
@@ -228,14 +267,16 @@ test("runProbes() keeps a late rejection handled", async () => {
   };
   process.on("unhandledRejection", onUnhandled);
   try {
-    const report = await runProbes([{
-      name: "a",
-      timeoutMs: 10,
-      run: () =>
-        new Promise<void>((_, reject) => {
-          setTimeout(() => reject(new Error("late")), 30);
-        }),
-    }]);
+    const report = await runProbes([
+      {
+        name: "a",
+        timeoutMs: 10,
+        run: () =>
+          new Promise<void>((_, reject) => {
+            setTimeout(() => reject(new Error("late")), 30);
+          }),
+      },
+    ]);
     assert.equal(report.checks[0].status, "timeout");
     await delay(50);
     assert.equal(unhandled, 0);
@@ -277,28 +318,31 @@ test("runProbes() caps every probe's timeout at deadlineMs", async () => {
 
 test("runProbes() ignores non-positive and non-finite timeouts", async () => {
   const seen: number[] = [];
-  await runProbes([
-    {
-      name: "zero",
-      timeoutMs: 0,
-      run: (_signal, ctx) => void seen.push(ctx.timeoutMs),
-    },
-    {
-      name: "negative",
-      timeoutMs: -1,
-      run: (_signal, ctx) => void seen.push(ctx.timeoutMs),
-    },
-    {
-      name: "infinite",
-      timeoutMs: Infinity,
-      run: (_signal, ctx) => void seen.push(ctx.timeoutMs),
-    },
-    {
-      name: "nan",
-      timeoutMs: Number.NaN,
-      run: (_signal, ctx) => void seen.push(ctx.timeoutMs),
-    },
-  ], { timeoutMs: 0, deadlineMs: 0 });
+  await runProbes(
+    [
+      {
+        name: "zero",
+        timeoutMs: 0,
+        run: (_signal, ctx) => void seen.push(ctx.timeoutMs),
+      },
+      {
+        name: "negative",
+        timeoutMs: -1,
+        run: (_signal, ctx) => void seen.push(ctx.timeoutMs),
+      },
+      {
+        name: "infinite",
+        timeoutMs: Infinity,
+        run: (_signal, ctx) => void seen.push(ctx.timeoutMs),
+      },
+      {
+        name: "nan",
+        timeoutMs: Number.NaN,
+        run: (_signal, ctx) => void seen.push(ctx.timeoutMs),
+      },
+    ],
+    { timeoutMs: 0, deadlineMs: 0 },
+  );
   assert.deepEqual(seen, [
     defaultTimeoutMs,
     defaultTimeoutMs,

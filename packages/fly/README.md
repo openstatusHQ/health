@@ -1,11 +1,10 @@
 # @openstatus/health-fly
 
 Fly.io server metadata for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Renders the region,
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Renders the region,
 machine and deployment that produced the response under a `server` key.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-fly
 npm install @openstatus/health @openstatus/health-fly
 ```
 

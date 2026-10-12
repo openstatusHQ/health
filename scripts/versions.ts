@@ -1,8 +1,15 @@
-import { dirname, join } from "@std/path";
+import { readdir, readFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
 
 interface Manifest {
+  name: string;
   version?: string;
   peerDependencies?: Record<string, string>;
+}
+
+export interface Member {
+  readonly name: string;
+  readonly dir: string;
 }
 
 export interface VersionedFile {
@@ -11,34 +18,37 @@ export interface VersionedFile {
   readonly corePeerRange?: string;
 }
 
-const root: string = dirname(import.meta.dirname!);
+export const root: string = dirname(import.meta.dirname);
 
-export async function workspaceMembers(): Promise<string[]> {
-  const text = await Deno.readTextFile(join(root, "deno.json"));
-  const data: { workspace: string[] } = JSON.parse(text);
-  return data.workspace;
+async function readManifest(path: string): Promise<Manifest> {
+  return JSON.parse(await readFile(path, "utf8"));
+}
+
+export async function workspaceMembers(): Promise<Member[]> {
+  const entries = await readdir(join(root, "packages"), {
+    withFileTypes: true,
+  });
+  const members: Member[] = [];
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+    const dir = join(root, "packages", entry.name);
+    const manifest = await readManifest(join(dir, "package.json"));
+    members.push({ name: manifest.name, dir });
+  }
+  return members.sort((a, b) => a.dir.localeCompare(b.dir));
 }
 
 export async function versionedFiles(): Promise<VersionedFile[]> {
   const files: VersionedFile[] = [];
   for (const member of await workspaceMembers()) {
-    for (const name of ["deno.json", "package.json"]) {
-      const path = join(root, member, name);
-      let text: string;
-      try {
-        text = await Deno.readTextFile(path);
-      } catch (e) {
-        if (e instanceof Deno.errors.NotFound) continue;
-        throw e;
-      }
-      const data: Manifest = JSON.parse(text);
-      if (data.version == null) continue;
-      files.push({
-        path,
-        version: data.version,
-        corePeerRange: data.peerDependencies?.["@openstatus/health"],
-      });
-    }
+    const path = join(member.dir, "package.json");
+    const manifest = await readManifest(path);
+    if (manifest.version == null) continue;
+    files.push({
+      path,
+      version: manifest.version,
+      corePeerRange: manifest.peerDependencies?.["@openstatus/health"],
+    });
   }
   return files;
 }

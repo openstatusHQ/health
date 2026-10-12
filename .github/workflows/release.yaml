@@ -16,36 +16,14 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-      - uses: actions/setup-node@v4
+      - uses: voidzero-dev/setup-vp@v1.21.2
         with:
           node-version: 24
-      - run: deno ci
+          cache: true
       - name: Tag matches every manifest
-        run: deno task check:versions "$GITHUB_REF_NAME"
-      - run: deno task test-all
-      - run: deno publish --dry-run
-      - run: |
-          for dir in packages/*/; do
-            (cd "$dir" && npm pack --dry-run --ignore-scripts)
-          done
-
-  jsr:
-    needs: verify
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-      - run: deno ci
-      - run: deno publish
+        run: vp run check:versions "$GITHUB_REF_NAME"
+      - run: vp run test-all
+      - run: vp pm pack -r --pack-destination "$RUNNER_TEMP/tarballs" -- --ignore-scripts
 
   npm:
     needs: verify
@@ -58,34 +36,14 @@ jobs:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-      - uses: actions/setup-node@v4
+      - uses: voidzero-dev/setup-vp@v1.21.2
         with:
           node-version: 24
-      - run: deno ci
-      - run: deno task build
+          cache: true
+      - run: vp run build
       - name: Use NPM_TOKEN when set, otherwise npm trusted publishing (OIDC)
         if: env.NPM_TOKEN != ''
         run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-      - name: Publish @openstatus/health first, then its dependents
-        run: |
-          set -euo pipefail
-          publish() {
-            local dir="$1"
-            local name version
-            name="$(node -p "require('$dir/package.json').name")"
-            version="$(node -p "require('$dir/package.json').version")"
-            if [ "$(npm view "$name@$version" version 2>/dev/null || true)" = "$version" ]; then
-              echo "::notice::$name@$version is already on npm, skipping"
-              return
-            fi
-            (cd "$dir" && npm publish --access public --ignore-scripts --provenance --loglevel verbose)
-          }
-          publish ./packages/health
-          for dir in ./packages/*/; do
-            dir="${dir%/}"
-            [ "$dir" = "./packages/health" ] && continue
-            publish "$dir"
-          done
+      # Publishes in dependency order (@openstatus/health first) and skips
+      # versions that are already on npm, so a failed run can be re-run.
+      - run: vp pm publish -r --access public --no-git-checks --provenance -- --ignore-scripts

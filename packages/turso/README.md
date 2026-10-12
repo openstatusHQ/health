@@ -1,11 +1,10 @@
 # @openstatus/health-turso
 
 Database probe for [Turso](https://turso.tech/) / libSQL for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Runs `select 1`
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Runs `select 1`
 against your `@libsql/client` `Client`. Critical by default.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-turso
 npm install @openstatus/health @openstatus/health-turso
 ```
 

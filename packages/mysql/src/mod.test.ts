@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { type MysqlLikeClient, mysqlProbe } from "./mod.ts";
 
@@ -25,9 +25,8 @@ test("mysqlProbe() runs select 1 through query()", async () => {
 });
 
 test("mysqlProbe() reports unhealthy when the query rejects", async () => {
-  const client = fakeClient(
-    [],
-    () => Promise.reject(new Error("ER_ACCESS_DENIED_ERROR")),
+  const client = fakeClient([], () =>
+    Promise.reject(new Error("ER_ACCESS_DENIED_ERROR")),
   );
   const report = await runProbes([mysqlProbe({ client })], {
     formatError: "message",

@@ -1,12 +1,11 @@
 # @openstatus/health-cloudflare-r2
 
 [Cloudflare R2](https://developers.cloudflare.com/r2/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends a `HEAD`
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends a `HEAD`
 for one object through an `R2Bucket` binding and fails the check when the
 request does — a missing object is a healthy answer, only an error is not.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-cloudflare-r2
 npm install @openstatus/health @openstatus/health-cloudflare-r2
 ```
 

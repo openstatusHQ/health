@@ -40,10 +40,7 @@ export interface GrpcLikeHealthClient {
   /** Call `Health/Check` for `service`. */
   check(
     request: { readonly service: string },
-    callback: (
-      error: Error | null,
-      response?: GrpcHealthCheckResponse,
-    ) => void,
+    callback: (error: Error | null, response?: GrpcHealthCheckResponse) => void,
   ): GrpcLikeCall;
 }
 
@@ -65,9 +62,8 @@ export function grpcProbe(options: GrpcProbeOptions): Probe {
       `must expose check(), got ${describe(client)}`,
     );
   }
-  const service = options.service === undefined
-    ? grpcDefaultService
-    : options.service;
+  const service =
+    options.service === undefined ? grpcDefaultService : options.service;
   if (typeof service !== "string") {
     throw new ProbeConfigError(
       "grpcProbe",

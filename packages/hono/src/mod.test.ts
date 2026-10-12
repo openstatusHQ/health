@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { type Env, Hono } from "hono";
 import {
   createHealthCheck,
@@ -56,9 +56,7 @@ test("healthRoute() maps unhealthy to 503 by default and honours overrides", asy
   );
   const res = await app(
     healthRoute({ probes: [bad], unhealthyStatusCode: 200 }),
-  ).request(
-    "/health",
-  );
+  ).request("/health");
   assert.equal(res.status, 200);
   assert.equal((await res.json()).status, "unhealthy");
 });
@@ -121,12 +119,14 @@ test("healthHandler() types the context from the app's Env", async () => {
 test("healthRoute() shares a prebuilt check between two routes", async () => {
   let calls = 0;
   const check = createHealthCheck({
-    probes: [{
-      name: "a",
-      run: () => {
-        calls++;
+    probes: [
+      {
+        name: "a",
+        run: () => {
+          calls++;
+        },
       },
-    }],
+    ],
     cacheMs: 1000,
   });
   const a = new Hono()
@@ -140,32 +140,38 @@ test("healthRoute() shares a prebuilt check between two routes", async () => {
 });
 
 test("healthRoute() gates checks and extend per request", async () => {
-  const a = app(healthRoute({
-    probes: [ok],
-    exposeChecks: (c) => c.req.header("x-health-token") === "s3cret",
-    extend: () => ({ region: "fra" }),
-  }));
+  const a = app(
+    healthRoute({
+      probes: [ok],
+      exposeChecks: (c) => c.req.header("x-health-token") === "s3cret",
+      extend: () => ({ region: "fra" }),
+    }),
+  );
   const anonymous = await (await a.request("/health")).json();
   assert.equal(anonymous.checks, undefined);
   assert.equal(anonymous.region, undefined);
-  const trusted = await (await a.request("/health", {
-    headers: { "x-health-token": "s3cret" },
-  })).json();
+  const trusted = await (
+    await a.request("/health", {
+      headers: { "x-health-token": "s3cret" },
+    })
+  ).json();
   assert.equal(trusted.checks.length, 1);
   assert.equal(trusted.region, "fra");
 });
 
 test("healthRoute() still answers when extend throws", async () => {
   const errors: string[] = [];
-  const a = app(healthRoute({
-    probes: [ok],
-    extend: () => {
-      throw new Error("boom");
-    },
-    onError: (error) => {
-      errors.push(error.message);
-    },
-  }));
+  const a = app(
+    healthRoute({
+      probes: [ok],
+      extend: () => {
+        throw new Error("boom");
+      },
+      onError: (error) => {
+        errors.push(error.message);
+      },
+    }),
+  );
   const res = await a.request("/health");
   assert.equal(res.status, 200);
   assert.equal((await res.json()).status, "ok");

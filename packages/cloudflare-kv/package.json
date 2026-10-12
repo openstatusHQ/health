@@ -3,31 +3,35 @@
   "version": "0.1.4",
   "description": "Cloudflare Workers KV probe for @openstatus/health",
   "keywords": [
-    "openstatus",
+    "cache",
+    "cloudflare",
     "health",
     "healthcheck",
-    "cloudflare",
     "kv",
-    "workers",
-    "cache"
+    "openstatus",
+    "workers"
   ],
+  "homepage": "https://github.com/openstatusHQ/health",
+  "bugs": {
+    "url": "https://github.com/openstatusHQ/health/issues"
+  },
   "license": "MIT",
   "author": {
     "name": "openstatus",
     "url": "https://www.openstatus.dev/"
   },
-  "homepage": "https://github.com/openstatusHQ/health",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/openstatusHQ/health.git",
     "directory": "packages/cloudflare-kv/"
   },
-  "bugs": {
-    "url": "https://github.com/openstatusHQ/health/issues"
-  },
+  "files": [
+    "dist/"
+  ],
   "type": "module",
-  "module": "./dist/mod.js",
+  "sideEffects": false,
   "main": "./dist/mod.cjs",
+  "module": "./dist/mod.js",
   "types": "./dist/mod.d.ts",
   "exports": {
     ".": {
@@ -40,23 +44,17 @@
     },
     "./package.json": "./package.json"
   },
-  "sideEffects": false,
-  "files": [
-    "dist/"
-  ],
-  "engines": {
-    "node": ">=22"
+  "scripts": {
+    "build": "vp pack",
+    "prepack": "vp pack"
+  },
+  "devDependencies": {
+    "@openstatus/health": "workspace:*"
   },
   "peerDependencies": {
     "@openstatus/health": "^0.1.4"
   },
-  "devDependencies": {
-    "tsdown": "^0.12.7",
-    "typescript": "^5.8.3"
-  },
-  "scripts": {
-    "build": "tsdown",
-    "prepack": "tsdown",
-    "test": "node --experimental-transform-types --test"
+  "engines": {
+    "node": ">=22"
   }
 }

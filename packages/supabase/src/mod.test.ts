@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { type JsonObject, runProbes } from "@openstatus/health";
 import {
   SupabaseConnectionPressureError,
@@ -104,9 +104,7 @@ test("supabaseProbe() fails on an unexpected response shape", async () => {
 });
 
 test("supabaseProbe() fails on a nested array row", async () => {
-  const report = await runProbes([
-    supabaseProbe({ client: fakeClient([[]]) }),
-  ]);
+  const report = await runProbes([supabaseProbe({ client: fakeClient([[]]) })]);
   assert.equal(report.checks[0].status, "failed");
 });
 
@@ -168,16 +166,19 @@ test("supabaseProbe() honours name, critical and skip overrides", async () => {
 });
 
 test("supabaseProbe() exposes the row through formatError", async () => {
-  const report = await runProbes([
-    supabaseProbe({
-      client: fakeClient({ ...belowThreshold(), connection_percent: 95 }),
-    }),
-  ], {
-    formatError: (e) =>
-      e instanceof SupabaseConnectionPressureError
-        ? `${e.message} (${e.row.current_connections}/${e.row.max_connections})`
-        : e.message,
-  });
+  const report = await runProbes(
+    [
+      supabaseProbe({
+        client: fakeClient({ ...belowThreshold(), connection_percent: 95 }),
+      }),
+    ],
+    {
+      formatError: (e) =>
+        e instanceof SupabaseConnectionPressureError
+          ? `${e.message} (${e.row.current_connections}/${e.row.max_connections})`
+          : e.message,
+    },
+  );
   assert.equal(
     report.checks[0].error,
     "connection pressure 95% exceeds 90% (24/100)",

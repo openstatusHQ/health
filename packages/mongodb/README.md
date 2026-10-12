@@ -1,13 +1,12 @@
 # @openstatus/health-mongodb
 
 [MongoDB](https://www.mongodb.com/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Runs the
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Runs the
 [`ping`](https://www.mongodb.com/docs/manual/reference/command/ping/) command
 through the official [`mongodb`](https://github.com/mongodb/node-mongodb-native)
 driver and fails the check when the server does not answer.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-mongodb
 npm install @openstatus/health @openstatus/health-mongodb
 ```
 

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { createHealthHandler } from "@openstatus/health";
 import {
   cloudflareExtend,
@@ -84,19 +84,17 @@ test("cloudflareServer() never renders client geolocation", () => {
     }),
   );
   assert.deepEqual(server, { platform: "cloudflare", region: "DFW" });
-  for (
-    const key of [
-      "country",
-      "city",
-      "regionCode",
-      "continent",
-      "latitude",
-      "longitude",
-      "postalCode",
-      "timezone",
-      "asOrganization",
-    ]
-  ) {
+  for (const key of [
+    "country",
+    "city",
+    "regionCode",
+    "continent",
+    "latitude",
+    "longitude",
+    "postalCode",
+    "timezone",
+    "asOrganization",
+  ]) {
     assert.equal(key in (server ?? {}), false, `${key} must never be rendered`);
   }
   assert.equal(server?.region, "DFW");

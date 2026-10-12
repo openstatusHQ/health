@@ -96,15 +96,13 @@ export class SupabaseConnectionPressureError extends Error {
 /** A probe that calls the RPC and fails on error, an unexpected row shape or high pressure; non-critical by default. Throws `ProbeConfigError` for a negative `maxConnectionPercent`. */
 export function supabaseProbe(options: SupabaseProbeOptions): Probe {
   const rpc = options.rpc ?? supabaseDefaultRpc;
-  const maxConnectionPercent = options.maxConnectionPercent ??
-    supabaseDefaultMaxConnectionPercent;
+  const maxConnectionPercent =
+    options.maxConnectionPercent ?? supabaseDefaultMaxConnectionPercent;
   if (!Number.isFinite(maxConnectionPercent) || maxConnectionPercent < 0) {
     throw new ProbeConfigError(
       "supabaseProbe",
       "maxConnectionPercent",
-      `must be a non-negative number, got ${
-        String(options.maxConnectionPercent)
-      }`,
+      `must be a non-negative number, got ${String(options.maxConnectionPercent)}`,
     );
   }
   return {

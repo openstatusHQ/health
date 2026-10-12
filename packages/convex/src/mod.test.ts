@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { fakeFetch, hangFetch } from "@openstatus/health/testing";
 import { convexProbe } from "./mod.ts";
@@ -18,16 +18,14 @@ test("convexProbe() posts the query to /api/query", async () => {
         body: success,
         onFetch: (call) =>
           calls.push(
-            `${call.method} ${call.url} ${call.headers.get("content-type")} ${
-              call.headers.get("authorization")
-            }`,
+            `${call.method} ${call.url} ${call.headers.get("content-type")} ${call.headers.get(
+              "authorization",
+            )}`,
           ),
       }),
     }),
   ]);
-  assert.deepEqual(calls, [
-    `POST ${url}/api/query application/json null`,
-  ]);
+  assert.deepEqual(calls, [`POST ${url}/api/query application/json null`]);
 });
 
 test("convexProbe() sends the token as a bearer token when given", async () => {
@@ -77,7 +75,9 @@ test("convexProbe() fails on an unexpected body", async () => {
   for (const body of [{ value: 1 }, null]) {
     const report = await runProbes(
       [convexProbe({ url, path, fetch: fakeFetch({ body }) })],
-      { formatError: "message" },
+      {
+        formatError: "message",
+      },
     );
     assert.equal(report.checks[0].error, "unexpected response shape");
   }
@@ -86,7 +86,9 @@ test("convexProbe() fails on an unexpected body", async () => {
 test("convexProbe() fails on a non-2xx response", async () => {
   const report = await runProbes(
     [convexProbe({ url, path, fetch: fakeFetch({ status: 502 }) })],
-    { formatError: "message" },
+    {
+      formatError: "message",
+    },
   );
   assert.equal(report.checks[0].error, "unexpected status 502");
 });

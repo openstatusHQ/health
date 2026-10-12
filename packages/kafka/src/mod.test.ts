@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import {
   type KafkaClusterDescription,
@@ -43,7 +43,7 @@ test("kafkaProbe() fails when the cluster has no brokers", async () => {
 
 test("kafkaProbe() fails on an unexpected response shape", async () => {
   const admin = fakeAdmin(() =>
-    Promise.resolve({} as unknown as KafkaClusterDescription)
+    Promise.resolve({} as unknown as KafkaClusterDescription),
   );
   const report = await runProbes([kafkaProbe({ admin })], {
     formatError: "message",
@@ -53,7 +53,7 @@ test("kafkaProbe() fails on an unexpected response shape", async () => {
 
 test("kafkaProbe() reports failed when describeCluster() rejects", async () => {
   const admin = fakeAdmin(() =>
-    Promise.reject(new Error("KafkaJSConnectionError"))
+    Promise.reject(new Error("KafkaJSConnectionError")),
   );
   const report = await runProbes([kafkaProbe({ admin })], {
     formatError: "message",

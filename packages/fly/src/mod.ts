@@ -51,8 +51,8 @@ export function flyServer<K extends keyof FlyServerInfo = never>(
   options?: FlyServerOptions<K>,
 ): Omit<FlyServerInfo, K> | undefined {
   const env = options?.env;
-  const instanceId = readEnvText("FLY_MACHINE_ID", env) ??
-    readEnvText("FLY_ALLOC_ID", env);
+  const instanceId =
+    readEnvText("FLY_MACHINE_ID", env) ?? readEnvText("FLY_ALLOC_ID", env);
   const service = readEnvText("FLY_APP_NAME", env);
   if (instanceId == null && service == null) return undefined;
 

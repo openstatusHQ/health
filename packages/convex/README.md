@@ -1,14 +1,13 @@
 # @openstatus/health-convex
 
 [Convex](https://www.convex.dev/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Runs one query
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Runs one query
 function of your deployment over its
 [HTTP API](https://docs.convex.dev/http-api/) — `POST {url}/api/query` —
 and fails the check unless it answers `status: "success"`. With `fetch`
 alone, on every runtime, and without the Convex client.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-convex
 npm install @openstatus/health @openstatus/health-convex
 ```
 

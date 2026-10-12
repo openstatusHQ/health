@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { fakeFetch, hangFetch } from "@openstatus/health/testing";
 import { algoliaDsnUrl, algoliaProbe } from "./mod.ts";
@@ -16,9 +16,9 @@ test("algoliaProbe() sends GET /1/isalive to the DSN host with the app headers",
       fetch: fakeFetch({
         onFetch: (call) =>
           calls.push(
-            `${call.method} ${call.url} ${
-              call.headers.get("x-algolia-application-id")
-            } ${call.headers.get("x-algolia-api-key")}`,
+            `${call.method} ${call.url} ${call.headers.get(
+              "x-algolia-application-id",
+            )} ${call.headers.get("x-algolia-api-key")}`,
           ),
       }),
     }),

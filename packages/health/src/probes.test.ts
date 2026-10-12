@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { ProbeConfigError } from "./errors.ts";
 import { expectOk, httpProbe, probe, probeUrl } from "./probes.ts";
 import { runProbes } from "./run.ts";

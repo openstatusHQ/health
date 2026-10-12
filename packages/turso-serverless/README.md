@@ -2,11 +2,10 @@
 
 Database probe for the
 [Turso serverless driver](https://www.npmjs.com/package/@tursodatabase/serverless)
-for [`@openstatus/health`](https://jsr.io/@openstatus/health). Runs `select 1`
+for [`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Runs `select 1`
 against the `Connection` returned by `connect()`. Critical by default.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-turso-serverless
 npm install @openstatus/health @openstatus/health-turso-serverless
 ```
 
@@ -51,7 +50,7 @@ Override `critical: false` for read replicas.
 
 Using the driver's libSQL compatibility layer
 (`@tursodatabase/serverless/compat`) instead? Its client exposes `execute()`,
-so use [`@openstatus/health-turso`](https://jsr.io/@openstatus/health-turso) with `tursoProbe({ client })`.
+so use [`@openstatus/health-turso`](https://www.npmjs.com/package/@openstatus/health-turso) with `tursoProbe({ client })`.
 
 ## About openstatus
 

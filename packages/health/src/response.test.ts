@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { renderHealthResponse, statusCodeFor } from "./response.ts";
 import type { HealthReport } from "./types.ts";
 
@@ -26,10 +26,14 @@ test("statusCodeFor() honours overrides", () => {
 });
 
 test("renderHealthResponse() exposes checks by default", () => {
-  const res = renderHealthResponse(report("ok"), {}, {
-    checks: [{ name: "private-db", status: "unhealthy" }],
-    latencyMs: 999,
-  });
+  const res = renderHealthResponse(
+    report("ok"),
+    {},
+    {
+      checks: [{ name: "private-db", status: "unhealthy" }],
+      latencyMs: 999,
+    },
+  );
   assert.equal(res.status, 200);
   assert.equal(res.headers["cache-control"], "no-store");
   assert.equal(res.headers["content-type"], "application/json; charset=utf-8");
@@ -52,15 +56,19 @@ test("renderHealthResponse() hides checks and latency when exposeChecks is false
 });
 
 test("renderHealthResponse() hides extension checks and latency but keeps other fields", () => {
-  const res = renderHealthResponse(report("ok"), {
-    exposeChecks: false,
-  }, {
-    region: "fra",
-    status: "hacked",
-    checkedAt: "hacked",
-    checks: [{ name: "private-db", status: "unhealthy" }],
-    latencyMs: 999,
-  });
+  const res = renderHealthResponse(
+    report("ok"),
+    {
+      exposeChecks: false,
+    },
+    {
+      region: "fra",
+      status: "hacked",
+      checkedAt: "hacked",
+      checks: [{ name: "private-db", status: "unhealthy" }],
+      latencyMs: 999,
+    },
+  );
   assert.deepEqual(res.body, {
     region: "fra",
     status: "ok",
@@ -73,10 +81,14 @@ test("renderHealthResponse() accepts interface-typed and Date fields", () => {
     readonly rss: number;
   }
   const vitals: Vitals = { rss: 1 };
-  const res = renderHealthResponse(report("ok"), { exposeChecks: false }, {
-    vitals,
-    at: new Date("2026-09-11T00:00:00.000Z"),
-  });
+  const res = renderHealthResponse(
+    report("ok"),
+    { exposeChecks: false },
+    {
+      vitals,
+      at: new Date("2026-09-11T00:00:00.000Z"),
+    },
+  );
   assert.equal(
     JSON.stringify(res.body),
     '{"vitals":{"rss":1},"at":"2026-09-11T00:00:00.000Z","status":"ok","checkedAt":"2026-09-11T00:00:00.000Z"}',
@@ -103,9 +115,11 @@ for (const exposeChecks of [true, false]) {
       checkedAt: "2026-09-11T00:00:00.000Z",
       ...(exposeChecks
         ? {
-          latencyMs: 12,
-          checks: [{ name: "db", status: "ok", critical: true, latencyMs: 3 }],
-        }
+            latencyMs: 12,
+            checks: [
+              { name: "db", status: "ok", critical: true, latencyMs: 3 },
+            ],
+          }
         : {}),
     });
   });

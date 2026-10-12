@@ -49,7 +49,7 @@ import { unkeyProbe } from "@openstatus/health-unkey";
 import { upstashProbe } from "@openstatus/health-upstash";
 import { workosProbe } from "@openstatus/health-workos";
 
-const env = (name: string): string | undefined => Deno.env.get(name);
+const env = (name: string): string | undefined => process.env[name];
 
 export function exampleProbes(): Probe[] {
   const libsql = createLibsqlClient({
@@ -82,8 +82,8 @@ export function exampleProbes(): Probe[] {
   );
 
   const planetscale = connectPlanetScale({
-    url: env("PLANETSCALE_URL") ||
-      "mysql://user:pass@aws.connect.psdb.cloud/app",
+    url:
+      env("PLANETSCALE_URL") || "mysql://user:pass@aws.connect.psdb.cloud/app",
   });
 
   const ioredis = new IORedis(env("REDIS_URL") || "redis://localhost:6379", {
@@ -246,16 +246,19 @@ export function exampleProbes(): Probe[] {
       skip: () => !env("ANTHROPIC_API_KEY"),
     }),
     algoliaProbe({
+      name: "algolia",
       appId: env("ALGOLIA_APP_ID") || "unconfigured",
       apiKey: env("ALGOLIA_SEARCH_KEY") || "unconfigured",
       skip: () => !env("ALGOLIA_APP_ID") || !env("ALGOLIA_SEARCH_KEY"),
     }),
     meilisearchProbe({
+      name: "meilisearch",
       host: env("MEILISEARCH_HOST") || "http://localhost:7700",
       apiKey: env("MEILISEARCH_API_KEY") || undefined,
       skip: () => !env("MEILISEARCH_HOST"),
     }),
     typesenseProbe({
+      name: "typesense",
       host: env("TYPESENSE_HOST") || "http://localhost:8108",
       apiKey: env("TYPESENSE_API_KEY") || undefined,
       skip: () => !env("TYPESENSE_HOST"),

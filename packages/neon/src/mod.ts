@@ -81,8 +81,6 @@ function describe(client: NeonLikeClient): string {
   }
   const keys = Object.keys(client);
   return keys.length === 0
-    ? `${
-      typeof client === "function" ? "a function" : "an object"
-    } with no keys`
+    ? `${typeof client === "function" ? "a function" : "an object"} with no keys`
     : `an object with keys ${keys.slice(0, 8).join(", ")}`;
 }

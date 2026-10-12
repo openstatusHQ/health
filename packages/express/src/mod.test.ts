@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createServer, type Server } from "node:http";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import express from "express";
 import {
   createHealthCheck,
@@ -40,7 +40,7 @@ async function withServer(
     await fn(`http://127.0.0.1:${port}`);
   } finally {
     await new Promise<void>((resolve, reject) =>
-      server.close((e) => (e ? reject(e) : resolve()))
+      server.close((e) => (e ? reject(e) : resolve())),
     );
   }
 }
@@ -124,7 +124,7 @@ test("healthHandler() mounts on a plain route and sees the full request", async 
     assert.equal(body.host, "127.0.0.1");
   } finally {
     await new Promise<void>((resolve, reject) =>
-      server.close((e) => (e ? reject(e) : resolve()))
+      server.close((e) => (e ? reject(e) : resolve())),
     );
   }
 });
@@ -143,7 +143,7 @@ async function serve(
     await fn(`http://127.0.0.1:${address.port}`);
   } finally {
     await new Promise<void>((resolve, reject) =>
-      server.close((e) => (e ? reject(e) : resolve()))
+      server.close((e) => (e ? reject(e) : resolve())),
     );
   }
 }
@@ -174,28 +174,32 @@ test("healthHandler() types res.locals from the Locals generic", async () => {
 test("healthRoute() shares a prebuilt check and gates checks per request", async () => {
   let calls = 0;
   const check = createHealthCheck({
-    probes: [{
-      name: "a",
-      run: () => {
-        calls++;
+    probes: [
+      {
+        name: "a",
+        run: () => {
+          calls++;
+        },
       },
-    }],
+    ],
     cacheMs: 1000,
   });
   const errors: string[] = [];
   const app = express();
   app.use(healthRoute({ check, exposeChecks: false }));
-  app.use(healthRoute({
-    check,
-    path: "/_health",
-    exposeChecks: (req) => req.get("x-health-token") === "s3cret",
-    extend: () => {
-      throw new Error("boom");
-    },
-    onError: (error) => {
-      errors.push(error.message);
-    },
-  }));
+  app.use(
+    healthRoute({
+      check,
+      path: "/_health",
+      exposeChecks: (req) => req.get("x-health-token") === "s3cret",
+      extend: () => {
+        throw new Error("boom");
+      },
+      onError: (error) => {
+        errors.push(error.message);
+      },
+    }),
+  );
   await serve(app, async (base) => {
     const pub = await (await fetch(`${base}/health`)).json();
     const anonymous = await (await fetch(`${base}/_health`)).json();

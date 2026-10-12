@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { NextRequest } from "next/server.js";
 import type { Probe } from "@openstatus/health";
 import { healthRoute } from "./mod.ts";
@@ -39,7 +39,8 @@ test("healthRoute() passes the NextRequest to extend", async () => {
     probes: [ok],
     extend: (_report, req) => ({ path: req.nextUrl.pathname }),
   });
-  const body = await (await GET(new NextRequest("http://localhost/api/health")))
-    .json();
+  const body = await (
+    await GET(new NextRequest("http://localhost/api/health"))
+  ).json();
   assert.equal(body.path, "/api/health");
 });

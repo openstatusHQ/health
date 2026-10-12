@@ -1,10 +1,9 @@
 # @openstatus/health-elysia
 
-Elysia adapter for [`@openstatus/health`](https://jsr.io/@openstatus/health).
+Elysia adapter for [`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health).
 
 ```sh
 bun add @openstatus/health @openstatus/health-elysia
-deno add jsr:@openstatus/health jsr:@openstatus/health-elysia
 npm install @openstatus/health @openstatus/health-elysia
 ```
 

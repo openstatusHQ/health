@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- Packages are no longer published to JSR; npm is the only registry. Existing
+  JSR versions stay available but will not be updated. The npm packages still
+  run on Deno through `npm:` specifiers.
+- The repository moved from Deno to [Vite+](https://viteplus.dev/): pnpm
+  workspaces, `vp check` (Oxlint + Oxfmt + type check), `vp test` (Vitest) and
+  `vp pack` (tsdown) for the ESM + CJS builds. Published output is unchanged
+  in shape.
+
 ## 0.1.4
 
 - New `@openstatus/health-mysql` probe: `mysqlProbe({ client })` runs `select

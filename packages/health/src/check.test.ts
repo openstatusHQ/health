@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { setTimeout as delay } from "node:timers/promises";
 import { runInNewContext } from "node:vm";
 import { createHealthCheck } from "./check.ts";
@@ -28,7 +28,10 @@ test("createHealthCheck() rejects duplicate probe names", () => {
   assert.throws(
     () =>
       createHealthCheck({
-        probes: [{ name: "a", run: () => {} }, { name: "a", run: () => {} }],
+        probes: [
+          { name: "a", run: () => {} },
+          { name: "a", run: () => {} },
+        ],
       }),
     DuplicateProbeError,
   );
@@ -93,13 +96,15 @@ test("createHealthCheck().invalidate() drops the cache", async () => {
 
 test("createHealthCheck() forwards timeoutMs and formatError", async () => {
   const check = createHealthCheck({
-    probes: [{
-      name: "a",
-      run: (signal) =>
-        new Promise<void>((_, reject) => {
-          signal.addEventListener("abort", () => reject(signal.reason));
-        }),
-    }],
+    probes: [
+      {
+        name: "a",
+        run: (signal) =>
+          new Promise<void>((_, reject) => {
+            signal.addEventListener("abort", () => reject(signal.reason));
+          }),
+      },
+    ],
     timeoutMs: 10,
     formatError: (e) => e.name,
   });
@@ -211,14 +216,16 @@ test("createHealthCheck() blocks once the stale window has passed", async () => 
 
 test("createHealthCheck() forwards deadlineMs", async () => {
   const check = createHealthCheck({
-    probes: [{
-      name: "a",
-      timeoutMs: 5000,
-      run: (signal) =>
-        new Promise<void>((_, reject) => {
-          signal.addEventListener("abort", () => reject(signal.reason));
-        }),
-    }],
+    probes: [
+      {
+        name: "a",
+        timeoutMs: 5000,
+        run: (signal) =>
+          new Promise<void>((_, reject) => {
+            signal.addEventListener("abort", () => reject(signal.reason));
+          }),
+      },
+    ],
     deadlineMs: 10,
   });
   const report = await check.report();
@@ -241,13 +248,15 @@ test("createHealthCheck().invalidate() abandons an in-flight round", async () =>
   const gate = Promise.withResolvers<void>();
   let calls = 0;
   const check = createHealthCheck({
-    probes: [{
-      name: "a",
-      run: async () => {
-        calls++;
-        if (calls === 1) await gate.promise;
+    probes: [
+      {
+        name: "a",
+        run: async () => {
+          calls++;
+          if (calls === 1) await gate.promise;
+        },
       },
-    }],
+    ],
     cacheMs: 1000,
   });
   const first = check.report();

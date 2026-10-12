@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2024", "DOM", "DOM.Iterable"],
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "strict": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@openstatus/health": ["./packages/health/src/mod.ts"],
+      "@openstatus/health/testing": ["./packages/health/src/testing.ts"],
+      "@openstatus/health-*": ["./packages/*/src/mod.ts"]
+    }
+  },
+  "include": [
+    "packages/*/src",
+    "packages/*/vite.config.ts",
+    "examples",
+    "scripts",
+    "vite.config.ts"
+  ],
+  "exclude": ["**/dist", "**/node_modules"]
+}

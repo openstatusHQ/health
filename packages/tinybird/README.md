@@ -1,7 +1,7 @@
 # @openstatus/health-tinybird
 
 Reachability probe for [Tinybird](https://www.tinybird.co/) for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Checks
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Checks
 `GET {baseUrl}/v0/health`, unauthenticated.
 
 Tinybird's `/v0/health` endpoint is public and answers without a token.
@@ -10,7 +10,6 @@ a perfectly healthy Tinybird as down. Use this unauthenticated reachability
 check and keep real failure detection to your queries.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-tinybird
 npm install @openstatus/health @openstatus/health-tinybird
 ```
 

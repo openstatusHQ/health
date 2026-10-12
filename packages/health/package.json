@@ -3,30 +3,34 @@
   "version": "0.1.4",
   "description": "Framework-agnostic health endpoint core: probes, caching, response rendering",
   "keywords": [
-    "openstatus",
     "health",
     "healthcheck",
+    "liveness",
+    "openstatus",
     "probe",
-    "readiness",
-    "liveness"
+    "readiness"
   ],
+  "homepage": "https://github.com/openstatusHQ/health",
+  "bugs": {
+    "url": "https://github.com/openstatusHQ/health/issues"
+  },
   "license": "MIT",
   "author": {
     "name": "openstatus",
     "url": "https://www.openstatus.dev/"
   },
-  "homepage": "https://github.com/openstatusHQ/health",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/openstatusHQ/health.git",
     "directory": "packages/health/"
   },
-  "bugs": {
-    "url": "https://github.com/openstatusHQ/health/issues"
-  },
+  "files": [
+    "dist/"
+  ],
   "type": "module",
-  "module": "./dist/mod.js",
+  "sideEffects": false,
   "main": "./dist/mod.cjs",
+  "module": "./dist/mod.js",
   "types": "./dist/mod.d.ts",
   "exports": {
     ".": {
@@ -47,20 +51,11 @@
     },
     "./package.json": "./package.json"
   },
-  "sideEffects": false,
-  "files": [
-    "dist/"
-  ],
+  "scripts": {
+    "build": "vp pack",
+    "prepack": "vp pack"
+  },
   "engines": {
     "node": ">=22"
-  },
-  "devDependencies": {
-    "tsdown": "^0.12.7",
-    "typescript": "^5.8.3"
-  },
-  "scripts": {
-    "build": "tsdown",
-    "prepack": "tsdown",
-    "test": "node --experimental-transform-types --test"
   }
 }

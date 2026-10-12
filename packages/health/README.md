@@ -10,23 +10,23 @@ The core is one package in a family — thin adapters mount it on your
 framework, thin probes know how to ping one dependency each, and hosting
 packages say which replica answered:
 
-- Adapters: [`@openstatus/health-hono`](https://jsr.io/@openstatus/health-hono),
-  [`@openstatus/health-elysia`](https://jsr.io/@openstatus/health-elysia),
-  [`@openstatus/health-express`](https://jsr.io/@openstatus/health-express),
-  [`@openstatus/health-next`](https://jsr.io/@openstatus/health-next),
-  [`@openstatus/health-tanstack-start`](https://jsr.io/@openstatus/health-tanstack-start).
-- Probes: [`@openstatus/health-drizzle`](https://jsr.io/@openstatus/health-drizzle),
-  [`@openstatus/health-supabase`](https://jsr.io/@openstatus/health-supabase),
-  [`@openstatus/health-tinybird`](https://jsr.io/@openstatus/health-tinybird),
-  [`@openstatus/health-turso`](https://jsr.io/@openstatus/health-turso),
-  [`@openstatus/health-turso-serverless`](https://jsr.io/@openstatus/health-turso-serverless),
-  [`@openstatus/health-unkey`](https://jsr.io/@openstatus/health-unkey),
-  [`@openstatus/health-upstash`](https://jsr.io/@openstatus/health-upstash).
-- Hosting: [`@openstatus/health-fly`](https://jsr.io/@openstatus/health-fly),
-  [`@openstatus/health-koyeb`](https://jsr.io/@openstatus/health-koyeb),
-  [`@openstatus/health-railway`](https://jsr.io/@openstatus/health-railway),
-  [`@openstatus/health-vercel`](https://jsr.io/@openstatus/health-vercel),
-  [`@openstatus/health-cloudflare`](https://jsr.io/@openstatus/health-cloudflare).
+- Adapters: [`@openstatus/health-hono`](https://www.npmjs.com/package/@openstatus/health-hono),
+  [`@openstatus/health-elysia`](https://www.npmjs.com/package/@openstatus/health-elysia),
+  [`@openstatus/health-express`](https://www.npmjs.com/package/@openstatus/health-express),
+  [`@openstatus/health-next`](https://www.npmjs.com/package/@openstatus/health-next),
+  [`@openstatus/health-tanstack-start`](https://www.npmjs.com/package/@openstatus/health-tanstack-start).
+- Probes: [`@openstatus/health-drizzle`](https://www.npmjs.com/package/@openstatus/health-drizzle),
+  [`@openstatus/health-supabase`](https://www.npmjs.com/package/@openstatus/health-supabase),
+  [`@openstatus/health-tinybird`](https://www.npmjs.com/package/@openstatus/health-tinybird),
+  [`@openstatus/health-turso`](https://www.npmjs.com/package/@openstatus/health-turso),
+  [`@openstatus/health-turso-serverless`](https://www.npmjs.com/package/@openstatus/health-turso-serverless),
+  [`@openstatus/health-unkey`](https://www.npmjs.com/package/@openstatus/health-unkey),
+  [`@openstatus/health-upstash`](https://www.npmjs.com/package/@openstatus/health-upstash).
+- Hosting: [`@openstatus/health-fly`](https://www.npmjs.com/package/@openstatus/health-fly),
+  [`@openstatus/health-koyeb`](https://www.npmjs.com/package/@openstatus/health-koyeb),
+  [`@openstatus/health-railway`](https://www.npmjs.com/package/@openstatus/health-railway),
+  [`@openstatus/health-vercel`](https://www.npmjs.com/package/@openstatus/health-vercel),
+  [`@openstatus/health-cloudflare`](https://www.npmjs.com/package/@openstatus/health-cloudflare).
 
 The full package table, with quick starts for every adapter, is in the
 [repository README](https://github.com/openstatusHQ/health#packages).
@@ -34,7 +34,6 @@ The full package table, with quick starts for every adapter, is in the
 ## Install
 
 ```sh
-deno add jsr:@openstatus/health
 npm install @openstatus/health
 ```
 

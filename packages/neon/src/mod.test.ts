@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import {
   type NeonLikeClient,
@@ -24,11 +24,7 @@ function fakeSqlFunction(
   signals: (AbortSignal | undefined)[] = [],
 ): NeonLikeClient {
   const sql = () => Promise.resolve([]);
-  sql.query = (
-    text: string,
-    _params?: never[],
-    options?: NeonQueryOptions,
-  ) => {
+  sql.query = (text: string, _params?: never[], options?: NeonQueryOptions) => {
     calls.push(text);
     signals.push(options?.fetchOptions?.signal);
     return Promise.resolve([]);
@@ -73,9 +69,8 @@ test("neonProbe() aborts the HTTP driver's signal on timeout", async () => {
 });
 
 test("neonProbe() reports unhealthy when the query rejects", async () => {
-  const client = fakeClient(
-    [],
-    () => Promise.reject(new Error("password authentication failed")),
+  const client = fakeClient([], () =>
+    Promise.reject(new Error("password authentication failed")),
   );
   const report = await runProbes([neonProbe({ client })], {
     formatError: "message",

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { type KVLikeNamespace, kvProbe } from "./mod.ts";
 
@@ -37,9 +37,8 @@ test("kvProbe() honours the key option", async () => {
 });
 
 test("kvProbe() reports degraded when get() rejects", async () => {
-  const namespace = fakeNamespace(
-    [],
-    () => Promise.reject(new Error("KV GET failed: 500 Internal Server Error")),
+  const namespace = fakeNamespace([], () =>
+    Promise.reject(new Error("KV GET failed: 500 Internal Server Error")),
   );
   const report = await runProbes([kvProbe({ namespace })], {
     formatError: "message",

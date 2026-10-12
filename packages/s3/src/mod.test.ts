@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { HeadBucketCommand } from "@aws-sdk/client-s3";
 import { runProbes } from "@openstatus/health";
 import { type S3LikeClient, s3Probe, type S3SendOptions } from "./mod.ts";
@@ -36,9 +36,8 @@ test("s3Probe() sends HeadBucket for the bucket with the probe signal", async ()
 });
 
 test("s3Probe() reports degraded when send() rejects", async () => {
-  const client = fakeClient(
-    [],
-    () => Promise.reject(new Error("NoSuchBucket")),
+  const client = fakeClient([], () =>
+    Promise.reject(new Error("NoSuchBucket")),
   );
   const report = await runProbes([s3Probe({ client, bucket: "uploads" })], {
     formatError: "message",
@@ -60,9 +59,13 @@ test("s3Probe() times out and aborts the request", async () => {
   let aborted = false;
   const client: S3LikeClient = {
     send: (_command, options) => {
-      options?.abortSignal?.addEventListener("abort", () => {
-        aborted = true;
-      }, { once: true });
+      options?.abortSignal?.addEventListener(
+        "abort",
+        () => {
+          aborted = true;
+        },
+        { once: true },
+      );
       return new Promise(() => {});
     },
   };

@@ -1,13 +1,12 @@
 # @openstatus/health-memory
 
-Memory probe for [`@openstatus/health`](https://jsr.io/@openstatus/health).
+Memory probe for [`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health).
 Compares the process's heap in use with the V8 heap limit — and its
 resident set size with a byte budget — and fails the check above either
 threshold, so a leak turns the report `degraded` before the process is
 killed for running out of memory.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-memory
 npm install @openstatus/health @openstatus/health-memory
 ```
 

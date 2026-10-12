@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { fakeFetch, hangFetch } from "@openstatus/health/testing";
 import { tinybirdProbe } from "./mod.ts";
@@ -35,7 +35,9 @@ test("tinybirdProbe() times out and aborts the signal", async () => {
   const track = { aborted: false };
   const report = await runProbes(
     [tinybirdProbe({ fetch: hangFetch(track), timeoutMs: 20 })],
-    { timeoutMs: 20 },
+    {
+      timeoutMs: 20,
+    },
   );
   assert.equal(report.checks[0].status, "timeout");
   assert.equal(track.aborted, true);

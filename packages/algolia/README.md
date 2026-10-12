@@ -1,13 +1,12 @@
 # @openstatus/health-algolia
 
 [Algolia](https://www.algolia.com/) probe for
-[`@openstatus/health`](https://jsr.io/@openstatus/health). Sends
+[`@openstatus/health`](https://www.npmjs.com/package/@openstatus/health). Sends
 `GET /1/isalive` to your application's DSN host with the application ID and
 an API key in the Algolia headers, so it proves both that the search API
 answers and that the key is valid — with `fetch` alone, on every runtime.
 
 ```sh
-deno add jsr:@openstatus/health jsr:@openstatus/health-algolia
 npm install @openstatus/health @openstatus/health-algolia
 ```
 

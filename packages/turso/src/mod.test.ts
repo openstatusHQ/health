@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import { test } from "vite-plus/test";
 import { runProbes } from "@openstatus/health";
 import { type LibsqlLikeClient, tursoProbe } from "./mod.ts";
 
@@ -33,9 +33,7 @@ test("tursoProbe() executes select 1", async () => {
 });
 
 test("tursoProbe() defaults to critical with the name database", async () => {
-  const report = await runProbes([
-    tursoProbe({ client: fakeClient().client }),
-  ]);
+  const report = await runProbes([tursoProbe({ client: fakeClient().client })]);
   const check = report.checks[0];
   assert.equal(check.name, "database");
   assert.equal(check.critical, true);
